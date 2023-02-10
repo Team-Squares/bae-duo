@@ -19,5 +19,3 @@ npm run dev
 - `axios`
 - `react-query`
 - `emotion`
-
-protect
