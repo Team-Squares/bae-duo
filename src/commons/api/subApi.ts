@@ -11,3 +11,7 @@ export const getSubDataDetail = (id: number) => {
 export const postSubData = (body: dataProps) => {
   return apiInstance.post(`/domain`, body)
 }
+
+export const deleteSubData = (id: number) => {
+  return apiInstance.delete(`/domain/${id}`)
+}
