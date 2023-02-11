@@ -1,8 +1,7 @@
-import { deleteSubData, getSubDataDetail, postSubData } from '@/src/commons/api/subApi'
-import { dataProps } from '@/src/commons/types/subTypes'
-import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { deleteSubData, getSubDataDetail, postSubData } from '@/src/commons/api/subApi'
 import * as Styled from './SubDetail.styles'
 
 const SubDetail = () => {
@@ -19,10 +18,10 @@ const SubDetail = () => {
   }, [subName])
 
   //* useQuery - get 요청에 해당
-  //const { data } = useQuery(['getSubDataItemKey', id], () => getSubDataDetail(id as number), {
-  //  enabled: !!subName,
-  //  retry: 3,
-  //})
+  const { data } = useQuery(['getSubDataItemKey', id], () => getSubDataDetail(id as number), {
+    enabled: !!subName,
+    retry: 3,
+  })
 
   //* useMutation - post,put,delete 요청에 해당
   const addMutation = useMutation(postSubData, {

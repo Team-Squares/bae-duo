@@ -1,10 +1,10 @@
 import { globalStyles } from '@/src/commons/styles/styles'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { Global } from '@emotion/react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import Layout from '@/src/components/commons/layout'
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
