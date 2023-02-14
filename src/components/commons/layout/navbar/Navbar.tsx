@@ -1,7 +1,7 @@
 import useRoutePage from '../../../../commons/hooks/useRoutePage'
 import * as Styled from './Navbar.styles'
 import Image from 'next/image'
-import tempProfileImg from './tempProfileImg.svg'
+import tempProfileImg from '@/public/images/profile_medium.svg'
 
 const Navbar = () => {
   const { routePage } = useRoutePage()
