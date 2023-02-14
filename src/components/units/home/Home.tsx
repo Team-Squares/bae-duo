@@ -22,27 +22,27 @@ const Home = () => {
         </div>
         <Styled.BrandsBox>
           <Styled.BrandsCard>
-            <div>
+            <Styled.FundingInfo>
               <Styled.LimitBox>
                 <Styled.Limit>11:00마감</Styled.Limit>
                 <Styled.Limit>최소 4명</Styled.Limit>
               </Styled.LimitBox>
               <div>
-                <div>한솥 도시락 종각점</div>
-                <div>
+                <Styled.BrandName>한솥 도시락 종각점</Styled.BrandName>
+                <Styled.Starter>
                   <Image src={tempProfileImg} alt="none"></Image>
-                  <span>문동은</span>
+                  <Styled.StarterName>문동은</Styled.StarterName>
                   <Image src={starterImg} alt="none"></Image>
-                </div>
+                </Styled.Starter>
               </div>
-            </div>
-            <div>
-              <div>
-                <span>56% 달성했어요</span>
+            </Styled.FundingInfo>
+            <Styled.ProgessBox>
+              <Styled.StatusBox>
+                <Styled.Status>56% 달성했어요</Styled.Status>
                 <Styled.Price>30,000원</Styled.Price>
-              </div>
-              <div></div>
-            </div>
+              </Styled.StatusBox>
+              <Styled.ProgressBar></Styled.ProgressBar>
+            </Styled.ProgessBox>
           </Styled.BrandsCard>
         </Styled.BrandsBox>
       </div>
