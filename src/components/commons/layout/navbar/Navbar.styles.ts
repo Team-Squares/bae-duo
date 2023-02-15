@@ -3,12 +3,27 @@ import styled from '@emotion/styled'
 
 export const Navbar = styled.nav`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 
   width: 100%;
-  height: 100px;
-  border: 5px solid ${color.$main};
+  height: 80px;
+  border-bottom: 1px solid ${color.$default};
+`
+
+export const Logo = styled.div`
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 22px;
+`
+
+export const RightSection = styled.div`
+  display: flex;
+  gap: 20px;
+`
+
+export const MenuBox = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 export const Menu = styled.div`
@@ -23,3 +38,5 @@ export const Menu = styled.div`
     color: white;
   }
 `
+
+export const Profile = styled.div``
