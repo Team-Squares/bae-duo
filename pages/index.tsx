@@ -3,7 +3,7 @@ import Home from '@/src/components/units/home/Home'
 
 const HomePage = () => {
   return (
-    <DefaultLayout>
+    <DefaultLayout title={'안녕 난 헤더얌'}>
       <Home />
     </DefaultLayout>
   )

@@ -16,6 +16,7 @@ export const Container = styled.div`
   width: 100%;
   max-width: 1040px;
   margin: 0 auto;
+  padding: 32px 40px;
   @media (max-width: 768px) {
     max-width: 768px;
     padding: 0 32px;
@@ -25,9 +26,7 @@ export const Container = styled.div`
     padding: 0 16px;
   }
 `
-
-export const BodyContainer = styled.div`
-  width: 100%;
-  margin: 0 40px;
-  border: 5px solid ${color.$point};
+export const HeaderLayout = styled.header`
+  margin: 24px 0;
+  font-size: 28px;
 `
