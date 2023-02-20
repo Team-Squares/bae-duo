@@ -9,26 +9,37 @@ interface ToastProps {
   toast: string
 }
 
+const ToastIcon: any = {
+  success: <CheckCircleOutlineIcon />,
+  fail: <HighlightOffIcon />,
+  warning: <ErrorOutlineIcon />,
+}
+
+const ToastColor: any = {
+  success: '#45B9C4',
+  warning: '#F0AB38',
+  fail: '#DC2626',
+}
+
+const ToastBackgroundColor: any = {
+  success: '#E0F5F6',
+  warning: '#FdF3E3',
+  fail: '#FCA5A5',
+}
+
 const Toast = (props: ToastProps) => {
-  const ToastIcon: any = {
-    success: <CheckCircleOutlineIcon />,
-    fail: <HighlightOffIcon />,
-    warning: <ErrorOutlineIcon />,
-  }
-
-  const ToastColor: any = {
-    success: '#45B9C4',
-    warning: '#F0AB38',
-    fail: '#DC2626',
-  }
-
-  const ToastBackgroundColor: any = {
-    success: '#E0F5F6',
-    warning: '#FdF3E3',
-    fail: '#FCA5A5',
-  }
-
   const [isActive, setIsActive] = useState<boolean>(false)
+  const { index, toast, setToastQueue } = props
+
+  const onClickClose = (e: any) => {
+    setToastQueue((prev: any) => {
+      console.log('prev: ', prev)
+      let toastQueue = [...prev]
+      toastQueue.splice(index, 1)
+      return [...toastQueue]
+    })
+  }
+
   useEffect(() => {
     setTimeout(() => setIsActive(true), 0)
   }, [])
@@ -39,15 +50,20 @@ const Toast = (props: ToastProps) => {
         isActive
           ? {
               transform: 'translateX(0)',
-              borderColor: `${ToastColor[props.toast]}`,
-              backgroundColor: `${ToastBackgroundColor[props.toast]}`,
+              borderColor: `${ToastColor[toast?.type]}`,
+              backgroundColor: `${ToastBackgroundColor[toast?.type]}`,
             }
           : null
       }
     >
-      <Styled.Icon style={{ color: `${ToastColor[props.toast]}` }}>{ToastIcon[props.toast]}</Styled.Icon>
-      <Styled.Contents>안녕 나는 {props.toast}맛 토스트야</Styled.Contents>
-      <Styled.Close>
+      <Styled.Icon style={{ color: `${ToastColor[toast?.type]}` }}>{ToastIcon[toast?.type]}</Styled.Icon>
+      <Styled.Contents>
+        <p>
+          안녕 나는 {index}번째 {toast?.type}맛 토스트야
+        </p>
+        <p>{toast?.content}</p>
+      </Styled.Contents>
+      <Styled.Close onClick={onClickClose}>
         <CloseIcon />
       </Styled.Close>
     </Styled.Toast>

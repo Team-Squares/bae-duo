@@ -10,8 +10,8 @@ export const Toast = styled.div`
   background-color: #fff;
   margin: 1.5px 0;
   border-radius: 5px;
-  transform: translateX(100%);
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
+  // transform: translateX(100%);
+  // transition: all 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
 `
 
 export const Icon = styled.div`
