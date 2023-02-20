@@ -2,7 +2,7 @@ import { useToast } from '@/src/components/units/toast/ToastArea'
 import * as Styled from '@/src/components/units/toast/ToastArea.styles'
 
 const SubListPage = () => {
-  const [pushToastQueue, ToastArea] = useToast()
+  const [pushToastQueue, ToastArea] = useToast({ delay: 2000 })
 
   return (
     <>

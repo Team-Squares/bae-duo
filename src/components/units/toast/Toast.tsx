@@ -3,7 +3,6 @@ import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import { useEffect, useState } from 'react'
 
 interface ToastProps {
   toast: string
@@ -28,7 +27,6 @@ const ToastBackgroundColor: any = {
 }
 
 const Toast = (props: ToastProps) => {
-  const [isActive, setIsActive] = useState<boolean>(false)
   const { index, toast, setToastQueue } = props
 
   const onClickClose = (e: any) => {
@@ -40,28 +38,20 @@ const Toast = (props: ToastProps) => {
     })
   }
 
-  useEffect(() => {
-    setTimeout(() => setIsActive(true), 0)
-  }, [])
-
   return (
     <Styled.Toast
-      style={
-        isActive
-          ? {
-              transform: 'translateX(0)',
-              borderColor: `${ToastColor[toast?.type]}`,
-              backgroundColor: `${ToastBackgroundColor[toast?.type]}`,
-            }
-          : null
-      }
+      style={{
+        transform: 'translateX(0)',
+        borderColor: `${ToastColor[toast.type]}`,
+        backgroundColor: `${ToastBackgroundColor[toast.type]}`,
+      }}
     >
-      <Styled.Icon style={{ color: `${ToastColor[toast?.type]}` }}>{ToastIcon[toast?.type]}</Styled.Icon>
+      <Styled.Icon style={{ color: `${ToastColor[toast.type]}` }}>{ToastIcon[toast.type]}</Styled.Icon>
       <Styled.Contents>
         <p>
-          안녕 나는 {index}번째 {toast?.type}맛 토스트야
+          안녕 나는 {index}번째 {toast.type}맛 토스트야
         </p>
-        <p>{toast?.content}</p>
+        <p>{toast.content}</p>
       </Styled.Contents>
       <Styled.Close onClick={onClickClose}>
         <CloseIcon />

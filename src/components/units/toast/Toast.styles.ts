@@ -18,7 +18,10 @@ export const Icon = styled.div`
   margin: 0 20px;
 `
 
-export const Contents = styled.div``
+export const Contents = styled.div`
+  width: 100%;
+`
 export const Close = styled.div`
   margin: 0 20px;
+  cursor: pointer;
 `

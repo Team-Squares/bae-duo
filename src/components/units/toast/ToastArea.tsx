@@ -1,13 +1,13 @@
 import * as Styled from './ToastArea.styles'
 import Toast from './Toast'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-export const useToast = () => {
+export const useToast = ({ delay }: any) => {
   const [toastQueue, setToastQueue] = useState<any>([])
 
   const pushToastQueue = (type: string, content: string) => {
     setToastQueue((prev: any) => [...prev, { type, content }])
-    setTimeout(removeToast, 2000)
+    setTimeout(removeToast, delay)
   }
 
   const removeToast = () => {
@@ -22,8 +22,8 @@ export const useToast = () => {
       <Styled.Container>
         {toastQueue.length > 0 && (
           <Styled.ToastArea>
-            {toastQueue.map((toast, i) => {
-              return <Toast toast={toast} index={i} setToastQueue={setToastQueue} />
+            {toastQueue.map((toast: any, i: number) => {
+              return <Toast key={i} toast={toast} index={i} setToastQueue={setToastQueue} />
             })}
           </Styled.ToastArea>
         )}
