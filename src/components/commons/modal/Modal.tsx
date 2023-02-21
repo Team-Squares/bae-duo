@@ -1,9 +1,10 @@
-import React, { FC, ReactFragment } from 'react'
+import React, { useCallback } from 'react'
 import * as Styled from './Modal.styles'
 import XmarkImg from '@/public/images/xmark_grey.svg'
 import Image from 'next/image'
 
 export interface ModalPropsType {
+  id: string
   title: string
   width: string
   height: string
@@ -12,11 +13,56 @@ export interface ModalPropsType {
   children: JSX.Element
   submitBtnContent?: string
   closeModal: () => any
-  onSubmitFunc?: () => any
+  submitFunc?: () => any
+  mode: 'submit' | 'info'
 }
 
-const Skeleton = (props: ModalPropsType) => {
-  const { width, height, left, top, title, closeModal, onSubmitFunc, children, submitBtnContent } = props
+const Modal = (props: ModalPropsType) => {
+  const {
+    id,
+    width,
+    height,
+    left,
+    top,
+    title,
+    closeModal,
+    submitFunc = () => {},
+    children,
+    submitBtnContent = 'Submit',
+    mode,
+  } = props
+
+  const getComponentByMode = useCallback(() => {
+    if (mode === 'submit')
+      return (
+        <Styled.BtnBox>
+          <Styled.CancleBtn onClick={closeModal}>
+            <div>Cancle</div>
+          </Styled.CancleBtn>
+          <Styled.SubmitBtn
+            onClick={e => {
+              e.stopPropagation()
+              submitFunc()
+            }}
+          >
+            <div>{submitBtnContent}</div>
+          </Styled.SubmitBtn>
+        </Styled.BtnBox>
+      )
+    else
+      return (
+        <Styled.CheckBox>
+          <input
+            type="checkbox"
+            onClick={e => {
+              e.stopPropagation()
+              // TODO click되면 해당 info는 오늘 안 보여주기
+            }}
+          />
+          <span>오늘 하루 보지 않기</span>
+        </Styled.CheckBox>
+      )
+  }, [closeModal, mode, submitBtnContent, submitFunc])
 
   return (
     <Styled.BackGround onClick={closeModal}>
@@ -28,24 +74,10 @@ const Skeleton = (props: ModalPropsType) => {
           </Styled.CloseBtn>
         </Styled.TopBox>
         <Styled.Child>{children}</Styled.Child>
-        {onSubmitFunc && submitBtnContent ? (
-          <Styled.BtnBox>
-            <Styled.CancleBtn onClick={closeModal}>
-              <div>Cancle</div>
-            </Styled.CancleBtn>
-            <Styled.SubmitBtn
-              onClick={e => {
-                e.stopPropagation()
-                onSubmitFunc()
-              }}
-            >
-              <div>{submitBtnContent}</div>
-            </Styled.SubmitBtn>
-          </Styled.BtnBox>
-        ) : null}
+        {getComponentByMode()}
       </Styled.Modal>
     </Styled.BackGround>
   )
 }
 
-export default Skeleton
+export default Modal

@@ -56,6 +56,7 @@ const Home = () => {
       </div>
       {showModal === true ? (
         <Modal
+          id="home"
           width="300px"
           height="300px"
           left="50%"
@@ -64,8 +65,7 @@ const Home = () => {
           closeModal={() => {
             setShowModal(false)
           }}
-          onSubmitFunc={() => {}}
-          submitBtnContent="go"
+          mode="info"
         >
           <span>hello</span>
         </Modal>

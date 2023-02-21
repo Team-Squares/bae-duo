@@ -41,7 +41,7 @@ export const TopBox = styled.div`
 
 export const Child = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: ${padding};
 `
 
@@ -75,18 +75,30 @@ const buttonStyle = css`
   height: ${btnHeight};
   border-radius: ${bdRadius};
   font-size: 13px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const CancleBtn = styled.div`
   ${buttonStyle}
   ${displayCenter}
-  border: 1px solid #8ea1f3;
-  color: #8ea1f3;
+  border: 1px solid ${color.$blue30};
+  color: ${color.$blue30};
 `
 
 export const SubmitBtn = styled.div`
   ${buttonStyle}
   ${displayCenter}
-  background-color: #8ea1f3;
+  background-color: ${color.$blue30};
   color: white;
+`
+
+export const CheckBox = styled.div`
+  padding: ${padding};
+  ${displayCenter}
+  gap: 10px;
+  span {
+    font-size: 15px;
+  }
 `

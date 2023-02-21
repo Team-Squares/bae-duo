@@ -5,6 +5,7 @@ export const color = {
   $point: '#e91e63',
   $sub: '#8ca315',
   $main: '#ffeb3b',
+  $blue30: '#8ea1f3',
 }
 
 export const globalStyles = css`
