@@ -1,19 +1,21 @@
-import React, { FC } from 'react'
 import * as Styled from './Input.styles'
 
 interface InputProps {
-  placeholder: string
-  type: string
-  label: string
-  width: string
+  placeholder?: string
+  type?: string
+  label?: string
+  size?: 'sm' | 'md' | 'lg'
 }
-const Input: FC<InputProps> = ({ placeholder, type, label, width }) => {
-  const inputStyle = width || '100%'
+
+const Input: React.FC<InputProps> = ({ placeholder, type, label = '', size = 'md' }) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value)
+  }
 
   return (
-    <Styled.InputContainer width={inputStyle}>
-      <Styled.Label>{label}</Styled.Label>
-      <Styled.Input placeholder={placeholder} type={type} />
+    <Styled.InputContainer size={size}>
+      <Styled.Label label={label}>{label}</Styled.Label>
+      <Styled.Input onChange={handleChange} placeholder={placeholder} type={type} />
     </Styled.InputContainer>
   )
 }

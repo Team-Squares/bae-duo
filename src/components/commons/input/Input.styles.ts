@@ -1,17 +1,45 @@
 import styled from '@emotion/styled'
+import { css } from '@emotion/react'
 
-export const InputContainer = styled.div<{ width: string }>`
-  width: ${props => props.width};
+const smInputStyles = css`
+  width: 200px;
+  padding: 10px 15px;
 `
 
-export const Label = styled.label`
-  font-size: 14px;
-  margin-bottom: 12px;
+const mdInputStyles = css`
+  width: 400px;
+  padding: 15px 18px;
+`
+
+const lgInputStyles = css`
+  width: 100%;
+  padding: 20px;
+`
+
+export const InputContainer = styled.div<{ size: string }>`
+  border-radius: 10px;
+  background-color: #f5f7fe;
+  ${props => (props.size === 'sm' ? smInputStyles : props.size === 'md' ? mdInputStyles : lgInputStyles)}
+`
+
+export const Label = styled.label<{ label: string }>`
+  font-size: 12px;
   display: block;
+  color: #868e96;
+  margin-bottom: ${props => (props.label ? '8px' : '0px')};
 `
 
 export const Input = styled.input`
-  padding: 5px 10px;
-  border-radius: 10px;
   width: 100%;
+  font-size: 16px;
+  border: none;
+  background-color: #f5f7fe;
+
+  &::placeholder {
+    font-size: 14px;
+  }
+
+  &:focus {
+    outline: none;
+  }
 `
