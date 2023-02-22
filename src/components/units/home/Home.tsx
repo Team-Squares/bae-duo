@@ -8,6 +8,9 @@ const Home = () => {
   return (
     <Styled.Container>
       <div style={{ width: '80%' }}>
+        <Tag text={'default'} />
+        <Tag text={'hi'} color={color.$warning} />
+        <Tag text={'bye'} color={color.$main} />
         <div>
           <Styled.GuideBox>
             <div>펀딩 목록</div>

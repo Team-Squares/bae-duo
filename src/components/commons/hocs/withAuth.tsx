@@ -4,7 +4,7 @@ export const withAuth =
   <P extends {}>(Component: ComponentType<P>) =>
   (props: P) => {
     useEffect(() => {
-      alert('withAuth HOC !')
+      console.log('withAuth HOC !')
     }, [])
 
     return <Component {...props} />
