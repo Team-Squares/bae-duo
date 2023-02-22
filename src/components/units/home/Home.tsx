@@ -2,8 +2,7 @@ import * as Styled from './Home.styles'
 import Image from 'next/image'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
-import Tag from '../../commons/tag/Tag'
-import { color } from '@/src/commons/styles/styles'
+import Skeleton from '../../commons/skeleton/Skeleton'
 
 const Home = () => {
   return (
@@ -51,6 +50,7 @@ const Home = () => {
           </Styled.BrandsCard>
         </Styled.BrandsBox>
       </div>
+      <Skeleton isCol width={60} height={60} />
     </Styled.Container>
   )
 }
