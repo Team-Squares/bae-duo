@@ -7,7 +7,7 @@ export const useToast = ({ delay }: any) => {
 
   const pushToastQueue = (type: string, content: string) => {
     setToastQueue((prev: any) => [...prev, { type, content }])
-    setTimeout(removeToast, delay)
+    if (delay) setTimeout(removeToast, delay)
   }
 
   const removeToast = () => {

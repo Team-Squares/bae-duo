@@ -3,6 +3,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
+import { useEffect } from 'react'
 
 interface ToastProps {
   toast: string
@@ -38,6 +39,10 @@ const Toast = (props: ToastProps) => {
     })
   }
 
+  useEffect(() => {
+    console.log('toast: ', toast)
+  }, [toast])
+
   return (
     <Styled.Toast
       style={{
@@ -46,7 +51,8 @@ const Toast = (props: ToastProps) => {
         backgroundColor: `${ToastBackgroundColor[toast.type]}`,
       }}
     >
-      <Styled.Icon style={{ color: `${ToastColor[toast.type]}` }}>{ToastIcon[toast.type]}</Styled.Icon>
+      {/* <Styled.Icon style={{ color: `${ToastColor[toast.type]}` }}>{ToastIcon[toast.type]}</Styled.Icon> */}
+      <Styled.Icon type={toast.type}>{ToastIcon[toast.type]}</Styled.Icon>
       <Styled.Contents>
         <p>
           안녕 나는 {index}번째 {toast.type}맛 토스트야
