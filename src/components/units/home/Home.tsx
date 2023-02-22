@@ -2,11 +2,16 @@ import * as Styled from './Home.styles'
 import Image from 'next/image'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
+import Tag from '../../commons/tag/Tag'
+import { color } from '@/src/commons/styles/styles'
 
 const Home = () => {
   return (
     <Styled.Container>
       <div style={{ width: '80%' }}>
+        <Tag text={'default'} />
+        <Tag text={'hi'} color={color.$warning} />
+        <Tag text={'bye'} color={color.$main} />
         <div>
           <Styled.GuideBox>
             <div>펀딩 목록</div>
