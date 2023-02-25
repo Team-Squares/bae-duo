@@ -1,8 +1,8 @@
-import { useToast } from '@/src/components/units/toast/ToastArea'
-import * as Styled from '@/src/components/units/toast/ToastArea.styles'
+import { useToast } from '@/src/commons/hooks/useToast'
+import * as Styled from '@/src/commons/hooks/useToast/useToast.styles'
 
 const SubListPage = () => {
-  const [pushToastQueue, ToastArea] = useToast({ delay: 0 })
+  const [pushToastQueue, ToastArea] = useToast({ delay: 5000 })
 
   return (
     <>
