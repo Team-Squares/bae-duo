@@ -1,29 +1,12 @@
 import * as Styled from './useToast.styles'
-import { useEffect, useState } from 'react'
+import { useState, createElement, MouseEvent } from 'react'
+// mui icon
 import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import { createElement } from 'react'
-
-type ToastType = 'success' | 'fail' | 'warning'
-
-interface Toast {
-  type: ToastType
-  content: string
-}
-
-interface ToastProps {
-  toast: Toast
-}
-
-interface UseToastOptions {
-  delay: number
-}
-
-interface ToastIconProps {
-  [key]: React.ComponentType
-}
+// type
+import { Toast, ToastProps, UseToastOptions, ToastIconProps } from './useToast.types'
 
 const ToastIcon: ToastIconProps = {
   success: CheckCircleOutlineIcon,
@@ -31,21 +14,23 @@ const ToastIcon: ToastIconProps = {
   warning: ErrorOutlineIcon,
 }
 
+/**
+ * 개별 Toast 컴포넌트입니다.
+ */
 const Toast = (props: ToastProps) => {
   const { index, toast, setToastQueue } = props
 
-  const onClickClose = (e: any) => {
+  /**
+   * 토스트의 삭제버튼을 클릭했을 때 발생하는 이벤트입니다.
+   * 해당 토스트의 index를 찾아 삭제합니다.
+   */
+  const onClickClose = () => {
     setToastQueue((prev: Toast[]) => {
-      console.log('prev: ', prev)
       let toastQueue = [...prev]
       toastQueue.splice(index, 1)
       return [...toastQueue]
     })
   }
-
-  useEffect(() => {
-    console.log('toast: ', toast)
-  }, [toast])
 
   return (
     <Styled.Toast type={toast.type}>
@@ -68,13 +53,13 @@ const Toast = (props: ToastProps) => {
  * useToast hook입니다.
  */
 export const useToast = ({ delay }: UseToastOptions) => {
-  const [toastQueue, setToastQueue] = useState<any>([])
+  const [toastQueue, setToastQueue] = useState<Toast[]>([])
 
   /**
    * 새롭게 받은 toast를 toast queue에 push해줍니다.
    */
   const pushToastQueue = (type: string, content: string) => {
-    setToastQueue((prev: any) => [...prev, { type, content }])
+    setToastQueue((prev: Toast[]) => [...prev, { type, content }])
     if (delay) setTimeout(removeToast, delay)
   }
 
@@ -82,7 +67,7 @@ export const useToast = ({ delay }: UseToastOptions) => {
    * toast queue에서, 가장 먼저 들어온 toast를 지워줍니다.
    */
   const removeToast = () => {
-    setToastQueue((prev: string[]) => {
+    setToastQueue((prev: Toast[]) => {
       prev.shift()
       return [...prev]
     })
@@ -94,7 +79,7 @@ export const useToast = ({ delay }: UseToastOptions) => {
         {toastQueue.length > 0 && (
           <Styled.ToastArea>
             {toastQueue.map((toast: Toast, i: number) => {
-              return <Toast key={i} toast={toast} index={index} setToastQueue={setToastQueue} />
+              return <Toast key={i} toast={toast} index={i} setToastQueue={setToastQueue} />
             })}
           </Styled.ToastArea>
         )}
