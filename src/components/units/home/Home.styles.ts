@@ -38,12 +38,17 @@ export const FundingInfo = styled.div`
   padding: 10px;
 `
 
-export const LimitBox = styled.div`
+export const StatusBox = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 5px;
 `
 
-export const Limit = styled.div`
+export const FundingDate = styled.div`
+  color: white;
+`
+
+export const Status = styled.div`
   background-color: white;
   border-radius: 10px;
   padding: 3px 6px;
@@ -69,24 +74,33 @@ export const StarterName = styled.span`
   font-size: 14px;
 `
 
-export const ProgessBox = styled.div`
+// Limit
+export const LimitBox = styled.span`
+  display: flex;
+  & > div {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+  }
+`
+
+// Progress
+export const ProgressBox = styled.div`
   height: 35%;
   padding: 10px;
 `
 
-export const StatusBox = styled.div`
+export const Percentage = styled.div`
   background-color: white;
   border-radius: 0px 0px 10px 10px;
-`
-
-export const Status = styled.span`
-  margin-right: 5px;
-  font-size: 14px;
-  font-weight: bold;
-`
-
-export const Price = styled.span`
-  font-size: 11px;
+  span:first-child {
+    margin-right: 5px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  span:last-child {
+    font-size: 11px;
+  }
 `
 
 export const ProgressBar = styled.div`
