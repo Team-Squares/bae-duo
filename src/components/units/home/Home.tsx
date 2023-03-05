@@ -4,6 +4,7 @@ import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
 import Modal from '@/src/components/commons/modal/Modal'
 import { useState } from 'react'
+import Skeleton from '../../commons/skeleton/Skeleton'
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false)
@@ -11,6 +12,9 @@ const Home = () => {
   return (
     <Styled.Container>
       <div style={{ width: '80%' }}>
+        <Tag text={'default'} />
+        <Tag text={'hi'} color={color.$warning} />
+        <Tag text={'bye'} color={color.$main} />
         <div>
           <Styled.GuideBox>
             <div>펀딩 목록</div>
@@ -70,6 +74,7 @@ const Home = () => {
           <span>hello</span>
         </Modal>
       ) : null}
+      <Skeleton isCol width={60} height={60} />
     </Styled.Container>
   )
 }
