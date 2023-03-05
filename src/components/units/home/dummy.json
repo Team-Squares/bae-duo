@@ -1,12 +1,13 @@
 [
   {
     "starter": "sook",
-    "brand": "hansot",
+    "brand": "한솥 도시락 종각점",
     "total_price": 30000,
-    "price_ing": 16900,
-    "deadtime": "11:00",
+    "curr_price": 16900,
+    "deadtime": "Sun Mar 05 2023 11:00:00 GMT+0900 (한국 표준시)",
     "min_member": 4,
-    "status": 0,
-    "created_At": "2022"
+    "curr_member": 3,
+    "status": 1,
+    "createdAt": "Sun Mar 05 2023 09:23:58 GMT+0900 (한국 표준시)"
   }
 ]
