@@ -1,31 +1,28 @@
-import * as Styled from './Home.styles'
+import { useState } from 'react'
 import Image from 'next/image'
+import * as Styled from './Home.styles'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
 import { FaClock } from 'react-icons/fa'
-// import Skeleton from '../../commons/skeleton/Skeleton'
-// import Tag from '../../commons/tag/Tag'
 import { RiUser3Fill } from 'react-icons/ri'
+import dummyData from './dummy.json'
 
 const Home = () => {
+  const [category, setCategory] = useState(1)
+  console.log(dummyData, new Date())
   return (
     <Styled.Container>
       <div style={{ width: '80%' }}>
-        {/* <Tag text={'default'} />
-        <Tag text={'hi'} color={color.$warning} />
-        <Tag text={'bye'} color={color.$main} /> */}
         <div>
           <Styled.GuideBox>
-            <div>펀딩 목록</div>
-            <div>
-              <div>+ 펀딩 만들기</div>
-            </div>
+            <span>펀딩 목록</span>
+            <span>+ 펀딩 만들기</span>
           </Styled.GuideBox>
-          <Styled.ProgressBtnBox>
-            <Styled.ProgressBtn>전체</Styled.ProgressBtn>
-            <Styled.ProgressBtn>진행중</Styled.ProgressBtn>
-            <Styled.ProgressBtn>완료</Styled.ProgressBtn>
-          </Styled.ProgressBtnBox>
+          <Styled.CategoryBox category={category}>
+            <button onClick={() => setCategory(1)}>전체</button>
+            <button onClick={() => setCategory(2)}>진행중</button>
+            <button onClick={() => setCategory(3)}>완료</button>
+          </Styled.CategoryBox>
         </div>
         <Styled.BrandsBox>
           <Styled.BrandsCard>
@@ -63,7 +60,6 @@ const Home = () => {
           </Styled.BrandsCard>
         </Styled.BrandsBox>
       </div>
-      {/* <Skeleton isCol width={60} height={60} /> */}
     </Styled.Container>
   )
 }

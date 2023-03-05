@@ -1,6 +1,13 @@
 import styled from '@emotion/styled'
+import { css } from '@emotion/react'
 import { color } from '@/src/commons/styles/styles'
 import hansotImg from '@/public/images/hansot.svg'
+
+const displayCenter = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
 export const Container = styled.div`
   display: flex;
@@ -11,12 +18,40 @@ export const Container = styled.div`
 `
 export const GuideBox = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  span:first-child {
+    font-weight: bold;
+  }
+  span:last-child {
+    font-size: 14px;
+    color: #4263eb;
+  }
 `
 
-export const ProgressBtnBox = styled.div`
+export const CategoryBox = styled.div<{ category: number }>`
   display: flex;
+  margin-bottom: 15px;
+  gap: 5px;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 78px;
+    height: 37px;
+    border-radius: 100px;
+    border: none;
+    background-color: #adb5bd1a;
+
+    cursor: pointer;
+  }
+  button:nth-of-type(${props => props.category}) {
+    background-color: #4263eb;
+    color: white;
+  }
 `
-export const ProgressBtn = styled.div``
 
 export const BrandsBox = styled.div`
   display: grid;
