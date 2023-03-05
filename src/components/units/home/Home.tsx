@@ -2,9 +2,13 @@ import * as Styled from './Home.styles'
 import Image from 'next/image'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
+import Modal from '@/src/components/commons/modal/Modal'
+import { useState } from 'react'
 import Skeleton from '../../commons/skeleton/Skeleton'
 
 const Home = () => {
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <Styled.Container>
       <div style={{ width: '80%' }}>
@@ -45,11 +49,31 @@ const Home = () => {
                 <Styled.Status>56% 달성했어요</Styled.Status>
                 <Styled.Price>30,000원</Styled.Price>
               </Styled.StatusBox>
-              <Styled.ProgressBar></Styled.ProgressBar>
+              <Styled.ProgressBar
+                onClick={() => {
+                  setShowModal(true)
+                }}
+              ></Styled.ProgressBar>
             </Styled.ProgessBox>
           </Styled.BrandsCard>
         </Styled.BrandsBox>
       </div>
+      {showModal === true ? (
+        <Modal
+          id="home"
+          width="300px"
+          height="300px"
+          left="50%"
+          top="50%"
+          title="test"
+          closeModal={() => {
+            setShowModal(false)
+          }}
+          mode="info"
+        >
+          <span>hello</span>
+        </Modal>
+      ) : null}
       <Skeleton isCol width={60} height={60} />
     </Styled.Container>
   )
