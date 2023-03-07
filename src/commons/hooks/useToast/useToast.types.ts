@@ -1,7 +1,7 @@
-type ToastType = 'success' | 'fail' | 'warning'
+// ? type ToastType = 'success' | 'fail' | 'warning'
 
 export interface Toast {
-  type: ToastType
+  type: string
   content: string
 }
 
@@ -18,4 +18,8 @@ export interface UseToastOptions {
 export interface ToastIconProps {
   // ? [key in ToastType]: React.ComponentType
   [key: string]: React.ComponentType
+}
+
+export interface ToastColorProps {
+  [key: string]: string
 }

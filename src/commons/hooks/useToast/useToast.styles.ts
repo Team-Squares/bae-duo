@@ -1,20 +1,21 @@
 import styled from '@emotion/styled'
+import { ToastColorProps } from './useToast.types'
 
 // Toast
 // Toast
-const ToastColor: any = {
+const ToastColor: ToastColorProps = {
   success: '#45B9C4',
   warning: '#F0AB38',
   fail: '#DC2626',
 }
 
-const ToastBackgroundColor: any = {
+const ToastBackgroundColor: ToastColorProps = {
   success: '#E0F5F6',
   warning: '#FdF3E3',
   fail: '#FCA5A5',
 }
 
-export const Toast = styled.div<{ type: any }>`
+export const Toast = styled.div<{ type: string }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -31,7 +32,7 @@ export const Toast = styled.div<{ type: any }>`
   // transition: all 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
 `
 
-export const Icon = styled.div<{ type: any }>`
+export const Icon = styled.div<{ type: string }>`
   margin: 0 20px;
   color: ${({ type }) => ToastColor[type]};
 `

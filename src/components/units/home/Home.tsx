@@ -3,6 +3,8 @@ import Image from 'next/image'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
 import Skeleton from '../../commons/skeleton/Skeleton'
+import Tag from '../../commons/tag/Tag'
+import { color } from '@/src/commons/styles/styles'
 
 const Home = () => {
   return (
