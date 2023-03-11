@@ -5,6 +5,8 @@ import starterImg from '@/public/images/starter.svg'
 import Modal from '@/src/components/commons/modal/Modal'
 import { useState } from 'react'
 import Skeleton from '../../commons/skeleton/Skeleton'
+import Tag from '../../commons/tag/Tag'
+import { color } from '@/src/commons/styles/styles'
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false)
