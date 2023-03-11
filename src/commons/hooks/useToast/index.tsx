@@ -1,5 +1,5 @@
 import * as Styled from './useToast.styles'
-import { createElement, MouseEvent, useEffect } from 'react'
+import { createElement, useEffect } from 'react'
 // mui icon
 import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
@@ -7,8 +7,6 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 // type
 import { Toast, ToastProps, UseToastOptions, ToastIconProps } from './useToast.types'
-import { toastArray } from '@/src/commons/atom/atom'
-import { useRecoilState, useSetRecoilState } from 'recoil'
 
 const ToastIcon: ToastIconProps = {
   success: CheckCircleOutlineIcon,
@@ -20,26 +18,24 @@ const ToastIcon: ToastIconProps = {
  * @param delay number
  * useToast hook입니다.
  */
-export const useToast = ({ delay }: UseToastOptions) => {
-  // const [toastQueue, setToastQueue] = useState<Toast[]>([])
-  const [toastQueue] = useRecoilState(toastArray)
-  const setToastQueue = useSetRecoilState(toastArray)
+export const useToast = () => {
   /**
    * 새롭게 받은 toast를 toast queue에 push해줍니다.
    */
-  const pushToastQueue = (type: string, content: string) => {
-    // setToastQueue((prev: Toast[]) => [...prev, { type, content }])
+  const pushToastQueue = (type: string, content: string, setToastQueue: any) => {
+    if (Object.keys(type).length === 0) return
     setToastQueue((prev: Toast[]) => {
       let temp = [...prev]
       return [...temp, { type, content }]
     })
-    if (delay) setTimeout(removeToast, delay)
+
+    if (delay) setTimeout(() => removeToast(setToastQueue), 3000)
   }
 
   /**
    * toast queue에서, 가장 먼저 들어온 toast를 지워줍니다.
    */
-  const removeToast = () => {
+  const removeToast = (setToastQueue: any) => {
     setToastQueue((prev: Toast[]) => {
       let temp = [...prev]
       temp.shift()
@@ -49,11 +45,9 @@ export const useToast = ({ delay }: UseToastOptions) => {
 
   /** Toast가 보여지는 영역입니다.
    * param-direction은 좌상,좌하,우상,우하 로 받을 예정입니다. */
-  useEffect(() => {
-    console.log(toastQueue)
-  }, [toastQueue])
 
-  const ToastArea = () => {
+  const ToastArea = ({ ...props }) => {
+    const { toastQueue, setToastQueue } = props
     return (
       <Styled.Container>
         {toastQueue.length > 0 && (
@@ -67,7 +61,7 @@ export const useToast = ({ delay }: UseToastOptions) => {
     )
   }
 
-  return [pushToastQueue, ToastArea]
+  return { pushToastQueue, ToastArea }
 }
 
 /**
