@@ -45,6 +45,8 @@ const Home = () => {
     axios.get('http://localhost:3050/funding').then(res => setFundingList(res.data))
   }, [])
 
+  // console.log(fundingList)
+
   if (!fundingList) return <></>
   return (
     <Styled.Container>
