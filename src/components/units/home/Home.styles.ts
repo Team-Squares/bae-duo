@@ -21,7 +21,7 @@ export const GuideBox = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  span:first-child {
+  span:first-of-type {
     font-weight: bold;
   }
   span:last-child {
@@ -131,7 +131,7 @@ export const ProgressBox = styled.div`
 export const Percentage = styled.div`
   background-color: white;
   /* border-radius: 0px 0px 10px 10px; */
-  span:first-child {
+  span:first-of-type {
     margin-right: 5px;
     font-size: 14px;
     font-weight: bold;
