@@ -46,7 +46,7 @@ const wrapperStyles = css`
   padding: 15px;
   border-radius: 10px;
   input {
-    padding: 0;
+    padding: 0px;
     border: none;
     border-radius: 0;
     &:focus {
@@ -61,12 +61,29 @@ const defaultStyles = css`
 `
 
 export const InputContainer = styled.div<{ size: string }>`
-  margin: 30px; //삭제필요
-  ${props => (props.size === 'sm' ? smInputStyles : props.size === 'md' ? mdInputStyles : lgInputStyles)}
+  ${props => {
+    switch (props.size) {
+      case 'sm':
+        return smInputStyles
+      case 'lg':
+        return lgInputStyles
+      default:
+        return mdInputStyles
+    }
+  }};
 `
 
 export const LabelWrapper = styled.div<{ labelType: string; variant: string }>`
-  ${props => (props.variant === 'outlined' ? outlinedStyles : props.variant === 'soft' ? softStyles : '')};
+  ${props => {
+    switch (props.variant) {
+      case 'outlined':
+        return outlinedStyles
+      case 'soft':
+        return softStyles
+      default:
+        return ''
+    }
+  }};
   ${props => (props.labelType === 'wrapper' ? wrapperStyles : defaultStyles)}
 `
 
@@ -82,7 +99,16 @@ export const Input = styled.input<{ variant: string }>`
   font-size: 16px;
   border: none;
   border-radius: 10px;
-  ${props => (props.variant === 'outlined' ? outlinedStyles : props.variant === 'soft' ? softStyles : '')};
+  ${props => {
+    switch (props.variant) {
+      case 'outlined':
+        return outlinedStyles
+      case 'soft':
+        return softStyles
+      default:
+        return ''
+    }
+  }};
   &:focus {
     outline: none;
   }
@@ -92,8 +118,16 @@ export const Input = styled.input<{ variant: string }>`
 `
 
 export const HelperText = styled.p<{ helperTextColor: string }>`
-  color: ${props =>
-    props.helperTextColor === 'notice' ? `${color.$default}` : props.helperTextColor === 'error' ? 'red' : 'green'};
+  color: ${props => {
+    switch (props.helperTextColor) {
+      case 'notice':
+        return `${color.$default}`
+      case 'error':
+        return 'red'
+      default:
+        return 'green'
+    }
+  }};
   font-size: 12px;
   margin-top: 10px;
   padding-left: 5px;
