@@ -14,7 +14,7 @@ const DefaultLayout = ({ children, isNav = true, title }: Props) => {
     <Styled.Main>
       {isNav && <Navbar />}
       <Styled.Container>
-        {title && <Styled.HeaderLayout>{title}</Styled.HeaderLayout>}
+        {/* {title && <Styled.HeaderLayout>{title}</Styled.HeaderLayout>} */}
         {children}
       </Styled.Container>
       <Footer />
