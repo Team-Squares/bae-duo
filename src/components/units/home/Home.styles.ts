@@ -53,10 +53,13 @@ export const CategoryBox = styled.div<{ category: number }>`
   }
 `
 
-export const BrandsBox = styled.div`
+export const BrandsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 `
+
+export const BrandsBox = styled.div``
 
 export const BrandsCard = styled.div`
   border: 1px solid ${color.$default};
