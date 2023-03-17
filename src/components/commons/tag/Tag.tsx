@@ -4,10 +4,11 @@ import * as Styled from './Tag.styles'
 interface TagProps {
   text: string
   color?: string
+  background?: string
   size?: 'sm' | 'md' | 'lg'
 }
 
-const Tag = ({ text, color = '#4263EB', size = 'sm' }: TagProps) => {
+const Tag = ({ text, color = '#4263EB', size = 'sm', background }: TagProps) => {
   const [bgColor, setBgColor] = useState<string>('')
 
   const hexToRGB = (hex: string, alpha = 1) => {
@@ -28,11 +29,11 @@ const Tag = ({ text, color = '#4263EB', size = 'sm' }: TagProps) => {
   }
 
   useEffect(() => {
-    hexToRGB(color, 0.1)
+    hexToRGB(color, 0.2)
   }, [color])
 
   return (
-    <Styled.TagContainer color={color} bgColor={bgColor} size={size}>
+    <Styled.TagContainer color={color} bgColor={background ?? bgColor} size={size}>
       {text}
     </Styled.TagContainer>
   )

@@ -10,9 +10,6 @@ export const Main = styled.main`
 `
 
 export const Container = styled.div`
-  /*display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 16px;*/
   width: 100%;
   max-width: 1040px;
   margin: 0 auto;
@@ -27,6 +24,10 @@ export const Container = styled.div`
   }
 `
 export const HeaderLayout = styled.header`
-  margin: 24px 0;
+  margin: 24px 0 42px;
   font-size: 28px;
+  font-weight: bold;
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
 `

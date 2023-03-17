@@ -8,24 +8,22 @@ const displayCenter = css`
   justify-content: space-between;
   align-items: center;
 `
-
-export const Container = styled.div`
-  display: flex;
-  justify-content: center;
-
-  width: 100%;
-  height: 300px;
-`
-export const GuideBox = styled.div`
+export const LandingHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+
+  margin-bottom: 16px;
+`
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 300px;
 `
 
 export const CategoryBox = styled.div<{ category: number }>`
   display: flex;
-  margin-bottom: 15px;
   gap: 5px;
   button {
     display: flex;
@@ -53,20 +51,29 @@ export const BrandsBox = styled.div`
 `
 
 export const BrandsCard = styled.div`
-  border: 1px solid ${color.$defaultBorder};
   border-radius: 10px;
   overflow: hidden;
-  width: 340px;
+  min-width: 200px;
   height: 300px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  transition: all 0.3s cubic-bezier(0.3, 0, 0.2, 1);
+  :hover {
+    transform: translateY(-3%);
+  }
 `
 
 export const FundingInfo = styled.div`
-  background: url(${hansotImg.src});
-  height: 140px;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${hansotImg.src}), no-repeat;
+  /*filter: brightness(60%);*/
+
+  height: 176px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px;
+  padding: 16px 20px;
+  font-size: 12px;
+  /*background-blend-mode: darken;*/
 `
 
 export const StatusBox = styled.div`
@@ -90,6 +97,7 @@ export const Status = styled.div`
 export const BrandName = styled.div`
   color: white;
   font-weight: bold;
+  font-size: 20px;
   margin-bottom: 5px;
 `
 
@@ -107,33 +115,45 @@ export const Starter = styled.div`
 // Limit
 export const LimitBox = styled.span`
   display: flex;
-  padding-top: 10px;
+  padding: 16px;
   & > div {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 10px;
     width: 50%;
+    font-size: 12px;
+    &:nth-child(1) {
+      border-right: 2px solid ${color.$lightGray};
+    }
+    > svg {
+      width: 12px;
+      height: 12px;
+      path {
+        color: #dee2e6;
+      }
+    }
   }
   span {
-    font-size: 14px;
+    color: #868e96;
   }
 `
 
 // Progress
 export const ProgressBox = styled.div`
-  /* height: 35%; */
-  padding: 10px;
+  padding: 0 20px;
 `
 
 export const Percentage = styled.div`
-  background-color: white;
-  /* border-radius: 0px 0px 10px 10px; */
+  /*background-color: white;*/
   span:first-child {
     margin-right: 5px;
     font-size: 14px;
     font-weight: bold;
   }
   span:last-child {
-    font-size: 11px;
+    font-size: 12px;
+    color: #868e96;
   }
 `
 
@@ -144,8 +164,8 @@ export const ProgressBar = styled.div<{ percentage: number }>`
   background-color: #adb5bd1a;
   div {
     height: 100%;
-    width: ${props => `${props.percentage}%`};
-    background-color: #6c56f9;
+    width: ${props => `${props.percentage > 100 ? 100 : props.percentage}%`};
+    background-color: ${color.$point};
     border-radius: 10px;
   }
 `

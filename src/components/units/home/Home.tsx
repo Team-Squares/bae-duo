@@ -1,10 +1,10 @@
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import Image from 'next/image'
 import * as Styled from './Home.styles'
-import tempProfileImg from '@/public/images/profile_small.svg'
-import starterImg from '@/public/images/starter.svg'
 import { FaClock } from 'react-icons/fa'
 import { RiUser3Fill, RiAddLine } from 'react-icons/ri'
+import tempProfileImg from '@/public/images/profile_small.svg'
+import starterImg from '@/public/images/starter.svg'
 import dummyData from './dummy.json'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
@@ -40,15 +40,8 @@ const Home = () => {
   }
 
   return (
-    <Styled.Container>
-      <div>
-        <Styled.GuideBox>
-          <h3>펀딩 목록</h3>
-          <Button size="small">
-            펀딩 추가 <RiAddLine />
-          </Button>
-        </Styled.GuideBox>
-
+    <div>
+      <Styled.LandingHeader>
         <Styled.CategoryBox category={category}>
           {categoryName.map((item, idx) => (
             <button key={idx} onClick={() => setCategory(idx)}>
@@ -56,56 +49,67 @@ const Home = () => {
             </button>
           ))}
         </Styled.CategoryBox>
-        <Styled.BrandsBox>
-          {dummyData.map(
-            item =>
-              (category === 0 || item.status === category) && (
-                <Fragment key={item.createdAt}>
-                  <Styled.BrandsCard>
-                    <Styled.FundingInfo>
-                      <Styled.StatusBox>
-                        <Styled.FundingDate>{getCreateDate(item.createdAt)}</Styled.FundingDate>
-                        <Styled.Status>{categoryName[item.status]}</Styled.Status>
-                      </Styled.StatusBox>
+        <Button size="small" variant="outlined">
+          펀딩 추가 <RiAddLine />
+        </Button>
+      </Styled.LandingHeader>
+      <Styled.BrandsBox>
+        {dummyData.map(
+          item =>
+            (category === 0 || item.status === category) && (
+              <Fragment key={item.createdAt}>
+                <Styled.BrandsCard>
+                  <Styled.FundingInfo>
+                    <Styled.StatusBox>
+                      <Styled.FundingDate>{getCreateDate(item.createdAt)}</Styled.FundingDate>
+                      <Tag
+                        text={`펀딩 ${categoryName[item.status] ?? '실패'}`}
+                        color="#45B9C4"
+                        background={'#E0F5F6'}
+                      />
+                    </Styled.StatusBox>
+                    <section>
+                      <Styled.BrandName>{item.brand}</Styled.BrandName>
+                      <Styled.Starter>
+                        <Image src={tempProfileImg} alt="none" />
+                        <span>{item.starter}</span>
+                        <Image src={starterImg} alt="none" />
+                      </Styled.Starter>
+                    </section>
+                  </Styled.FundingInfo>
+                  <Styled.LimitBox>
+                    <div>
+                      <RiUser3Fill />
                       <div>
-                        <Styled.BrandName>{item.brand}</Styled.BrandName>
-                        <Styled.Starter>
-                          <Image src={tempProfileImg} alt="none"></Image>
-                          <span>{item.starter}</span>
-                          <Image src={starterImg} alt="none"></Image>
-                        </Styled.Starter>
+                        <b>
+                          {item.cur_member}/{item.min_member}
+                        </b>
+                        <span> 명 참여</span>
                       </div>
-                    </Styled.FundingInfo>
-                    <Styled.LimitBox>
+                    </div>
+                    <div>
+                      <FaClock />
                       <div>
-                        <RiUser3Fill />
-                        <span>
-                          {item.cur_member}/{item.min_member} 참여
-                        </span>
+                        <b>{getEndTime(item.deadline)}</b>
+                        <span> 마감</span>
                       </div>
-                      <div>
-                        <FaClock />
-                        <span>{getEndTime(item.deadline)} 마감</span>
-                      </div>
-                    </Styled.LimitBox>
-                    <Styled.ProgressBox>
-                      <Styled.Percentage>
-                        <span>{`${getPercentage(item.cur_price, item.total_price)}% 달성했어요`}</span>
-                        <span>{`${getKORMoneyString(item.cur_price)}원 / ${getKORMoneyString(
-                          item.total_price
-                        )}원`}</span>
-                      </Styled.Percentage>
-                      <Styled.ProgressBar percentage={getPercentage(item.cur_price, item.total_price)}>
-                        <div></div>
-                      </Styled.ProgressBar>
-                    </Styled.ProgressBox>
-                  </Styled.BrandsCard>
-                </Fragment>
-              )
-          )}
-        </Styled.BrandsBox>
-      </div>
-    </Styled.Container>
+                    </div>
+                  </Styled.LimitBox>
+                  <Styled.ProgressBox>
+                    <Styled.Percentage>
+                      <span>{`${getPercentage(item.cur_price, item.total_price)}% 달성했어요`}</span>
+                      <span>{`${getKORMoneyString(item.cur_price)}원 / ${getKORMoneyString(item.total_price)}원`}</span>
+                    </Styled.Percentage>
+                    <Styled.ProgressBar percentage={getPercentage(item.cur_price, item.total_price)}>
+                      <div></div>
+                    </Styled.ProgressBar>
+                  </Styled.ProgressBox>
+                </Styled.BrandsCard>
+              </Fragment>
+            )
+        )}
+      </Styled.BrandsBox>
+    </div>
   )
 }
 
