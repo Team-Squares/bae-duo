@@ -6,6 +6,7 @@ export const Button = styled.button<ButtonStyleProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s;
 
   width: ${({ width }) => `${width}px`};
   height: ${({ height }) => `${height}px`};
@@ -16,7 +17,6 @@ export const Button = styled.button<ButtonStyleProps>`
 
   font-size: ${({ fontSize }) => `${fontSize}px`};
   font-weight: 700;
-  color: ${({ fontColor }) => fontColor};
 
   cursor: ${({ disable }) => (disable ? 'not-allowed' : 'pointer')};
 
@@ -26,11 +26,15 @@ export const Button = styled.button<ButtonStyleProps>`
   }
 
   span {
+    color: ${({ fontColor }) => fontColor};
     position: relative;
   }
 
   svg {
     position: absolute;
     top: 1px;
+    path {
+      color: ${({ fontColor }) => fontColor};
+    }
   }
 `

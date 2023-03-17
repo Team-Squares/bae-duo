@@ -1,11 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useState } from 'react'
 import Image from 'next/image'
 import * as Styled from './Home.styles'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
 import { FaClock } from 'react-icons/fa'
-import { RiUser3Fill } from 'react-icons/ri'
+import { RiUser3Fill, RiAddLine } from 'react-icons/ri'
 import dummyData from './dummy.json'
+import Button from '../../commons/button/Button'
+import Tag from '../../commons/tag/Tag'
 
 const categoryName = ['전체', '진행 중', '완료']
 
@@ -39,23 +41,26 @@ const Home = () => {
 
   return (
     <Styled.Container>
-      <div style={{ width: '100%' }}>
+      <div>
         <Styled.GuideBox>
-          <span>펀딩 목록</span>
-          <span>+ 펀딩 만들기</span>
+          <h3>펀딩 목록</h3>
+          <Button size="small">
+            펀딩 추가 <RiAddLine />
+          </Button>
         </Styled.GuideBox>
+
         <Styled.CategoryBox category={category}>
           {categoryName.map((item, idx) => (
-            <button key={item} onClick={() => setCategory(idx)}>
+            <button key={idx} onClick={() => setCategory(idx)}>
               {item}
             </button>
           ))}
         </Styled.CategoryBox>
-        {dummyData.map(
-          item =>
-            (category === 0 || item.status === category) && (
-              <React.Fragment key={item.createdAt}>
-                <Styled.BrandsBox>
+        <Styled.BrandsBox>
+          {dummyData.map(
+            item =>
+              (category === 0 || item.status === category) && (
+                <Fragment key={item.createdAt}>
                   <Styled.BrandsCard>
                     <Styled.FundingInfo>
                       <Styled.StatusBox>
@@ -75,30 +80,30 @@ const Home = () => {
                       <div>
                         <RiUser3Fill />
                         <span>
-                          {item.curr_member}/{item.min_member} 참여
+                          {item.cur_member}/{item.min_member} 참여
                         </span>
                       </div>
                       <div>
                         <FaClock />
-                        <span>{getEndTime(item.deadtime)} 마감</span>
+                        <span>{getEndTime(item.deadline)} 마감</span>
                       </div>
                     </Styled.LimitBox>
                     <Styled.ProgressBox>
                       <Styled.Percentage>
-                        <span>{`${getPercentage(item.curr_price, item.total_price)}% 달성했어요`}</span>
-                        <span>{`${getKORMoneyString(item.curr_price)}원 / ${getKORMoneyString(
+                        <span>{`${getPercentage(item.cur_price, item.total_price)}% 달성했어요`}</span>
+                        <span>{`${getKORMoneyString(item.cur_price)}원 / ${getKORMoneyString(
                           item.total_price
                         )}원`}</span>
                       </Styled.Percentage>
-                      <Styled.ProgressBar percentage={getPercentage(item.curr_price, item.total_price)}>
+                      <Styled.ProgressBar percentage={getPercentage(item.cur_price, item.total_price)}>
                         <div></div>
                       </Styled.ProgressBar>
                     </Styled.ProgressBox>
                   </Styled.BrandsCard>
-                </Styled.BrandsBox>
-              </React.Fragment>
-            )
-        )}
+                </Fragment>
+              )
+          )}
+        </Styled.BrandsBox>
       </div>
     </Styled.Container>
   )

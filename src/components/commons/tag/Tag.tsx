@@ -7,7 +7,7 @@ interface TagProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const Tag = ({ text, color = '#4263EB', size = 'sm' }:TagProps) => {
+const Tag = ({ text, color = '#4263EB', size = 'sm' }: TagProps) => {
   const [bgColor, setBgColor] = useState<string>('')
 
   const hexToRGB = (hex: string, alpha = 1) => {

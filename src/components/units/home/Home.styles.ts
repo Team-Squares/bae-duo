@@ -21,13 +21,6 @@ export const GuideBox = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  span:first-child {
-    font-weight: bold;
-  }
-  span:last-child {
-    font-size: 14px;
-    color: #4263eb;
-  }
 `
 
 export const CategoryBox = styled.div<{ category: number }>`
@@ -43,8 +36,8 @@ export const CategoryBox = styled.div<{ category: number }>`
     height: 37px;
     border-radius: 100px;
     border: none;
-    background-color: #adb5bd1a;
-
+    background-color: ${color.$transparentBg};
+    color: ${color.$disabledText};
     cursor: pointer;
   }
   button:nth-of-type(${props => props.category + 1}) {
@@ -56,12 +49,15 @@ export const CategoryBox = styled.div<{ category: number }>`
 export const BrandsBox = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 `
 
 export const BrandsCard = styled.div`
-  border: 1px solid ${color.$default};
+  border: 1px solid ${color.$defaultBorder};
   border-radius: 10px;
   overflow: hidden;
+  width: 340px;
+  height: 300px;
 `
 
 export const FundingInfo = styled.div`
