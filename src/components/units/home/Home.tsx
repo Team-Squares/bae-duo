@@ -39,6 +39,17 @@ const Home = () => {
     return Math.floor((numerator / denominator) * 100)
   }
 
+  const tagByStatus = (status: number) => {
+    switch (status) {
+      case 1:
+        return { color: '#4263EB', background: '#F5F7FE' }
+      case 2:
+        return { color: '#DC2626', background: '#FEF2F2' }
+      case 3:
+        return { color: '#45B9C4', background: '#E0F5F6' }
+    }
+  }
+
   return (
     <div>
       <Styled.LandingHeader>
@@ -64,14 +75,16 @@ const Home = () => {
                       <Styled.FundingDate>{getCreateDate(item.createdAt)}</Styled.FundingDate>
                       <Tag
                         text={`펀딩 ${categoryName[item.status] ?? '실패'}`}
-                        color="#45B9C4"
-                        background={'#E0F5F6'}
+                        //color="#45B9C4"
+                        //background={'#E0F5F6'}
+                        color={tagByStatus(item.status)?.color}
+                        background={tagByStatus(item.status)?.background}
                       />
                     </Styled.StatusBox>
                     <section>
                       <Styled.BrandName>{item.brand}</Styled.BrandName>
                       <Styled.Starter>
-                        <Image src={tempProfileImg} alt="none" />
+                        <Image src={tempProfileImg} alt="none" width={16} height={16} />
                         <span>{item.starter}</span>
                         <Image src={starterImg} alt="none" />
                       </Styled.Starter>
@@ -96,7 +109,7 @@ const Home = () => {
                     </div>
                   </Styled.LimitBox>
                   <Styled.ProgressBox>
-                    <Styled.Percentage>
+                    <Styled.Percentage percentage={getPercentage(item.cur_price, item.total_price)}>
                       <span>{`${getPercentage(item.cur_price, item.total_price)}% 달성했어요`}</span>
                       <span>{`${getKORMoneyString(item.cur_price)}원 / ${getKORMoneyString(item.total_price)}원`}</span>
                     </Styled.Percentage>
