@@ -4,7 +4,8 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { Global } from '@emotion/react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import Layout from '@/src/components/commons/layout'
+import DefaultLayout from '@/src/components/commons/layout/DefaultLayout'
+import { RecoilRoot } from 'recoil'
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
@@ -22,9 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <script></script>
       </Head>
-      <Layout>
+      <RecoilRoot>
         <Component {...pageProps} />
-      </Layout>
+      </RecoilRoot>
     </QueryClientProvider>
   )
 }

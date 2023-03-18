@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { deleteSubData, getSubDataDetail, postSubData } from '@/src/commons/api/subApi'
 import * as Styled from './SubDetail.styles'
+import Skeleton from '@/src/components/commons/skeleton/Skeleton'
 
 const SubDetail = () => {
   const queryClient = useQueryClient()
@@ -18,7 +19,7 @@ const SubDetail = () => {
   }, [subName])
 
   //* useQuery - get 요청에 해당
-  const { data } = useQuery(['getSubDataItemKey', id], () => getSubDataDetail(id as number), {
+  const { data, isFetching } = useQuery(['getSubDataItemKey', id], () => getSubDataDetail(id as number), {
     enabled: !!subName,
     retry: 3,
   })
@@ -51,6 +52,19 @@ const SubDetail = () => {
       console.dir(error)
     },
   })
+
+  if (isFetching) {
+    return (
+      <Styled.Container>
+        {subName}
+        <Styled.ExplainText type={type} size={Number(subName)}>
+          {type}
+        </Styled.ExplainText>
+        <Skeleton isCol />
+      </Styled.Container>
+    )
+  }
+
   return (
     <Styled.Container>
       {subName}
