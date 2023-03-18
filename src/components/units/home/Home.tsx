@@ -1,5 +1,6 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Image from 'next/image'
+import moment from 'moment'
 import * as Styled from './Home.styles'
 import { FaClock } from 'react-icons/fa'
 import { RiUser3Fill, RiAddLine } from 'react-icons/ri'
@@ -8,26 +9,14 @@ import starterImg from '@/public/images/starter.svg'
 import dummyData from './dummy.json'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
-
-const categoryName = ['전체', '진행 중', '완료']
+import { categoryName } from './data'
 
 const Home = () => {
+  const Moment = require('moment')
   const [category, setCategory] = useState(0)
-
-  const getCreateDate = (date: string) => {
-    const dateObj = new Date(date)
-    const year = dateObj.getFullYear()
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
-    const day = dateObj.getDate().toString().padStart(2, '0')
-    return `${year}.${month}.${day}`
-  }
-
-  const getEndTime = (date: string) => {
-    const dateObj = new Date(date)
-    const hour = dateObj.getHours()
-    const minute = dateObj.getMinutes().toString().padStart(2, '0')
-    return `${hour}:${minute}`
-  }
+  useEffect(() => {
+    dummyData.sort((a, b) => new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
+  }, [Moment])
 
   const getKORMoneyString = (money: number) => {
     return money.toLocaleString('ko-KR', {
@@ -72,11 +61,9 @@ const Home = () => {
                 <Styled.BrandsCard>
                   <Styled.FundingInfo>
                     <Styled.StatusBox>
-                      <Styled.FundingDate>{getCreateDate(item.createdAt)}</Styled.FundingDate>
+                      <Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>
                       <Tag
                         text={`펀딩 ${categoryName[item.status] ?? '실패'}`}
-                        //color="#45B9C4"
-                        //background={'#E0F5F6'}
                         color={tagByStatus(item.status)?.color}
                         background={tagByStatus(item.status)?.background}
                       />
@@ -103,7 +90,7 @@ const Home = () => {
                     <div>
                       <FaClock />
                       <div>
-                        <b>{getEndTime(item.deadline)}</b>
+                        <b>{moment(item.deadline).format('hh:mm')}</b>
                         <span> 마감</span>
                       </div>
                     </div>
