@@ -12,7 +12,6 @@ export const LandingHeader = styled.header`
   ${displayCenter}
   margin-bottom: 16px;
 `
-
 export const CategoryBox = styled.div<{ category: number }>`
   display: flex;
   gap: 5px;

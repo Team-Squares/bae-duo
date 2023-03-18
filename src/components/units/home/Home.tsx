@@ -4,12 +4,12 @@ import moment from 'moment'
 import * as Styled from './Home.styles'
 import { FaClock } from 'react-icons/fa'
 import { RiUser3Fill, RiAddLine } from 'react-icons/ri'
+import { categoryName, getKORMoneyString, getPercentage, tagByStatus } from './data'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
 import dummyData from './dummy.json'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
-import { categoryName } from './data'
 
 const Home = () => {
   const Moment = require('moment')
@@ -17,27 +17,6 @@ const Home = () => {
   useEffect(() => {
     dummyData.sort((a, b) => new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
   }, [Moment])
-
-  const getKORMoneyString = (money: number) => {
-    return money.toLocaleString('ko-KR', {
-      currency: 'KRW',
-    })
-  }
-
-  const getPercentage = (numerator: number, denominator: number) => {
-    return Math.floor((numerator / denominator) * 100)
-  }
-
-  const tagByStatus = (status: number) => {
-    switch (status) {
-      case 1:
-        return { color: '#4263EB', background: '#F5F7FE' }
-      case 2:
-        return { color: '#DC2626', background: '#FEF2F2' }
-      case 3:
-        return { color: '#45B9C4', background: '#E0F5F6' }
-    }
-  }
 
   return (
     <div>

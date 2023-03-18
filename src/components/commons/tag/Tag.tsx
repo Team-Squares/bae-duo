@@ -29,7 +29,7 @@ const Tag = ({ text, color = '#4263EB', size = 'sm', background }: TagProps) => 
   }
 
   useEffect(() => {
-    hexToRGB(color, 0.2)
+    hexToRGB(color, 0.1)
   }, [color])
 
   return (
