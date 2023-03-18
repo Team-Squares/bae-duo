@@ -6,7 +6,6 @@ export const color = {
   $sub: '#8ca315',
   $main: '#ffeb3b',
 
-
   $primaryText: '#212529',
   $secondaryText: '#868E96',
   $placeholderText: '#868E96',
@@ -17,6 +16,7 @@ export const color = {
   $primaryBg: '#4263eb',
   $secondaryBg: '#F5F7FE',
   $defaultBorder: '#dee2e6',
+  $blue30: '#8ea1f3',
 
   //Hierarchy 4,5,6
   $defaultGray: '#dee2e6',

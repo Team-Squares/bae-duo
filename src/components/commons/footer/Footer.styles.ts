@@ -7,5 +7,5 @@ export const Footer = styled.footer`
   align-items: center;
   width: 100%;
   height: 200px;
-  border: 5px solid ${color.$sub};
+  /* border: 5px solid ${color.$sub}; */
 `

@@ -1,58 +1,105 @@
-import * as Styled from './Home.styles'
+import React, { useCallback, useState } from 'react'
 import Image from 'next/image'
+import * as Styled from './Home.styles'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
-import Skeleton from '../../commons/skeleton/Skeleton'
-import Tag from '../../commons/tag/Tag'
-import { color } from '@/src/commons/styles/styles'
+import { FaClock } from 'react-icons/fa'
+import { RiUser3Fill } from 'react-icons/ri'
+import dummyData from './dummy.json'
+
+const categoryName = ['전체', '진행 중', '완료']
 
 const Home = () => {
+  const [category, setCategory] = useState(0)
+
+  const getCreateDate = (date: string) => {
+    const dateObj = new Date(date)
+    const year = dateObj.getFullYear()
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0')
+    const day = dateObj.getDate().toString().padStart(2, '0')
+    return `${year}.${month}.${day}`
+  }
+
+  const getEndTime = (date: string) => {
+    const dateObj = new Date(date)
+    const hour = dateObj.getHours()
+    const minute = dateObj.getMinutes().toString().padStart(2, '0')
+    return `${hour}:${minute}`
+  }
+
+  const getKORMoneyString = (money: number) => {
+    return money.toLocaleString('ko-KR', {
+      currency: 'KRW',
+    })
+  }
+
+  const getPercentage = (numerator: number, denominator: number) => {
+    return Math.floor((numerator / denominator) * 100)
+  }
+
   return (
     <Styled.Container>
-      <div style={{ width: '80%' }}>
-        <Tag text={'default'} />
-        <Tag text={'hi'} color={color.$warning} />
-        <Tag text={'bye'} color={color.$main} />
-        <div>
-          <Styled.GuideBox>
-            <div>펀딩 목록</div>
-            <div>
-              <div>+ 펀딩 만들기</div>
-            </div>
-          </Styled.GuideBox>
-          <Styled.ProgressBtnBox>
-            <Styled.ProgressBtn>전체</Styled.ProgressBtn>
-            <Styled.ProgressBtn>진행중</Styled.ProgressBtn>
-            <Styled.ProgressBtn>완료</Styled.ProgressBtn>
-          </Styled.ProgressBtnBox>
-        </div>
-        <Styled.BrandsBox>
-          <Styled.BrandsCard>
-            <Styled.FundingInfo>
-              <Styled.LimitBox>
-                <Styled.Limit>11:00마감</Styled.Limit>
-                <Styled.Limit>최소 4명</Styled.Limit>
-              </Styled.LimitBox>
-              <div>
-                <Styled.BrandName>한솥 도시락 종각점</Styled.BrandName>
-                <Styled.Starter>
-                  <Image src={tempProfileImg} alt="none"></Image>
-                  <Styled.StarterName>문동은</Styled.StarterName>
-                  <Image src={starterImg} alt="none"></Image>
-                </Styled.Starter>
-              </div>
-            </Styled.FundingInfo>
-            <Styled.ProgessBox>
-              <Styled.StatusBox>
-                <Styled.Status>56% 달성했어요</Styled.Status>
-                <Styled.Price>30,000원</Styled.Price>
-              </Styled.StatusBox>
-              <Styled.ProgressBar></Styled.ProgressBar>
-            </Styled.ProgessBox>
-          </Styled.BrandsCard>
-        </Styled.BrandsBox>
+      <div style={{ width: '100%' }}>
+        <Styled.GuideBox>
+          <span>펀딩 목록</span>
+          <span>+ 펀딩 만들기</span>
+        </Styled.GuideBox>
+        <Styled.CategoryBox category={category}>
+          {categoryName.map((item, idx) => (
+            <button key={item} onClick={() => setCategory(idx)}>
+              {item}
+            </button>
+          ))}
+        </Styled.CategoryBox>
+        {dummyData.map(
+          item =>
+            (category === 0 || item.status === category) && (
+              <React.Fragment key={item.createdAt}>
+                <Styled.BrandsBox>
+                  <Styled.BrandsCard>
+                    <Styled.FundingInfo>
+                      <Styled.StatusBox>
+                        <Styled.FundingDate>{getCreateDate(item.createdAt)}</Styled.FundingDate>
+                        <Styled.Status>{categoryName[item.status]}</Styled.Status>
+                      </Styled.StatusBox>
+                      <div>
+                        <Styled.BrandName>{item.brand}</Styled.BrandName>
+                        <Styled.Starter>
+                          <Image src={tempProfileImg} alt="none"></Image>
+                          <span>{item.starter}</span>
+                          <Image src={starterImg} alt="none"></Image>
+                        </Styled.Starter>
+                      </div>
+                    </Styled.FundingInfo>
+                    <Styled.LimitBox>
+                      <div>
+                        <RiUser3Fill />
+                        <span>
+                          {item.curr_member}/{item.min_member} 참여
+                        </span>
+                      </div>
+                      <div>
+                        <FaClock />
+                        <span>{getEndTime(item.deadtime)} 마감</span>
+                      </div>
+                    </Styled.LimitBox>
+                    <Styled.ProgressBox>
+                      <Styled.Percentage>
+                        <span>{`${getPercentage(item.curr_price, item.total_price)}% 달성했어요`}</span>
+                        <span>{`${getKORMoneyString(item.curr_price)}원 / ${getKORMoneyString(
+                          item.total_price
+                        )}원`}</span>
+                      </Styled.Percentage>
+                      <Styled.ProgressBar percentage={getPercentage(item.curr_price, item.total_price)}>
+                        <div></div>
+                      </Styled.ProgressBar>
+                    </Styled.ProgressBox>
+                  </Styled.BrandsCard>
+                </Styled.BrandsBox>
+              </React.Fragment>
+            )
+        )}
       </div>
-      <Skeleton isCol width={60} height={60} />
     </Styled.Container>
   )
 }

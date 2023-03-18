@@ -22,7 +22,7 @@ const DefaultLayout = ({ children, isNav = true, title }: Props) => {
       <ToastArea toastQueue={toastQueue} setToastQueue={setToastQueue} />
       {isNav && <Navbar />}
       <Styled.Container>
-        {title && <Styled.HeaderLayout>{title}</Styled.HeaderLayout>}
+        {/* {title && <Styled.HeaderLayout>{title}</Styled.HeaderLayout>} */}
         {children}
       </Styled.Container>
       <Footer />
