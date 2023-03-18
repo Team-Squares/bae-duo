@@ -6,7 +6,7 @@ import starterImg from '@/public/images/starter.svg'
 import { FaClock } from 'react-icons/fa'
 import { RiUser3Fill } from 'react-icons/ri'
 import { FundingListType } from './Home.types'
-import axios from 'axios'
+import { getFundingList } from '@/src/commons/api/subApi'
 
 const categoryName = ['전체', '진행 중', '완료']
 
@@ -41,7 +41,7 @@ const Home = () => {
 
   // 서버에서 fundingList를 가져와서 상태값에 넣어줌
   useLayoutEffect(() => {
-    axios.get('http://localhost:3050/funding').then(res => setFundingList(res.data))
+    getFundingList().then(res => setFundingList(res.data))
   }, [])
 
   if (!fundingList) return <></>
