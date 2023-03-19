@@ -12,12 +12,15 @@ import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
 
 const Home = () => {
-  const Moment = require('moment')
   const [category, setCategory] = useState(0)
-  useEffect(() => {
-    dummyData.sort((a, b) => new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
-  }, [Moment])
 
+  useEffect(() => {
+    dummyData.sort((a, b) => {
+      let firstDate = new Date(a.createdAt)
+      let lastestDate = new Date(b.createdAt)
+      return moment(firstDate).diff(lastestDate)
+    })
+  }, [])
   return (
     <div>
       <Styled.LandingHeader>
@@ -33,14 +36,19 @@ const Home = () => {
         </Button>
       </Styled.LandingHeader>
       <Styled.BrandsBox>
-        {dummyData.map(
-          item =>
+        {dummyData.map(item => {
+          let date = new Date(item.createdAt)
+          let dead = new Date(item.deadline)
+          const fundingDate = moment(date).format('YYYY-MM-DD')
+          const deadlineTime = moment(dead).format('hh:mm')
+
+          return (
             (category === 0 || item.status === category) && (
               <Fragment key={item.createdAt}>
                 <Styled.BrandsCard>
                   <Styled.FundingInfo>
                     <Styled.StatusBox>
-                      <Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>
+                      <Styled.FundingDate>{fundingDate}</Styled.FundingDate>
                       <Tag
                         text={`펀딩 ${categoryName[item.status] ?? '실패'}`}
                         color={tagByStatus(item.status)?.color}
@@ -69,7 +77,7 @@ const Home = () => {
                     <div>
                       <FaClock />
                       <div>
-                        <b>{moment(item.deadline).format('hh:mm')}</b>
+                        <b>{deadlineTime}</b>
                         <span> 마감</span>
                       </div>
                     </div>
@@ -86,7 +94,8 @@ const Home = () => {
                 </Styled.BrandsCard>
               </Fragment>
             )
-        )}
+          )
+        })}
       </Styled.BrandsBox>
     </div>
   )
