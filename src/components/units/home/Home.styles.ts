@@ -21,7 +21,7 @@ export const GuideBox = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
-  span:first-child {
+  span:first-of-type {
     font-weight: bold;
   }
   span:last-child {
@@ -53,10 +53,13 @@ export const CategoryBox = styled.div<{ category: number }>`
   }
 `
 
-export const BrandsBox = styled.div`
+export const BrandsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 `
+
+export const BrandsBox = styled.div``
 
 export const BrandsCard = styled.div`
   border: 1px solid ${color.$default};
@@ -131,7 +134,7 @@ export const ProgressBox = styled.div`
 export const Percentage = styled.div`
   background-color: white;
   /* border-radius: 0px 0px 10px 10px; */
-  span:first-child {
+  span:first-of-type {
     margin-right: 5px;
     font-size: 14px;
     font-weight: bold;
