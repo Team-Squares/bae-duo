@@ -5,7 +5,7 @@ import { Global } from '@emotion/react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import DefaultLayout from '@/src/components/commons/layout/DefaultLayout'
-import { RecoilRoot } from 'recoil'
+//import { RecoilRoot } from 'recoil'
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
@@ -20,12 +20,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       {process.env.NODE_ENV !== 'production' ? <ReactQueryDevtools initialIsOpen={false} /> : null}
       <Global styles={globalStyles} />
-      <Head>
-        <script></script>
-      </Head>
-      <RecoilRoot>
-        <Component {...pageProps} />
-      </RecoilRoot>
+      <Head>{/*<script></script>*/}</Head>
+      {/*<RecoilRoot>*/}
+      <Component {...pageProps} />
+      {/*</RecoilRoot>*/}
     </QueryClientProvider>
   )
 }

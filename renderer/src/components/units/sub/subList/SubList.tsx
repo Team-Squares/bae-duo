@@ -5,7 +5,7 @@ import useRoutePage from '@/src/commons/hooks/useRoutePage'
 import * as Styled from './SubList.styles'
 import { useSetRecoilState } from 'recoil'
 import { useToast } from '@/src/commons/hooks/useToast'
-import { toastArray } from '@/src/commons/atom/atom'
+//import { toastArray } from '@/src/commons/atom/atom'
 
 const SubList = () => {
   const { routePage } = useRoutePage()
@@ -14,7 +14,7 @@ const SubList = () => {
 
   //const { data } = useQuery(['getSubDataListKey'], () => getSubDataList())
   const { pushToastQueue } = useToast()
-  const setToastQueue = useSetRecoilState(toastArray)
+  //const setToastQueue = useSetRecoilState(toastArray)
 
   return (
     <Styled.Container>
@@ -23,7 +23,7 @@ const SubList = () => {
           {idx}
         </div>
       ))}
-      <button onClick={() => pushToastQueue('fail', '실패했습니다.', setToastQueue)}>Fail</button>
+      {/*<button onClick={() => pushToastQueue('fail', '실패했습니다.', setToastQueue)}>Fail</button>*/}
     </Styled.Container>
   )
 }
