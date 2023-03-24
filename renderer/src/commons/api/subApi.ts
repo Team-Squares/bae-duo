@@ -1,6 +1,10 @@
 import { apiInstance } from '.'
 import { dataProps } from '../types/subTypes'
 
+export const getFundingList = () => {
+  return apiInstance.get('/funding')
+}
+
 export const getSubDataList = () => {
   return apiInstance.get('/domain')
 }
