@@ -40,7 +40,7 @@ const Home = () => {
                 <Styled.BrandsCard>
                   <Styled.FundingInfo>
                     <Styled.StatusBox>
-                      <Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>
+                      {/*<Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>*/}
                       <Tag
                         text={`펀딩 ${categoryName[item.status] ?? '실패'}`}
                         color={tagByStatus(item.status)?.color}
@@ -69,7 +69,7 @@ const Home = () => {
                     <div>
                       <FaClock />
                       <div>
-                        <b>{moment(item.deadline).format('hh:mm')}</b>
+                        {/*<b>{moment(item.deadline).format('hh:mm')}</b>*/}
                         <span> 마감</span>
                       </div>
                     </div>

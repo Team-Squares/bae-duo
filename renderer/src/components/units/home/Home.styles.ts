@@ -105,7 +105,7 @@ export const LimitBox = styled.span`
     gap: 10px;
     width: 50%;
     font-size: 12px;
-    &:nth-child(1) {
+    :nth-of-type(1) {
       border-right: 2px solid ${color.$lightGray};
     }
     > svg {
@@ -127,13 +127,13 @@ export const ProgressBox = styled.div`
 `
 
 export const Percentage = styled.div<{ percentage: number }>`
-  span:first-child {
+  span:nth-of-type(1) {
     margin-right: 5px;
     font-size: 14px;
     font-weight: bold;
     color: ${props => `${props.percentage > 100 && color.$mainText}`};
   }
-  span:last-child {
+  span:last-of-type(1) {
     font-size: 12px;
     color: #868e96;
   }
