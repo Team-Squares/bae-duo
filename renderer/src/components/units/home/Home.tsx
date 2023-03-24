@@ -12,11 +12,11 @@ import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
 
 const Home = () => {
-  const Moment = require('moment')
+  //const Moment = require('moment')
   const [category, setCategory] = useState(0)
-  useEffect(() => {
-    dummyData.sort((a, b) => new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
-  }, [Moment])
+  //useEffect(() => {
+  //  dummyData.sort((a, b) => new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
+  //}, [Moment])
 
   return (
     <div>
