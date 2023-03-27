@@ -111,6 +111,7 @@ export const Input = styled.input<{ variant: string }>`
   }};
   &:focus {
     outline: none;
+    border: 1px solid ${color.$point};
   }
   &::placeholder {
     color: #999;
