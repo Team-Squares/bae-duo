@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import * as Styled from './fundingDetail.style'
+import * as Styled from './Detail.style'
 
 const Progress = ({ ...props }) => {
   const { type } = props

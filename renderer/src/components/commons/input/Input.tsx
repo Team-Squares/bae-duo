@@ -10,6 +10,7 @@ interface InputProps {
   disabled?: boolean
   helperText?: string
   helperTextColor?: 'error' | 'success' | 'notice'
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,22 +23,13 @@ const Input: React.FC<InputProps> = ({
   disabled = false,
   helperText,
   helperTextColor = 'notice',
+  onChange,
 }) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value)
-  }
-
   return (
     <Styled.InputContainer size={size}>
       <Styled.LabelWrapper labelType={labelType} variant={variant}>
         <Styled.Label label={label}>{label}</Styled.Label>
-        <Styled.Input
-          onChange={handleChange}
-          placeholder={placeholder}
-          type={type}
-          disabled={disabled}
-          variant={variant}
-        />
+        <Styled.Input onChange={onChange} placeholder={placeholder} type={type} disabled={disabled} variant={variant} />
       </Styled.LabelWrapper>
       <Styled.HelperText helperTextColor={helperTextColor}>{helperText}</Styled.HelperText>
     </Styled.InputContainer>

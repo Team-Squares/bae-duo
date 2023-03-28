@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { typography } from '@/src/commons/styles/typography'
 import { color } from '@/src/commons/styles/styles'
+import { colorPalette } from '@/src/commons/styles/color'
 
 export const Container = styled.div`
   width: 100%;
@@ -36,6 +37,13 @@ export const Header = styled.div`
     display: flex;
     align-items: center;
     gap: 16px;
+
+    button > span {
+      font-size: ${typography.body1.medium};
+    }
+    button:nth-child(1) > span {
+      color: ${color.$point};
+    }
   }
 `
 
@@ -44,6 +52,14 @@ export const Content = styled.div`
   display: flex;
   justify-content: center;
   gap: 40px;
+
+  button {
+    width: 100%;
+  }
+
+  button > span {
+    font-size: ${typography.body1.medium};
+  }
 `
 
 export const FundingInfoList = styled.div`
@@ -122,5 +138,62 @@ export const ParticipantInfo = styled.div`
     align-items: center;
     gap: 16px;
     margin-bottom: 16px;
+    & > div {
+      width: calc((100% - 16px) / 2);
+    }
+  }
+
+  button > span {
+    color: ${colorPalette.gray.gray30};
+  }
+`
+
+export const MenuContainer = styled.div`
+  width: 100%;
+  margin-top: 32px;
+
+  .userInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+
+    .img {
+      width: 36px;
+      height: 36px;
+      background-color: ${color.$defaultGray};
+      border-radius: 50px;
+    }
+
+    .userName {
+      ${typography.body1.bold}
+      color: ${color.$primaryText};
+    }
+  }
+
+  .menuGroup {
+    padding: 16px 24px;
+    border: 1px solid ${color.$defaultBorder};
+    border-radius: 10px;
+    position: relative;
+
+    .menuName {
+      color: ${color.$primaryText};
+      ${typography.body1.bold};
+      margin-bottom: 3x;
+    }
+
+    .menuPrice {
+      color: ${color.$secondaryText};
+      ${typography.body2.medium};
+    }
+
+    svg {
+      position: absolute;
+      font-size: 20px;
+      top: 16px;
+      right: 16px;
+      cursor: pointer;
+    }
   }
 `
