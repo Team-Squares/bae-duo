@@ -1,0 +1,46 @@
+[
+  {
+    "starter": "sook",
+    "brand": "한솥 도시락 종각점",
+    "total_price": 30000,
+    "cur_price": 16900,
+    "deadline": "Sun Mar 13 2023 11:00:00 GMT+0900 (한국 표준시)",
+    "min_member": 4,
+    "cur_member": 3,
+    "status": 1,
+    "createdAt": "Sun Mar 13 2023 09:23:58 GMT+0900 (한국 표준시)"
+  },
+  {
+    "starter": "kslee",
+    "brand": "노브랜드 경수점",
+    "total_price": 14000,
+    "cur_price": 4900,
+    "deadline": "Sun Mar 17 2023 11:20:00 GMT+0900 (한국 표준시)",
+    "min_member": null,
+    "cur_member": 1,
+    "status": 2,
+    "createdAt": "Sun Mar 17 2023 09:23:58 GMT+0900 (한국 표준시)"
+  },
+  {
+    "starter": "김승원",
+    "brand": "피자피자 승원점",
+    "total_price": 20000,
+    "cur_price": 23000,
+    "deadline": "Sun Mar 15 2023 11:00:00 GMT+0900 (한국 표준시)",
+    "min_member": 4,
+    "cur_member": 4,
+    "status": 3,
+    "createdAt": "Sun Mar 15 2023 09:23:58 GMT+0900 (한국 표준시)"
+  },
+  {
+    "starter": "raea",
+    "brand": "쌀국수 형래점",
+    "total_price": 20000,
+    "cur_price": 19000,
+    "deadline": "Sun Mar 12 2023 11:30:00 GMT+0900 (한국 표준시)",
+    "min_member": null,
+    "cur_member": 2,
+    "status": 1,
+    "createdAt": "Sun Mar 12 2023 09:23:58 GMT+0900 (한국 표준시)"
+  }
+]
