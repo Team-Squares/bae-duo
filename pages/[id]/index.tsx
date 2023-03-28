@@ -1,6 +1,6 @@
 import React from 'react'
-import DefaultLayout from '@/src/components/commons/layout/DefaultLayout'
-import FundingDetail from '@/src/components/units/fundingDetail/fundingDetail'
+import DefaultLayout from '@/renderer/src/components/commons/layout/DefaultLayout'
+import FundingDetail from '@/renderer/src/components/units/fundingDetail/fundingDetail'
 
 const index = () => {
   return (
