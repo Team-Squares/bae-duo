@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import * as Styled from './AddFunding.styles'
 import hansotImg from '@/public/images/hansot.svg'
 import noBrandImg from '@/public/images/nobrand.svg'
@@ -6,9 +6,14 @@ import Image from 'next/image'
 import Button from '@/src/components/commons/button/Button'
 import Toggle from '@/src/components/commons/toggle/Toggle'
 import Input from '@/src/components/commons/input/Input'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { color } from '@/src/commons/styles/color'
 
 const AddFunding = () => {
   const [useGoalPrice, setUseGoalPrice] = useState(false)
+  const [useNumberOfPerson, setUseNumberOfPerson] = useState(false)
+  const imgInputRef = useRef<HTMLInputElement | null>(null)
+
   return (
     <>
       <Styled.TitleContainer>
@@ -64,6 +69,7 @@ const AddFunding = () => {
           <Styled.SettingCard>
             <Styled.SettingCardTitle>
               <h2>마감시간 설정</h2>
+              <Input size="sm" />
             </Styled.SettingCardTitle>
             {/* <Styled.SettingCardContents></Styled.SettingCardContents> */}
           </Styled.SettingCard>
@@ -89,13 +95,40 @@ const AddFunding = () => {
           <Styled.SettingCard>
             <Styled.SettingCardTitle>
               <h2>참여인원 설정</h2>
-              <Toggle isCheck={false} setIsCheck={() => {}} />
+              <Toggle isCheck={useNumberOfPerson} setIsCheck={setUseNumberOfPerson} />
             </Styled.SettingCardTitle>
-            {/* {useGoalPrice && (
+            {useNumberOfPerson && (
               <Styled.SettingCardContents>
-                <div>sdf</div>
+                <Styled.CardContents>
+                  <span>최소 참여인원</span>
+                  <Input size="sm" />
+                  <span>명</span>
+                </Styled.CardContents>
               </Styled.SettingCardContents>
-            )} */}
+            )}
+          </Styled.SettingCard>
+
+          {/* 이미지 설정 */}
+          <Styled.SettingCard>
+            <Styled.SettingCardTitle>
+              <h2>메뉴 이미지</h2>
+              <AddCircleOutlineIcon
+                sx={{
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  if (!imgInputRef.current) return
+                  imgInputRef.current.click()
+                }}
+              />
+              <input
+                ref={imgInputRef}
+                type="file"
+                accept="image/jpg, image/jpeg, image/png"
+                multiple
+                style={{ display: 'none' }}
+              />
+            </Styled.SettingCardTitle>
           </Styled.SettingCard>
         </Styled.Flex>
       </Styled.ContentsContainer>
