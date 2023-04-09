@@ -2,36 +2,27 @@ import { color, colorPalette } from '@/src/commons/styles/color'
 import { typography } from '@/src/commons/styles/typography'
 import styled from '@emotion/styled'
 
-export const TitleContainer = styled.div`
-  margin-bottom: 48px;
+export const AddFundingHeader = styled.div`
+  margin-bottom: 32px;
   display: flex;
   justify-content: space-between;
-
-  .title {
-    ${typography.heading3}
-  }
-  .subTitle {
-    margin-top: 8px;
-    ${typography.body1.medium}
-  }
 `
 
-export const Title = styled.h1`
-  ${typography.heading3}
+export const HeaderTitle = styled.h1`
+  ${typography.heading4}
 `
-export const SubTitle = styled.p`
+export const HeaderSubTitle = styled.p`
   margin-top: 8px;
   ${typography.body1.medium}
 `
 
-export const ContentsContainer = styled.div`
+export const AddFundingBody = styled.div`
+  max-width: 688px;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   gap: 16px;
-
-  > div {
-    flex: 1;
-  }
 `
 
 export const SettingCard = styled.div`
@@ -42,21 +33,22 @@ export const SettingCard = styled.div`
   padding: 30px 0;
 `
 
-export const SettingCardTitle = styled.div`
+export const SettingCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   /* margin-bottom: 34px; */
   padding: 0 30px;
+  margin-bottom: 30px;
 
   h2 {
-    ${typography.heading4}
+    ${typography.body1.bold}
   }
 
   ul {
     list-style: none;
     display: flex;
-    ${typography.body1.medium}
+    ${typography.body2.medium}
 
     li {
       padding: 0 8px;
@@ -74,8 +66,8 @@ export const SettingCardTitle = styled.div`
     }
   }
 `
-export const SettingCardContents = styled.div`
-  margin-top: 30px;
+export const SettingCardBody = styled.div`
+  /* margin-top: 30px; */
 `
 
 export const CardContents = styled.div`
@@ -95,32 +87,32 @@ export const Brand = styled.div<{ isActive?: boolean }>`
   :hover {
     background-color: ${color.secondary};
   }
+`
 
-  .brand-img-container {
+export const BrandImageContainer = styled.div<{ isActive?: boolean }>`
+  width: 80px;
+  height: 80px;
+  border: 2px solid ${props => (props.isActive ? color.primary : color.border.default)};
+  border-radius: 10px;
+  overflow: hidden;
+
+  img {
     width: 80px;
     height: 80px;
-    border: 2px solid ${props => (props.isActive ? color.primary : color.border.default)};
-    border-radius: 10px;
-    overflow: hidden;
-
-    img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-    }
+    object-fit: cover;
   }
+`
 
-  .info-container {
-    .title {
-      ${typography.body1.medium}
-      color: ${props => props.isActive && color.primary};
-      font-weight: ${props => props.isActive && 700};
-    }
-    .funding-count {
-      color: ${props => (props.isActive ? colorPalette.blue.blue30 : color.text.gray)};
-      margin-top: 8px;
-      ${typography.body2.medium}
-    }
+export const BrandInfo = styled.div<{ isActive?: boolean }>`
+  .title {
+    ${typography.body2.bold}
+    color: ${props => props.isActive && color.primary};
+    font-weight: ${props => props.isActive && 700};
+  }
+  .funding-count {
+    color: ${props => (props.isActive ? colorPalette.blue.blue30 : color.text.gray)};
+    margin-top: 8px;
+    ${typography.caption.medium}
   }
 `
 
@@ -129,7 +121,7 @@ export const Flex = styled.div<{ direction?: string; gap?: number; alignItems?: 
   flex-direction: ${props => props.direction};
   align-items: ${props => props.alignItems};
   justify-content: ${props => props.justifyContent};
-  gap: ${props => `${props.gap}px` || '0px'};
+  gap: ${props => `${props.gap || 0}px`};
 `
 
 export const FlexCenter = styled.div<{ direction?: string; gap?: number }>`
@@ -137,5 +129,5 @@ export const FlexCenter = styled.div<{ direction?: string; gap?: number }>`
   flex-direction: ${props => props.direction};
   align-items: center;
   justify-content: center;
-  gap: ${props => `${props.gap}px` || '0px'};
+  gap: ${props => `${props.gap || 0}px`};
 `
