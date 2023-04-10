@@ -3,17 +3,14 @@ import hansotImg from '@/public/images/hansot.svg'
 import noBrandImg from '@/public/images/nobrand.svg'
 import * as Styled from '@/src/components/units/addFunding/AddFunding.styles'
 import Image from 'next/image'
-import { color, colorPalette } from '@/src/commons/styles/color'
-import { typography } from '@/src/commons/styles/typography'
-import styled from '@emotion/styled'
 
 interface BrandSettingProps {
-  selectedBrand: string
-  setSelectedBrand: any
+  brand: string
+  setBrand: any
   setCurStep: any
 }
 
-const BrandSetting = ({ selectedBrand, setSelectedBrand, setCurStep }: BrandSettingProps) => {
+const BrandSetting = ({ brand, setBrand, setCurStep }: BrandSettingProps) => {
   return (
     <Styled.SettingCard>
       <Styled.SettingCardHeader>
@@ -27,29 +24,30 @@ const BrandSetting = ({ selectedBrand, setSelectedBrand, setCurStep }: BrandSett
       <Styled.SettingCardBody>
         <Styled.Brand
           onClick={() => {
-            setSelectedBrand('hansot')
+            setBrand('한솥 도시락 (을지로4가점)')
             setCurStep(2)
           }}
-          isActive={selectedBrand === 'hansot'}
+          isActive={brand === '한솥 도시락 (을지로4가점)'}
         >
-          <Styled.BrandImageContainer isActive={selectedBrand === 'hansot'}>
+          <Styled.BrandImageContainer isActive={brand === '한솥 도시락 (을지로4가점)'}>
             <Image src={hansotImg} alt={'한솥 이미지'} />
           </Styled.BrandImageContainer>
-          <Styled.BrandInfo isActive={selectedBrand === 'hansot'}>
+          <Styled.BrandInfo isActive={brand === '한솥 도시락 (을지로4가점)'}>
             <h3 className="title">한솥 도시락 (을지로4가점)</h3>
             <p className="funding-count">지난 펀딩 횟수: 4회</p>
           </Styled.BrandInfo>
         </Styled.Brand>
         <Styled.Brand
           onClick={() => {
-            setSelectedBrand('nobrand')
+            setBrand('노브랜드 버거 (을지로점)')
+            setCurStep(2)
           }}
-          isActive={selectedBrand === 'nobrand'}
+          isActive={brand === '노브랜드 버거 (을지로점)'}
         >
-          <Styled.BrandImageContainer isActive={selectedBrand === 'nobrand'}>
+          <Styled.BrandImageContainer isActive={brand === '노브랜드 버거 (을지로점)'}>
             <Image src={noBrandImg} alt={'노브랜드 이미지'} />
           </Styled.BrandImageContainer>
-          <Styled.BrandInfo isActive={selectedBrand === 'nobrand'}>
+          <Styled.BrandInfo isActive={brand === '노브랜드 버거 (을지로점)'}>
             <h3 className="title">노브랜드 버거 (을지로점)</h3>
             <p className="funding-count">지난 펀딩 횟수: 2회</p>
           </Styled.BrandInfo>

@@ -3,12 +3,31 @@ import * as Styled from '@/src/components/units/addFunding/AddFunding.styles'
 import Input from '@/src/components/commons/input/Input'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import Button from '@/src/components/commons/button/Button'
+import { useFormContext } from 'react-hook-form'
 
 interface AdditionalSettingProps {
+  deadline: string
+  totalPrice: number
+  description: string
+  images: string[]
+  setDeadline: any
+  setTotalPrice: any
+  setDescription: any
+  setImages: any
   setCurStep: any
 }
 
-const AdditionalSetting = ({ setCurStep }: AdditionalSettingProps) => {
+const AdditionalSetting = ({
+  deadline,
+  totalPrice,
+  description,
+  images,
+  setDeadline,
+  setTotalPrice,
+  setDescription,
+  setImages,
+  setCurStep,
+}: AdditionalSettingProps) => {
   const imgInputRef = useRef<HTMLInputElement | null>(null)
 
   return (
@@ -18,7 +37,7 @@ const AdditionalSetting = ({ setCurStep }: AdditionalSettingProps) => {
         <Styled.SettingCard style={{ flex: 1 }}>
           <Styled.SettingCardHeader style={{ marginBottom: 0 }}>
             <h2>마감시간</h2>
-            <input type="text" />
+            <input type="text" onChange={e => setDeadline(e.target.value)} />
           </Styled.SettingCardHeader>
         </Styled.SettingCard>
 
@@ -26,7 +45,7 @@ const AdditionalSetting = ({ setCurStep }: AdditionalSettingProps) => {
         <Styled.SettingCard style={{ flex: 1 }}>
           <Styled.SettingCardHeader style={{ marginBottom: 0 }}>
             <h2>목표금액</h2>
-            <input type="text" />
+            <input type="number" onChange={e => setTotalPrice(e.target.value)} />
           </Styled.SettingCardHeader>
         </Styled.SettingCard>
       </Styled.Flex>
@@ -36,7 +55,7 @@ const AdditionalSetting = ({ setCurStep }: AdditionalSettingProps) => {
           <h2>설명</h2>
         </Styled.SettingCardHeader>
         <Styled.SettingCardBody style={{ padding: '0 30px' }}>
-          <textarea style={{ width: '100%', height: 120 }} />
+          <textarea style={{ width: '100%', height: 120 }} onChange={e => setDescription(e.target.value)} />
         </Styled.SettingCardBody>
       </Styled.SettingCard>
 
