@@ -35,7 +35,6 @@ export const StepItem = styled.div<{ isActive: boolean; cursor?: string }>`
 `
 
 export const RightArrowIcon = styled(KeyboardArrowRight)`
-  /* margin: 0 20px; */
   svg {
     width: 24px;
     height: 24px;

@@ -32,7 +32,6 @@ export const SettingCard = styled.div`
   overflow: hidden;
   padding: 30px 0;
 `
-
 export const SettingCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -116,6 +115,7 @@ export const BrandInfo = styled.div<{ isActive?: boolean }>`
   }
 `
 
+// Flex
 export const Flex = styled.div<{ direction?: string; gap?: number; alignItems?: string; justifyContent?: string }>`
   display: flex;
   flex-direction: ${props => props.direction};

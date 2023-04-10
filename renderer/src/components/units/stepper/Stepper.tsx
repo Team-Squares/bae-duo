@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import * as Styled from '@/src/components/commons/stepbar/StepBar.styles'
+import * as Styled from '@/src/components/units/stepper/Stepper.styles'
 import StoreIcon from '@mui/icons-material/Storefront'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck'
