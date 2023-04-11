@@ -55,10 +55,10 @@ export const Row = styled.div`
   align-items: center;
   padding: 5px;
   border-radius: 5px;
-  cursor: pointer;
 
-  :hover {
+  &:not(:nth-child(2)):hover {
     background-color: #e9e9e9;
+    cursor: pointer;
   }
 `
 

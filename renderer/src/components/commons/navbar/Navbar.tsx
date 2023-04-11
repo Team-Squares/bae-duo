@@ -13,21 +13,45 @@ import IconMessage from '@/public/icons/message.svg'
 import IconPerson from '@/public/icons/person.svg'
 import IconSetting from '@/public/icons/setting.svg'
 import IconArrowBottom from '@/public/icons/arrowBottom.svg'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 
 import tempProfileImg from '@/public/images/profile_medium.svg'
 
 import Dialog from '@/src/components/commons/navbar/Dialog'
+import { useRouter } from 'next/router'
 
 const Navbar = () => {
   const { routePage } = useRoutePage()
+  const router = useRouter()
+
   const [toggleDialog, setToggleDialog] = useState(false)
   return (
     <Styled.Header>
       <Styled.Navbar>
-        <Styled.Logo>BAEDUO</Styled.Logo>
+        <Styled.LeftSection>
+          <Styled.Logo>BAEDUO</Styled.Logo>
+          <Styled.HistoryButtons>
+            <div
+              onClick={() => {
+                router.back()
+              }}
+            >
+              <ArrowBackIosNewIcon />
+            </div>
+            <div
+              onClick={() => {
+                console.log('앞으로가기')
+                // router.forward()
+              }}
+            >
+              <ArrowForwardIosIcon />
+            </div>
+          </Styled.HistoryButtons>
+        </Styled.LeftSection>
         <Styled.RightSection>
           <Styled.SearchBox>
-            <Styled.SearchInput></Styled.SearchInput>
+            <Styled.SearchInput placeholder="펀딩을 검색해보세요!"></Styled.SearchInput>
             <Styled.SearchButton>
               <Image src={IconMagnifier} alt="none"></Image>
             </Styled.SearchButton>
@@ -35,9 +59,9 @@ const Navbar = () => {
 
           <Styled.MenuBox>
             {/* <Styled.Menu onClick={() => routePage('/')}>Home</Styled.Menu> */}
-            <Styled.Menu onClick={() => routePage('/')}>
+            {/* <Styled.Menu onClick={() => router.back()}>
               <Image src={IconBack} alt="none"></Image>
-            </Styled.Menu>
+            </Styled.Menu> */}
             <Styled.Menu>
               <Image src={IconMessage} alt="none"></Image>
             </Styled.Menu>

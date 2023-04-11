@@ -32,6 +32,33 @@ export const Logo = styled.div`
   font-size: 22px;
 `
 
+export const LeftSection = styled.div`
+  display: flex;
+  gap: 20px;
+`
+
+export const HistoryButtons = styled.div`
+  display: flex;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    > svg {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      border-radius: 50%;
+      padding: 5px;
+      &:hover {
+        background-color: #eee;
+      }
+      > path {
+        color: #999;
+      }
+    }
+  }
+`
+
 export const RightSection = styled.div`
   display: flex;
   gap: 20px;
