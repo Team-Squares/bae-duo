@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import * as Styled from './Detail.style'
+import * as Styled from '../FundingDetail.style'
 import Progress from './Progress'
 
 const FundingInfoList = () => {
