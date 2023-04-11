@@ -9,6 +9,8 @@ export const DialogLayer = styled.div`
   height: 100vh;
   background-color: transparent;
   z-index: 999;
+  cursor: auto;
+  transition: 1s;
 `
 
 export const Dialog = styled.div`
@@ -16,8 +18,8 @@ export const Dialog = styled.div`
   width: 170px;
   // height: 200px;
   padding: 10px;
-  top: 50px;
-  right: 0;
+  top: 65px;
+  right: calc(50% - 520px);
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 4px 10px 13px rgba(0, 0, 0, 0.25);
@@ -65,6 +67,19 @@ export const MenuIcon = styled.div`
   margin-right: 12px;
 `
 export const MenuTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 85%;
   color: #5f666d;
   font-size: 14px;
 `
+
+export const Line = styled.div`
+  height: 1px;
+  width: 100%;
+  background-color: #eee;
+`
+
+export const Text = styled.span``
+export const Toggle = styled.span``
