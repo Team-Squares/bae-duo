@@ -124,7 +124,7 @@ export const FundingInfoItem = styled.div`
   }
 `
 
-export const ParticipantInfo = styled.div`
+export const AttendantInfo = styled.div`
   flex: 1;
   width: calc((100% - 40px) / 2);
 

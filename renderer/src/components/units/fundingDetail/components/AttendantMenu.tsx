@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from '../FundingDetail.style'
 import CloseIcon from '@mui/icons-material/Close'
-import { Menu, InfoProps } from '../FundingDetail.types'
+import { InfoProps } from '../FundingDetail.types'
 
-const ParticipantMenu: React.FC<InfoProps> = ({ item, setAttendData, attendData }) => {
+const AttendantMenu: React.FC<InfoProps> = ({ item, setAttendData, attendData }) => {
   const removeMenu = (idx: number) => {
     if (item.menuInfo.length === 1) {
       console.log('LENGTH !')
@@ -13,6 +13,10 @@ const ParticipantMenu: React.FC<InfoProps> = ({ item, setAttendData, attendData 
       // TODO 여러 메뉴 있을때 하나만 삭제하기
     }
   }
+
+  useEffect(() => {
+    console.log(Object.keys(item.menuInfo[0]))
+  }, [])
 
   return (
     <Styled.MenuContainer>
@@ -24,8 +28,8 @@ const ParticipantMenu: React.FC<InfoProps> = ({ item, setAttendData, attendData 
         {item.menuInfo.map((ele, idx) => (
           <div className="menuItem" key={idx}>
             <div className="menuItemInfo">
-              <div className="menuName">{ele.menuName}</div>
-              <div className="menuPrice">가격 : {ele.menuPrice}원</div>
+              <div className="menuName">{Object.keys(ele)}</div>
+              <div className="menuPrice">가격 : {Object.values(ele)}원</div>
             </div>
             <CloseIcon onClick={() => removeMenu(idx)} />
           </div>
@@ -35,4 +39,4 @@ const ParticipantMenu: React.FC<InfoProps> = ({ item, setAttendData, attendData 
   )
 }
 
-export default ParticipantMenu
+export default AttendantMenu

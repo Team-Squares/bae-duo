@@ -3,10 +3,10 @@ import * as Styled from '../FundingDetail.style'
 import { colorPalette } from '../../../../commons/styles/color'
 import Button from '../../../commons/button/Button'
 import Input from '../../../commons/input/Input'
-import ParticipantMenu from './AttendantMenu'
+import AttendantMenu from './AttendantMenu'
 import { Menu } from '../FundingDetail.types'
 
-const ParticipantInfo = ({ ...props }) => {
+const AttendantInfo = ({ ...props }) => {
   const { data } = props
   const [menu, setMenu] = useState({
     userId: 2,
@@ -15,35 +15,35 @@ const ParticipantInfo = ({ ...props }) => {
   })
   const [attendData, setAttendData] = useState<Menu[]>(data)
 
+  useEffect(() => {
+    console.log(data)
+  }, [])
+
   const addMenuList = () => {
     if (!menu.menuName || !menu.menuPrice) return
-    if (menu.userId === 2) {
-      // 아이디가 이미 존재할때 -> 방법 고민중.!.!.
-      let _addMenu = attendData.filter(data => data.userId === 2)
-      _addMenu[0].menuInfo.push({
-        menuName: menu.menuName,
-        menuPrice: menu.menuPrice,
+    const _sameUser = attendData.filter((data: Menu) => data.userId === menu.userId)
+    if (_sameUser.length) {
+      _sameUser[0].menuInfo.push({
+        [menu.menuName]: menu.menuPrice,
       })
-
       setAttendData([
-        ...attendData.filter(data => data.userId !== 2),
         {
-          userId: 2,
-          menuInfo: [..._addMenu[0].menuInfo],
+          userId: menu.userId,
+          menuInfo: [..._sameUser[0].menuInfo],
         },
+        ...attendData.filter(data => data.userId !== menu.userId),
       ])
     } else {
       setAttendData([
-        ...attendData,
         {
-          userId: menu.userId,
+          userId: 2,
           menuInfo: [
             {
-              menuName: menu.menuName,
-              menuPrice: menu.menuPrice,
+              [menu.menuName]: menu.menuPrice,
             },
           ],
         },
+        ...attendData,
       ])
     }
 
@@ -65,15 +65,8 @@ const ParticipantInfo = ({ ...props }) => {
     }
   }
 
-  const handleOnlyNumberKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    let check = /^[0-9]+$/
-    if (check.test(e.key)) {
-      e.preventDefault()
-    }
-  }
-
   return (
-    <Styled.ParticipantInfo>
+    <Styled.AttendantInfo>
       <div className="title">참여자</div>
       <div className="inputGroup">
         <Input
@@ -87,7 +80,6 @@ const ParticipantInfo = ({ ...props }) => {
           size="md"
           value={menu.menuPrice}
           onChange={e => handleChangeData(e, 'price')}
-          onKeyDown={e => handleOnlyNumberKey(e)}
         />
       </div>
       <Button
@@ -103,10 +95,10 @@ const ParticipantInfo = ({ ...props }) => {
       </Button>
 
       {attendData.map((item, idx) => (
-        <ParticipantMenu item={item} key={idx} setAttendData={setAttendData} attendData={attendData} />
+        <AttendantMenu item={item} key={idx} setAttendData={setAttendData} attendData={attendData} />
       ))}
-    </Styled.ParticipantInfo>
+    </Styled.AttendantInfo>
   )
 }
 
-export default ParticipantInfo
+export default AttendantInfo

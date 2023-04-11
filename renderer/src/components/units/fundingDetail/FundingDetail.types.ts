@@ -1,6 +1,5 @@
-export interface MenuInfo {
-  menuName: string
-  menuPrice: string
+interface MenuInfo {
+  [x: string]: string
 }
 
 export interface Menu {
