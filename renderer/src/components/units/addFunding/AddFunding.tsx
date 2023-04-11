@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Styled from './AddFunding.styles'
 import Stepper from '../stepper/Stepper'
 import Button from '../../commons/button/Button'
@@ -9,7 +9,7 @@ import FundingCard from './fundingCard/FundingCard'
 const AddFunding = () => {
   const [starter, setStarter] = useState('seung')
   const [brand, setBrand] = useState('')
-  const [deadline, setDeadline] = useState('')
+  const [deadline, setDeadline] = useState<Date>()
   const [totalPrice, setTotalPrice] = useState(0)
   const [minMember, setMinMember] = useState(0)
   const [description, setDescription] = useState('')
@@ -45,7 +45,7 @@ const AddFunding = () => {
         {/* 2. 추가 설정 */}
         {curStep === 2 && (
           <AdditionalSetting
-            deadline={deadline}
+            // deadline={deadline}
             totalPrice={totalPrice}
             description={description}
             images={images}
@@ -58,7 +58,7 @@ const AddFunding = () => {
         )}
 
         {/* 3. 설정 확인 */}
-        {curStep === 3 && (
+        {curStep === 3 && deadline && (
           <Styled.Flex direction="column" gap={8}>
             <FundingCard
               brand={brand}
@@ -87,7 +87,7 @@ const AddFunding = () => {
         )}
 
         {/* 4. 생성 완료 */}
-        {curStep === 4 && (
+        {curStep === 4 && deadline && (
           <Styled.Flex direction="column" gap={8}>
             <FundingCard
               isSuccess={true}

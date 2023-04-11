@@ -6,11 +6,13 @@ import hansotImg from '@/public/images/hansot.svg'
 import { color } from '@/src/commons/styles/color'
 import { typography } from '@/src/commons/styles/typography'
 import SuccessIcon from '@/public/icons/success_icon.svg'
+import moment from 'moment'
+import CloseIcon from '@mui/icons-material/Close'
 
 interface FundingCardProps {
   isSuccess?: boolean
   brand: string
-  deadline: string
+  deadline: Date
   totalPrice: number
   description?: string
   images?: string[]
@@ -34,23 +36,29 @@ const FundingCard = ({ isSuccess, brand, deadline, totalPrice, description, imag
         <Styled.Flex direction="column" gap={16}>
           <SettingItem>
             <SettingItemTitle>마감시간</SettingItemTitle>
-            <SettingItemBody>{deadline}</SettingItemBody>
+            <SettingItemBody>{moment(deadline).format('h시 mm분')}</SettingItemBody>
           </SettingItem>
           <SettingItem>
             <SettingItemTitle>목표금액</SettingItemTitle>
-            <SettingItemBody>{totalPrice}원</SettingItemBody>
+            <SettingItemBody>{Number(totalPrice).toLocaleString()}원</SettingItemBody>
           </SettingItem>
           <SettingItem>
             <SettingItemTitle>추가설명</SettingItemTitle>
             <SettingItemBody>
-              <p>
-                {description}
-                {/* 자세한 메뉴알고 싶으신 분들은 노브랜드 버거 을지로4가점 검색해서 보세요 🐷
-                <br />
-                현저하게 사랑의 없는 끝까지 청춘의 풍부하게 청춘이 약동하다. 이상 낙원을 미인을 기쁘며, 스며들어 이 하는
-                봄바람이다. <br />
-                인생에 풀밭에 무한한 남는 피가 행복스럽고 듣는다. */}
-              </p>
+              <Description>{description}</Description>
+            </SettingItemBody>
+          </SettingItem>
+          <SettingItem>
+            <SettingItemTitle>메뉴 이미지</SettingItemTitle>
+            <SettingItemBody>
+              <ImagePreviewContainer>
+                {images &&
+                  images.map((image, i) => (
+                    <ImagePreview key={`image-uploader-${i}`}>
+                      <Image src={image} alt={`이미지 ${i}`} width={120} height={80} />
+                    </ImagePreview>
+                  ))}
+              </ImagePreviewContainer>
             </SettingItemBody>
           </SettingItem>
         </Styled.Flex>
@@ -100,4 +108,26 @@ const SettingItemTitle = styled.div`
 `
 const SettingItemBody = styled.div`
   flex: 1;
+`
+const Description = styled.p`
+  white-space: pre-wrap;
+`
+
+const ImagePreviewContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+
+  min-height: 40px;
+`
+
+const ImagePreview = styled.div`
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid ${color.border.default};
+
+  img {
+    object-fit: cover;
+  }
 `

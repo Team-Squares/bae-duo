@@ -1,12 +1,13 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as Styled from '@/src/components/units/addFunding/AddFunding.styles'
 import Input from '@/src/components/commons/input/Input'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import Button from '@/src/components/commons/button/Button'
-import { useFormContext } from 'react-hook-form'
+import Dropdown from '@/src/components/commons/dropdown/Dropdown'
+import ImageUploader from '../../imageUploader/ImageUploader'
 
 interface AdditionalSettingProps {
-  deadline: string
+  // deadline: string
   totalPrice: number
   description: string
   images: string[]
@@ -18,7 +19,7 @@ interface AdditionalSettingProps {
 }
 
 const AdditionalSetting = ({
-  deadline,
+  // deadline,
   totalPrice,
   description,
   images,
@@ -28,7 +29,15 @@ const AdditionalSetting = ({
   setImages,
   setCurStep,
 }: AdditionalSettingProps) => {
-  const imgInputRef = useRef<HTMLInputElement | null>(null)
+  const [deadlineHour, setDeadlineHour] = useState<number>()
+  const [deadlineMinute, setDeadlineMinute] = useState<number>()
+
+  useEffect(() => {
+    if (!deadlineHour || !deadlineMinute) return
+
+    const today = new Date()
+    setDeadline(new Date(today.getFullYear(), today.getMonth(), today.getDate(), deadlineHour, deadlineMinute))
+  }, [deadlineHour, deadlineMinute])
 
   return (
     <Styled.Flex direction="column" gap={8}>
@@ -37,7 +46,25 @@ const AdditionalSetting = ({
         <Styled.SettingCard style={{ flex: 1 }}>
           <Styled.SettingCardHeader style={{ marginBottom: 0 }}>
             <h2>마감시간</h2>
-            <input type="text" onChange={e => setDeadline(e.target.value)} />
+            {/* <input type="text" onChange={e => setDeadline(e.target.value)} /> */}
+            <Styled.Flex alignItems="center" gap={4}>
+              <div style={{ width: 70 }}>
+                <Dropdown
+                  defaultValue={deadlineHour}
+                  optionList={[9, 10, 11, 12]}
+                  placeholder="시"
+                  onSelect={option => setDeadlineHour(+option)}
+                />
+              </div>
+              <div>:</div>
+              <div style={{ width: 70 }}>
+                <Dropdown
+                  optionList={[0, 10, 20, 30, 40, 50]}
+                  placeholder="분"
+                  onSelect={option => setDeadlineMinute(+option)}
+                />
+              </div>
+            </Styled.Flex>
           </Styled.SettingCardHeader>
         </Styled.SettingCard>
 
@@ -63,23 +90,10 @@ const AdditionalSetting = ({
       <Styled.SettingCard>
         <Styled.SettingCardHeader>
           <h2>메뉴 이미지</h2>
-          <AddCircleOutlineIcon
-            sx={{
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              if (!imgInputRef.current) return
-              imgInputRef.current.click()
-            }}
-          />
-          <input
-            ref={imgInputRef}
-            type="file"
-            accept="image/jpg, image/jpeg, image/png"
-            multiple
-            style={{ display: 'none' }}
-          />
         </Styled.SettingCardHeader>
+        <Styled.SettingCardBody style={{ padding: '0 30px' }}>
+          <ImageUploader images={images} setImages={setImages} />
+        </Styled.SettingCardBody>
       </Styled.SettingCard>
 
       <Button style={{ width: '100%', height: 56 }} onClick={() => setCurStep(3)}>

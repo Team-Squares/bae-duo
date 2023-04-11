@@ -29,7 +29,7 @@ export const SettingCard = styled.div`
   border-radius: 5px;
   border: 1px solid ${color.border.default};
   /* padding: 30px; */
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 30px 0;
 `
 export const SettingCardHeader = styled.div`
