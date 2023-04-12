@@ -24,8 +24,6 @@ const Home = () => {
     staleTime: 3000,
   })
 
-  console.log('data:::', data)
-
   return (
     <div>
       <Styled.LandingHeader>
@@ -77,21 +75,21 @@ const Home = () => {
                     <div>
                       <FaClock />
                       <div>
-                        {/*<b>{moment(item.deadline).format('hh:mm')}</b>*/}
+                        <b>{moment(item.deadline).format('hh:mm')}</b>
                         <span> 마감</span>
                       </div>
                     </div>
                   </Styled.LimitBox>
                   <Styled.ProgressBox>
-                    {item.curMember ? (
-                      <Styled.Percentage percentage={getPercentage(item.curPrice, item.curPrice * item.curMember)}>
+                    <Styled.Percentage percentage={getPercentage(item.curPrice, item.curPrice * item.curMember)}>
+                      {item.curMember ? (
                         <span>{`${getPercentage(item.curPrice, item.minPrice)}% 달성했어요`}</span>
-                        <span>{`${getKORMoneyString(item.curPrice)}원 / ${getKORMoneyString(item.minPrice)}원`}</span>
-                      </Styled.Percentage>
-                    ) : (
-                      <span>참여인원이 없습니다.</span>
-                    )}
-                    <Styled.ProgressBar percentage={getPercentage(item.curPrice, item.curPrice * item.curMember)}>
+                      ) : (
+                        <span>참여인원이 없습니다.</span>
+                      )}
+                      <span>{`${getKORMoneyString(item.curPrice)}원 / ${getKORMoneyString(item.minPrice)}원`}</span>
+                    </Styled.Percentage>
+                    <Styled.ProgressBar percentage={getPercentage(item.curPrice, item.minPrice)}>
                       <div></div>
                     </Styled.ProgressBar>
                   </Styled.ProgressBox>

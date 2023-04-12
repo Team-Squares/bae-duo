@@ -46,7 +46,8 @@ export const BrandsCard = styled.div`
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   transition: all 0.3s cubic-bezier(0.3, 0, 0.2, 1);
   :hover {
-    transform: translateY(-3%);
+    box-shadow: 0 2px 8px hsl(212deg 7% 43% / 32%);
+    transform: translateY(-0.2%);
   }
 `
 
@@ -124,10 +125,11 @@ export const LimitBox = styled.span`
 // Progress
 export const ProgressBox = styled.div`
   padding: 0 20px 20px;
+  font-size: 14px;
 `
 
 export const Percentage = styled.div<{ percentage: number }>`
-  font-size: 14px;
+  ${displayCenter}
   span:nth-of-type(1) {
     margin-right: 5px;
     font-weight: bold;
