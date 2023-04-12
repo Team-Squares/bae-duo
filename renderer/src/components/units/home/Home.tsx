@@ -10,13 +10,21 @@ import starterImg from '@/public/images/starter.svg'
 import dummyData from './dummy.json'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
+import { useQuery, useQueryClient } from 'react-query'
+import { getAllFundingList } from '@/src/commons/api/mainApi'
 
 const Home = () => {
-  //const Moment = require('moment')
+  const queryClient = useQueryClient() //delete할때 필요.
   const [category, setCategory] = useState(0)
-  //useEffect(() => {
-  //  dummyData.sort((a, b) => new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
-  //}, [Moment])
+  const { isLoading, data } = useQuery(['getAllFundingList'], () => getAllFundingList(), {
+    //cacheTime: 0,
+    retry: 1,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    staleTime: 3000,
+  })
+
+  console.log('data:::', data)
 
   return (
     <div>
@@ -33,7 +41,7 @@ const Home = () => {
         </Button>
       </Styled.LandingHeader>
       <Styled.BrandsBox>
-        {dummyData.map(
+        {data?.map(
           item =>
             (category === 0 || item.status === category) && (
               <Fragment key={item.createdAt}>
@@ -61,7 +69,7 @@ const Home = () => {
                       <RiUser3Fill />
                       <div>
                         <b>
-                          {item.cur_member}/{item.min_member}
+                          {item.curMember}/{item.minMember}
                         </b>
                         <span> 명 참여</span>
                       </div>
@@ -75,11 +83,15 @@ const Home = () => {
                     </div>
                   </Styled.LimitBox>
                   <Styled.ProgressBox>
-                    <Styled.Percentage percentage={getPercentage(item.cur_price, item.total_price)}>
-                      <span>{`${getPercentage(item.cur_price, item.total_price)}% 달성했어요`}</span>
-                      <span>{`${getKORMoneyString(item.cur_price)}원 / ${getKORMoneyString(item.total_price)}원`}</span>
-                    </Styled.Percentage>
-                    <Styled.ProgressBar percentage={getPercentage(item.cur_price, item.total_price)}>
+                    {item.curMember ? (
+                      <Styled.Percentage percentage={getPercentage(item.curPrice, item.curPrice * item.curMember)}>
+                        <span>{`${getPercentage(item.curPrice, item.minPrice)}% 달성했어요`}</span>
+                        <span>{`${getKORMoneyString(item.curPrice)}원 / ${getKORMoneyString(item.minPrice)}원`}</span>
+                      </Styled.Percentage>
+                    ) : (
+                      <span>참여인원이 없습니다.</span>
+                    )}
+                    <Styled.ProgressBar percentage={getPercentage(item.curPrice, item.curPrice * item.curMember)}>
                       <div></div>
                     </Styled.ProgressBar>
                   </Styled.ProgressBox>

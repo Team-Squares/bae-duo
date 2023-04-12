@@ -21,7 +21,7 @@ export const CategoryBox = styled.div<{ category: number }>`
     height: 37px;
     border-radius: 100px;
     border: none;
-    background-color: ${color.$transparentBg};
+    background-color: ${color.$lightGray};
     color: ${color.$disabledText};
     cursor: pointer;
   }
@@ -127,9 +127,9 @@ export const ProgressBox = styled.div`
 `
 
 export const Percentage = styled.div<{ percentage: number }>`
+  font-size: 14px;
   span:nth-of-type(1) {
     margin-right: 5px;
-    font-size: 14px;
     font-weight: bold;
     color: ${props => `${props.percentage > 100 && color.$mainText}`};
   }
