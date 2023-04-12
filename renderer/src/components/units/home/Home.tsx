@@ -3,26 +3,36 @@ import Image from 'next/image'
 import moment from 'moment'
 import * as Styled from './Home.styles'
 import { FaClock } from 'react-icons/fa'
+import { TbNotesOff } from 'react-icons/tb'
 import { RiUser3Fill, RiAddLine } from 'react-icons/ri'
 import { categoryName, getKORMoneyString, getPercentage, tagByStatus } from './data'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
-import dummyData from './dummy.json'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
 import { useQuery, useQueryClient } from 'react-query'
 import { getAllFundingList } from '@/src/commons/api/mainApi'
+import { getAllFundingListProps } from '@/src/commons/types/mainApi'
+import { color } from '@/src/commons/styles/color'
 
 const Home = () => {
   const queryClient = useQueryClient() //delete할때 필요.
   const [category, setCategory] = useState(0)
+  const [filterByDate, setFilterByDate] = useState<getAllFundingListProps[]>([])
   const { isLoading, data } = useQuery(['getAllFundingList'], () => getAllFundingList(), {
-    //cacheTime: 0,
     retry: 1,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    staleTime: 3000,
+    //staleTime: 3000,
+    onSuccess: data => {
+      const sortByReverse = data.sort((a, b) => moment(b.createdAt).diff(a.createdAt))
+      setFilterByDate(sortByReverse)
+    },
+    onError: error => {
+      console.dir(error)
+    },
   })
+  console.log(filterByDate)
 
   return (
     <div>
@@ -39,14 +49,14 @@ const Home = () => {
         </Button>
       </Styled.LandingHeader>
       <Styled.BrandsBox>
-        {data?.map(
+        {filterByDate?.map(
           item =>
             (category === 0 || item.status === category) && (
               <Fragment key={item.createdAt}>
                 <Styled.BrandsCard>
                   <Styled.FundingInfo>
                     <Styled.StatusBox>
-                      {/*<Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>*/}
+                      <Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>
                       <Tag
                         text={`펀딩 ${categoryName[item.status] ?? '실패'}`}
                         color={tagByStatus(item.status)?.color}
@@ -98,6 +108,12 @@ const Home = () => {
             )
         )}
       </Styled.BrandsBox>
+      {filterByDate.length === 0 && (
+        <Styled.EmptySection>
+          <TbNotesOff style={{ width: '24px', height: '24px' }} />
+          empty data
+        </Styled.EmptySection>
+      )}
     </div>
   )
 }

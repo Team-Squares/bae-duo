@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/react'
 import { color } from '@/src/commons/styles/styles'
 import hansotImg from '@/public/images/hansot.svg'
+import { typography } from '@/src/commons/styles/typography'
 
 const displayCenter = css`
   display: flex;
@@ -151,5 +152,21 @@ export const ProgressBar = styled.div<{ percentage: number }>`
     width: ${props => `${props.percentage > 100 ? 100 : props.percentage}%`};
     background-color: ${color.$point};
     border-radius: 10px;
+  }
+`
+
+export const EmptySection = styled.section`
+  width: 100%;
+  height: 292px;
+  background-color: ${color.$lightestGray};
+  color: ${color.$secondaryText};
+  ${displayCenter};
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  text-transform: capitalize;
+  /*${typography.body1.medium};*/
+  path {
+    color: ${color.$secondaryText};
   }
 `
