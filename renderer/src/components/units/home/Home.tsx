@@ -10,10 +10,12 @@ import starterImg from '@/public/images/starter.svg'
 import dummyData from './dummy.json'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
+import { useRouter } from 'next/router'
 
 const Home = () => {
   //const Moment = require('moment')
   const [category, setCategory] = useState(0)
+  const router = useRouter()
   //useEffect(() => {
   //  dummyData.sort((a, b) => new Moment(a.createdAt).format('YYYYMMDD') - new Moment(b.createdAt).format('YYYYMMDD'))
   //}, [Moment])
@@ -28,7 +30,7 @@ const Home = () => {
             </button>
           ))}
         </Styled.CategoryBox>
-        <Button size="small" variant="outlined">
+        <Button size="small" variant="outlined" onClick={() => router.push('/funding/add')}>
           펀딩 추가 <RiAddLine />
         </Button>
       </Styled.LandingHeader>
