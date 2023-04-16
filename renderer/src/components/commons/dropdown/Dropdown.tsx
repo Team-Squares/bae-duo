@@ -26,7 +26,7 @@ const Dropdown = ({ optionList, defaultValue, placeholder = '', onSelect }: Drop
   }, [defaultValue])
 
   useEffect(() => {
-    if (!selectedOption) return
+    if (selectedOption === null || selectedOption === undefined) return
     onSelect(selectedOption)
   }, [onSelect, selectedOption])
 
