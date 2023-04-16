@@ -43,6 +43,8 @@ const Navbar = () => {
               onClick={() => {
                 console.log('앞으로가기')
                 // router.forward()
+                // ? router 내 forward 기능이 제대로 동작하지 않음
+                window.history.forward()
               }}
             >
               <ArrowForwardIosIcon />
