@@ -7,18 +7,19 @@ import { color } from '@/src/commons/styles/color'
 import { typography } from '@/src/commons/styles/typography'
 import SuccessIcon from '@/public/icons/success_icon.svg'
 import moment from 'moment'
-import CloseIcon from '@mui/icons-material/Close'
+import { useFormContext, useWatch } from 'react-hook-form'
 
 interface FundingCardProps {
   isSuccess?: boolean
-  brand: string
-  deadline: Date
-  totalPrice: number
-  description?: string
-  images?: string[]
 }
 
-const FundingCard = ({ isSuccess, brand, deadline, totalPrice, description, images }: FundingCardProps) => {
+const FundingCard = ({ isSuccess }: FundingCardProps) => {
+  const { control } = useFormContext()
+  const [brand, deadline, minPrice, minMember, description, images] = useWatch({
+    control,
+    name: ['brand', 'deadline', 'minPrice', 'minMember', 'description', 'images'],
+  })
+
   return (
     <FundingCardContainer>
       {isSuccess && (
@@ -39,28 +40,37 @@ const FundingCard = ({ isSuccess, brand, deadline, totalPrice, description, imag
             <SettingItemBody>{moment(deadline).format('h시 mm분')}</SettingItemBody>
           </SettingItem>
           <SettingItem>
-            <SettingItemTitle>목표금액</SettingItemTitle>
-            <SettingItemBody>{Number(totalPrice).toLocaleString()}원</SettingItemBody>
+            <SettingItemTitle>최소금액</SettingItemTitle>
+            <SettingItemBody>{minPrice > 0 ? `${Number(minPrice).toLocaleString()} 원` : '없음'}</SettingItemBody>
           </SettingItem>
           <SettingItem>
-            <SettingItemTitle>추가설명</SettingItemTitle>
+            <SettingItemTitle>최소인원</SettingItemTitle>
             <SettingItemBody>
-              <Description>{description}</Description>
+              <Description>{minMember > 0 ? `${minMember} 명` : '없음'}</Description>
             </SettingItemBody>
           </SettingItem>
-          <SettingItem>
-            <SettingItemTitle>메뉴 이미지</SettingItemTitle>
-            <SettingItemBody>
-              <ImagePreviewContainer>
-                {images &&
-                  images.map((image, i) => (
+          {description && (
+            <SettingItem>
+              <SettingItemTitle>추가설명</SettingItemTitle>
+              <SettingItemBody>
+                <Description>{description}</Description>
+              </SettingItemBody>
+            </SettingItem>
+          )}
+          {images?.length > 0 && (
+            <SettingItem>
+              <SettingItemTitle>메뉴 이미지</SettingItemTitle>
+              <SettingItemBody>
+                <ImagePreviewContainer>
+                  {images.map((image: string, i: number) => (
                     <ImagePreview key={`image-uploader-${i}`}>
                       <Image src={image} alt={`이미지 ${i}`} width={120} height={80} />
                     </ImagePreview>
                   ))}
-              </ImagePreviewContainer>
-            </SettingItemBody>
-          </SettingItem>
+                </ImagePreviewContainer>
+              </SettingItemBody>
+            </SettingItem>
+          )}
         </Styled.Flex>
       </Styled.SettingCardBody>
     </FundingCardContainer>

@@ -8,10 +8,10 @@ import { typography } from '@/src/commons/styles/typography'
 
 interface ImageUploaderProps {
   images: string[]
-  setImages: React.Dispatch<React.SetStateAction<string[]>>
+  onChangeImages: (images: string[]) => void
 }
 
-const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
+const ImageUploader = ({ images, onChangeImages }: ImageUploaderProps) => {
   const imgInputRef = useRef<HTMLInputElement | null>(null)
   const dragRef = useRef<HTMLDivElement | null>(null)
   const [isDragging, setIsDragging] = useState(false)
@@ -24,7 +24,8 @@ const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
   const handleSetImageList = (fileList: FileList) => {
     const targetFilesArray = Array.from(fileList)
     const selectedFiles: string[] = targetFilesArray.map(file => URL.createObjectURL(file))
-    setImages(prev => [...prev, ...selectedFiles])
+    const newImages = [...images, ...selectedFiles]
+    onChangeImages(newImages)
   }
 
   const handleDragIn = useCallback((e: DragEvent) => {
@@ -107,7 +108,8 @@ const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
               <Image src={image} alt={`이미지 ${i}`} width={120} height={80} />
               <ImageRemoveIcon
                 onClick={() => {
-                  setImages(prevImages => prevImages.filter((prevImage, prevImageIndex) => prevImageIndex !== i))
+                  const newImages = images.filter((image, index) => index !== i)
+                  onChangeImages(newImages)
                 }}
               />
             </ImagePreview>
@@ -184,9 +186,18 @@ const ImageRemoveIcon = styled(CloseIcon)`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  padding: 4px;
+  box-sizing: content-box;
   fill: ${color.text.gray};
+  border-radius: 100px;
 
   position: absolute;
   top: 4px;
   right: 4px;
+
+  transition: background-color 0.2s;
+
+  :hover {
+    background-color: rgba(173, 181, 189, 0.2);
+  }
 `
