@@ -97,7 +97,9 @@ const BrandSetting = ({ brand, setBrand, setCurStep }: BrandSettingProps) => {
 
             <Styled.Submit
               onClick={() => {
-                if (brandName) {
+                // ? 공백으로 구성되어있거나, 빈 문자열 판단하는 정규식
+                const pattern = /^\s*$/
+                if (!pattern.test(brandName)) {
                   let _brandList = [...brandList]
                   let obj = { title: brandName, img: defaultImg, count: 0 }
                   _brandList.push(obj)
