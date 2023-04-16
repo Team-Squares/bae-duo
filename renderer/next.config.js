@@ -6,8 +6,13 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    loader: 'akamai',
-    path: '',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos', // 추후에 변경해야함
+        port: '',
+      },
+    ],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

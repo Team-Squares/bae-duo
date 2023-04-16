@@ -29,12 +29,12 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
   useEffect(() => {
     if (deadlineHour === null || deadlineHour === undefined) return
     setValue('deadline', new Date(moment(deadline).hours(deadlineHour).format()))
-  }, [deadline, setValue])
+  }, [deadlineHour])
 
   useEffect(() => {
     if (deadlineMinute === null || deadlineMinute === undefined) return
     setValue('deadline', new Date(moment(deadline).minutes(deadlineMinute).format()))
-  }, [deadline, setValue])
+  }, [deadlineMinute])
 
   return (
     <Styled.Flex direction="column" gap={8}>
@@ -65,10 +65,10 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
           </Styled.SettingCardHeader>
         </Styled.SettingCard>
 
-        {/* 목표금액 설정 */}
+        {/* 최소금액 설정 */}
         <Styled.SettingCard style={{ flex: 1 }}>
           <Styled.SettingCardHeader style={{ marginBottom: 0 }}>
-            <h2>목표금액</h2>
+            <h2>최소금액</h2>
             <input
               type="number"
               {...register('minPrice', {

@@ -10,10 +10,11 @@ import moment from 'moment'
 import { useFormContext, useWatch } from 'react-hook-form'
 
 interface FundingCardProps {
+  brandImage?: string
   isSuccess?: boolean
 }
 
-const FundingCard = ({ isSuccess }: FundingCardProps) => {
+const FundingCard = ({ brandImage, isSuccess }: FundingCardProps) => {
   const { control } = useFormContext()
   const [brand, deadline, minPrice, minMember, description, images] = useWatch({
     control,
@@ -29,7 +30,7 @@ const FundingCard = ({ isSuccess }: FundingCardProps) => {
       )}
       <FundingCardHeader>
         <FundingBrandImageContainer>
-          <Image src={hansotImg} alt={'한솥 이미지'} />
+          {brandImage && <Image src={brandImage} alt={'브랜드 이미지'} width={60} height={60} />}
         </FundingBrandImageContainer>
         <h3>{brand}</h3>
       </FundingCardHeader>

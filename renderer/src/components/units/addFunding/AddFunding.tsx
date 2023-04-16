@@ -7,12 +7,16 @@ import Button from '@/src/components/commons/button/Button'
 import BrandSetting from '@/src/components/units/addFunding/brandSetting/BrandSetting'
 import AdditionalSetting from '@/src/components/units/addFunding/additionalSetting/AdditionalSetting'
 import FundingCard from '@/src/components/units/addFunding/fundingCard/FundingCard'
-import { AddFundingProps } from '@/src/components/units/addFunding/AddFunding.types'
+import { BrandType, FundingType } from '@/src/components/units/addFunding/AddFunding.types'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { createFunding, getBrandList } from '@/src/commons/api/subApi'
 
 const AddFunding = () => {
+  const queryClient = useQueryClient()
   const [curStep, setCurStep] = useState(1)
+  const [selectedBrand, setSelectedBrand] = useState<BrandType | null>(null)
 
-  const methods = useForm<AddFundingProps>({
+  const methods = useForm<FundingType>({
     defaultValues: {
       starter: 'seung',
       brand: '',
@@ -23,26 +27,53 @@ const AddFunding = () => {
       images: [],
     },
   })
-  const { handleSubmit, control } = methods
+  const { setValue, handleSubmit, control } = methods
+
+  const { data: brandListData } = useQuery(['getBrandListKey'], () => getBrandList(), {
+    retry: 3,
+  })
+
+  const addFundingMutation = useMutation(createFunding, {
+    onSuccess: () => {
+      setCurStep(4)
+      return queryClient.invalidateQueries('createFundingKey')
+    },
+    onError: error => {
+      console.dir(error)
+    },
+    onSettled: () => {
+      // alert('성공하든 실패하든 UI 먼저 보여줌. 예를들면 페이스북 따봉이 있음.')
+    },
+  })
 
   const [deadline] = useWatch({
     control,
     name: ['deadline'],
   })
 
-  const handleAddFunding = (data: AddFundingProps) => {
-    setCurStep(4)
-    console.log(data)
+  useEffect(() => {
+    if (!selectedBrand) return
+    setValue('brand', selectedBrand.name)
+    if (selectedBrand.defaultDeadLine) {
+      setValue('deadline', new Date(selectedBrand.defaultDeadLine))
+    }
+    if (selectedBrand.defaultMinPrice) {
+      setValue('minPrice', selectedBrand.defaultMinPrice)
+    }
+  }, [selectedBrand])
+
+  const handleAddFunding = (data: FundingType) => {
+    addFundingMutation.mutate(data)
   }
 
   return (
     <>
-      <FormProvider<AddFundingProps> {...methods}>
+      <FormProvider<FundingType> {...methods}>
         {/* HEADER */}
         <Styled.AddFundingHeader>
           <div>
-            {/* <Styled.HeaderTitle>점심펀딩 만들기</Styled.HeaderTitle> */}
-            {/* <Styled.HeaderSubTitle>배달 부터 포장까지 동료와 맛있는 점심을 함께 하세요.</Styled.HeaderSubTitle> */}
+            <Styled.HeaderTitle>점심펀딩 만들기</Styled.HeaderTitle>
+            <Styled.HeaderSubTitle>배달 부터 포장까지 동료와 맛있는 점심을 함께 하세요.</Styled.HeaderSubTitle>
           </div>
         </Styled.AddFundingHeader>
 
@@ -59,7 +90,9 @@ const AddFunding = () => {
 
           {/* CONTENT */}
           {/* 1. 브랜드 설정 */}
-          {curStep === 1 && <BrandSetting setCurStep={setCurStep} />}
+          {curStep === 1 && (
+            <BrandSetting brandList={brandListData?.data} setCurStep={setCurStep} setSelectedBrand={setSelectedBrand} />
+          )}
 
           {/* 2. 추가 설정 */}
           {curStep === 2 && <AdditionalSetting setCurStep={setCurStep} />}
@@ -67,7 +100,7 @@ const AddFunding = () => {
           {/* 3. 설정 확인 */}
           {curStep === 3 && deadline && (
             <Styled.Flex direction="column" gap={8}>
-              <FundingCard />
+              <FundingCard brandImage={selectedBrand?.menuImage} />
 
               <Button style={{ width: '100%', height: 56 }} onClick={handleSubmit(handleAddFunding)}>
                 펀딩 만들기
@@ -78,7 +111,7 @@ const AddFunding = () => {
           {/* 4. 생성 완료 */}
           {curStep === 4 && deadline && (
             <Styled.Flex direction="column" gap={8}>
-              <FundingCard isSuccess={true} />
+              <FundingCard isSuccess={true} brandImage={selectedBrand?.menuImage} />
 
               <Button style={{ width: '100%', height: 56 }}>펀딩으로 이동</Button>
             </Styled.Flex>
