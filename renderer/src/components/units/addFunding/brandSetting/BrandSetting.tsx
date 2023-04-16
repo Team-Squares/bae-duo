@@ -97,11 +97,15 @@ const BrandSetting = ({ brand, setBrand, setCurStep }: BrandSettingProps) => {
 
             <Styled.Submit
               onClick={() => {
-                let _brandList = [...brandList]
-                let obj = { title: brandName, img: defaultImg, count: 0 }
-                _brandList.push(obj)
-                setBrandList([..._brandList])
-                setOpenDialog(false)
+                if (brandName) {
+                  let _brandList = [...brandList]
+                  let obj = { title: brandName, img: defaultImg, count: 0 }
+                  _brandList.push(obj)
+                  setBrandList([..._brandList])
+                  setOpenDialog(false)
+                } else {
+                  alert('브랜드명 입력은 필수입니다.')
+                }
               }}
             >
               브랜드 추가하기
