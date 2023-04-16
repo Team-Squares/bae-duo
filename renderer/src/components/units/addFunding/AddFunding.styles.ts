@@ -26,6 +26,9 @@ export const AddFundingBody = styled.div`
 `
 
 export const SettingCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border-radius: 5px;
   border: 1px solid ${color.border.default};
   /* padding: 30px; */
@@ -130,4 +133,88 @@ export const FlexCenter = styled.div<{ direction?: string; gap?: number }>`
   align-items: center;
   justify-content: center;
   gap: ${props => `${props.gap || 0}px`};
+`
+
+export const SettingCaryFooter = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+`
+export const BrandAddButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 60px);
+  padding: 10px 0;
+  background-color: ${color.gray.gray50};
+  border-radius: 5px;
+  transition: 0.15s;
+
+  &:hover {
+    background-color: ${color.primary};
+    color: #fff;
+  }
+`
+
+export const DialogLayer = styled.div`
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const CloseButton = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+`
+
+export const DialogBody = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 5px;
+  width: 300px;
+  height: 400px;
+  padding: 20px;
+`
+export const Submit = styled.button`
+  position: absolute;
+  bottom: 0;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  padding: 10px 0;
+  background-color: ${color.primary};
+  color: #fff;
+  border-radius: 5px;
+  transition: 0.15s;
+`
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin: 10px 0;
+
+  & input {
+    width: 100%;
+  }
 `
