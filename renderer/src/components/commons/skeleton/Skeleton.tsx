@@ -10,7 +10,8 @@ export type SkeletonProps = {
 const Skeleton: FC<SkeletonProps> = ({ width, height, isCol }) => {
   return (
     <Styled.SkeletonContainer>
-      <Styled.SkeletonCircle width={width} height={height} />
+      {/*<Styled.SkeletonCircle width={width} height={height} />*/}
+      <Styled.SkeletonImg />
       <Styled.SkeletonArticle>
         <Styled.SkeletonFlex isCol={isCol}>
           <Styled.SkeletonFlex>

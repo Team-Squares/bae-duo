@@ -15,6 +15,7 @@ import { getAllFundingList } from '@/src/commons/api/main/mainApi'
 import { getAllFundingListProps } from '@/src/commons/types/mainApi'
 import { useRouter } from 'next/router'
 import Skeleton from '../../commons/skeleton/Skeleton'
+import { Flex } from '../addFunding/AddFunding.styles'
 
 const Home = () => {
   const router = useRouter()
@@ -51,7 +52,11 @@ const Home = () => {
         </Button>
       </Styled.LandingHeader>
       {isLoading ? (
-        <Skeleton />
+        <Flex gap={16}>
+          <Skeleton isCol />
+          <Skeleton isCol />
+          <Skeleton isCol />
+        </Flex>
       ) : (
         <Styled.BrandsBox>
           {fundingList?.map(item => (
