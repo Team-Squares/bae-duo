@@ -12,6 +12,10 @@ export const getSubDataDetail = (id: number) => {
   return apiInstance.get(`/domain/${id}`)
 }
 
+export const getAttendant = () => {
+  return apiInstance.get('/attendant')
+}
+
 export const postSubData = (body: dataProps) => {
   return apiInstance.post(`/domain`, body)
 }

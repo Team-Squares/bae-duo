@@ -14,6 +14,7 @@ import { useQuery, useQueryClient } from 'react-query'
 import { getAllFundingList } from '@/src/commons/api/mainApi'
 import { getAllFundingListProps } from '@/src/commons/types/mainApi'
 import { color } from '@/src/commons/styles/color'
+import { useRouter } from 'next/router'
 
 const Home = () => {
   const queryClient = useQueryClient() //delete할때 필요.
@@ -32,7 +33,7 @@ const Home = () => {
       console.dir(error)
     },
   })
-  console.log(filterByDate)
+  const router = useRouter()
 
   return (
     <div>
@@ -44,7 +45,7 @@ const Home = () => {
             </button>
           ))}
         </Styled.CategoryBox>
-        <Button size="small" variant="outlined">
+        <Button size="small" variant="outlined" onClick={() => router.push('/funding/add')}>
           펀딩 추가 <RiAddLine />
         </Button>
       </Styled.LandingHeader>
