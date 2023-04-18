@@ -11,9 +11,8 @@ import starterImg from '@/public/images/starter.svg'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
 import { useQuery, useQueryClient } from 'react-query'
-import { getAllFundingList } from '@/src/commons/api/mainApi'
+import { getAllFundingList } from '@/src/commons/api/main/mainApi'
 import { getAllFundingListProps } from '@/src/commons/types/mainApi'
-import { color } from '@/src/commons/styles/color'
 import { useRouter } from 'next/router'
 
 const Home = () => {
