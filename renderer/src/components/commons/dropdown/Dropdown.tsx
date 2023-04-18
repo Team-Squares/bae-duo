@@ -26,11 +26,6 @@ const Dropdown = ({ optionList, defaultValue, placeholder = '', onSelect }: Drop
   }, [defaultValue])
 
   useEffect(() => {
-    if (selectedOption === null || selectedOption === undefined) return
-    onSelect(selectedOption)
-  }, [onSelect, selectedOption])
-
-  useEffect(() => {
     if (!dropdownInputRef) return
     const inputHeight = dropdownInputRef.current?.getBoundingClientRect().height
     if (!inputHeight) return
@@ -75,6 +70,7 @@ const Dropdown = ({ optionList, defaultValue, placeholder = '', onSelect }: Drop
               onClick={() => {
                 setSelectedOption(() => option)
                 setIsOpen(false)
+                onSelect(option)
               }}
             >
               {option}

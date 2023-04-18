@@ -131,9 +131,9 @@ const UploadContainer = styled.div<{ isDragging: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 12rem;
+  height: 120px;
   border: 2px dashed ${({ isDragging }) => (isDragging ? color.primary : color.border.default)};
-  border-radius: 0.8rem;
+  border-radius: 8px;
   cursor: pointer;
   background-color: ${({ isDragging }) => (isDragging ? color.secondary : '#fff')};
 
@@ -143,7 +143,7 @@ const UploadContainer = styled.div<{ isDragging: boolean }>`
     text-align: center;
 
     p {
-      ${typography.caption.medium}
+      ${typography.caption.light}
       color: ${color.text.gray}
     }
   }

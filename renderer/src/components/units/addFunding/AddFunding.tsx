@@ -9,7 +9,7 @@ import AdditionalSetting from '@/src/components/units/addFunding/additionalSetti
 import FundingCard from '@/src/components/units/addFunding/fundingCard/FundingCard'
 import { BrandType, FundingType } from '@/src/components/units/addFunding/AddFunding.types'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { createFunding, getBrandList } from '@/src/commons/api/subApi'
+import { createFunding, getBrandList } from '@/src/commons/api/addFundingApi'
 
 const AddFunding = () => {
   const queryClient = useQueryClient()
@@ -19,6 +19,7 @@ const AddFunding = () => {
   const methods = useForm<FundingType>({
     defaultValues: {
       starter: 'seung',
+      brandId: 0,
       brand: '',
       minPrice: 0,
       minMember: 0,
@@ -54,11 +55,20 @@ const AddFunding = () => {
   useEffect(() => {
     if (!selectedBrand) return
     setValue('brand', selectedBrand.name)
+    setValue('brandId', selectedBrand.id)
+    setValue('minPrice', selectedBrand?.defaultMinPrice || 0)
     if (selectedBrand.defaultDeadLine) {
-      setValue('deadline', new Date(selectedBrand.defaultDeadLine))
-    }
-    if (selectedBrand.defaultMinPrice) {
-      setValue('minPrice', selectedBrand.defaultMinPrice)
+      setValue(
+        'deadline',
+        new Date(
+          moment()
+            .hours(new Date(selectedBrand.defaultDeadLine).getHours())
+            .minutes(new Date(selectedBrand.defaultDeadLine).getMinutes())
+            .format()
+        )
+      )
+    } else {
+      setValue('deadline', new Date(moment().hours(11).minutes(0).seconds(0).format()))
     }
   }, [selectedBrand])
 

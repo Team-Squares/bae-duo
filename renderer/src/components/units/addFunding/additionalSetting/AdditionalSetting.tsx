@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import * as Styled from '@/src/components/units/addFunding/AddFunding.styles'
 import Button from '@/src/components/commons/button/Button'
 import Dropdown from '@/src/components/commons/dropdown/Dropdown'
@@ -19,22 +19,12 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
   })
 
   useEffect(() => {
-    const hours = deadline.getHours()
-    const minutes = deadline.getMinutes()
+    const hours = new Date(deadline).getHours()
+    const minutes = new Date(deadline).getMinutes()
 
     setDeadlineHour(hours)
     setDeadlineMinute(minutes)
   }, [deadline])
-
-  useEffect(() => {
-    if (deadlineHour === null || deadlineHour === undefined) return
-    setValue('deadline', new Date(moment(deadline).hours(deadlineHour).format()))
-  }, [deadlineHour])
-
-  useEffect(() => {
-    if (deadlineMinute === null || deadlineMinute === undefined) return
-    setValue('deadline', new Date(moment(deadline).minutes(deadlineMinute).format()))
-  }, [deadlineMinute])
 
   return (
     <Styled.Flex direction="column" gap={8}>
@@ -49,7 +39,10 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
                   defaultValue={deadlineHour}
                   optionList={[9, 10, 11, 12]}
                   placeholder="시"
-                  onSelect={option => setDeadlineHour(+option)}
+                  onSelect={option => {
+                    setDeadlineHour(+option)
+                    setValue('deadline', new Date(moment(deadline).hours(+option).format()))
+                  }}
                 />
               </div>
               <div>:</div>
@@ -58,7 +51,10 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
                   defaultValue={deadlineMinute}
                   optionList={[0, 10, 20, 30, 40, 50]}
                   placeholder="분"
-                  onSelect={option => setDeadlineMinute(+option)}
+                  onSelect={option => {
+                    setDeadlineMinute(+option)
+                    setValue('deadline', new Date(moment(deadline).minutes(+option).format()))
+                  }}
                 />
               </div>
             </Styled.Flex>

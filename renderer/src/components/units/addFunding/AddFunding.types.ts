@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 export interface FundingType {
   starter: string
   brand: string
+  brandId: number
   minPrice: number
   minMember: number
   deadline: Date
