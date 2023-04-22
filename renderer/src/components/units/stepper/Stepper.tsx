@@ -1,20 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as Styled from '@/src/components/units/stepper/Stepper.styles'
 import StoreIcon from '@mui/icons-material/Storefront'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck'
 import RestaurantIcon from '@mui/icons-material/Restaurant'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { color } from '@/src/commons/styles/color'
 
 interface StepBarProps {
   step: number
-  onChangeCurStep: any
+  onChangeCurStep: (step: number) => void
 }
 
 const StepBar = ({ step, onChangeCurStep }: StepBarProps) => {
-  // const [curStep, setCurStep] = useState(1)
-
   return (
     <Styled.StepBar>
       <Styled.StepItem isActive={step === 1 ? true : false} cursor="pointer" onClick={() => onChangeCurStep(1)}>

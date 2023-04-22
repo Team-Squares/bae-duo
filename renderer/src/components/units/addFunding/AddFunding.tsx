@@ -1,107 +1,133 @@
 import React, { useEffect, useState } from 'react'
-import * as Styled from './AddFunding.styles'
-import Stepper from '../stepper/Stepper'
-import Button from '../../commons/button/Button'
-import BrandSetting from './brandSetting/BrandSetting'
-import AdditionalSetting from './additionalSetting/AdditionalSetting'
-import FundingCard from './fundingCard/FundingCard'
+import { FormProvider, useForm, useWatch } from 'react-hook-form'
+import moment from 'moment'
+import * as Styled from '@/src/components/units/addFunding/AddFunding.styles'
+import Stepper from '@/src/components/units/stepper/Stepper'
+import Button from '@/src/components/commons/button/Button'
+import BrandSetting from '@/src/components/units/addFunding/brandSetting/BrandSetting'
+import AdditionalSetting from '@/src/components/units/addFunding/additionalSetting/AdditionalSetting'
+import FundingCard from '@/src/components/units/addFunding/fundingCard/FundingCard'
+import { BrandType, FundingType } from '@/src/components/units/addFunding/AddFunding.types'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { createFunding, getBrandList } from '@/src/commons/api/addFundingApi'
 
 const AddFunding = () => {
-  const [starter, setStarter] = useState('seung')
-  const [brand, setBrand] = useState('')
-  const [deadline, setDeadline] = useState<Date>()
-  const [totalPrice, setTotalPrice] = useState(0)
-  const [minMember, setMinMember] = useState(0)
-  const [description, setDescription] = useState('')
-  const [images, setImages] = useState([])
-
+  const queryClient = useQueryClient()
   const [curStep, setCurStep] = useState(1)
+  const [selectedBrand, setSelectedBrand] = useState<BrandType | null>(null)
+
+  const methods = useForm<FundingType>({
+    defaultValues: {
+      starter: 'seung',
+      brandId: 0,
+      brand: '',
+      minPrice: 0,
+      minMember: 0,
+      deadline: new Date(moment().hours(11).minutes(0).seconds(0).format()), // 기본 11:00 세팅
+      description: '',
+      images: [],
+    },
+  })
+  const { setValue, handleSubmit, control } = methods
+
+  const { data: brandListData } = useQuery(['getBrandListKey'], () => getBrandList(), {
+    retry: 3,
+  })
+
+  const addFundingMutation = useMutation(createFunding, {
+    onSuccess: () => {
+      setCurStep(4)
+      return queryClient.invalidateQueries('createFundingKey')
+    },
+    onError: error => {
+      console.dir(error)
+    },
+    onSettled: () => {
+      // alert('성공하든 실패하든 UI 먼저 보여줌. 예를들면 페이스북 따봉이 있음.')
+    },
+  })
+
+  const [deadline] = useWatch({
+    control,
+    name: ['deadline'],
+  })
+
+  useEffect(() => {
+    if (!selectedBrand) return
+    setValue('brand', selectedBrand.name)
+    setValue('brandId', selectedBrand.id)
+    setValue('minPrice', selectedBrand?.defaultMinPrice || 0)
+    if (selectedBrand.defaultDeadLine) {
+      setValue(
+        'deadline',
+        new Date(
+          moment()
+            .hours(new Date(selectedBrand.defaultDeadLine).getHours())
+            .minutes(new Date(selectedBrand.defaultDeadLine).getMinutes())
+            .format()
+        )
+      )
+    } else {
+      setValue('deadline', new Date(moment().hours(11).minutes(0).seconds(0).format()))
+    }
+  }, [selectedBrand])
+
+  const handleAddFunding = (data: FundingType) => {
+    addFundingMutation.mutate(data)
+  }
 
   return (
     <>
-      {/* HEADER */}
-      <Styled.AddFundingHeader>
-        <div>
-          <Styled.HeaderTitle>점심펀딩 만들기</Styled.HeaderTitle>
-          <Styled.HeaderSubTitle>배달 부터 포장까지 동료와 맛있는 점심을 함께 하세요.</Styled.HeaderSubTitle>
-        </div>
-      </Styled.AddFundingHeader>
+      <FormProvider<FundingType> {...methods}>
+        {/* HEADER */}
+        <Styled.AddFundingHeader>
+          <div>
+            <Styled.HeaderTitle>점심펀딩 만들기</Styled.HeaderTitle>
+            <Styled.HeaderSubTitle>배달 부터 포장까지 동료와 맛있는 점심을 함께 하세요.</Styled.HeaderSubTitle>
+          </div>
+        </Styled.AddFundingHeader>
 
-      {/* BODY */}
+        {/* BODY */}
 
-      <Styled.AddFundingBody>
-        {/* STEPPER*/}
-        <Stepper
-          step={curStep}
-          onChangeCurStep={(step: number) => {
-            setCurStep(step)
-          }}
-        />
-
-        {/* CONTENT */}
-        {/* 1. 브랜드 설정 */}
-        {curStep === 1 && <BrandSetting brand={brand} setBrand={setBrand} setCurStep={setCurStep} />}
-
-        {/* 2. 추가 설정 */}
-        {curStep === 2 && (
-          <AdditionalSetting
-            // deadline={deadline}
-            totalPrice={totalPrice}
-            description={description}
-            images={images}
-            setDeadline={setDeadline}
-            setTotalPrice={setTotalPrice}
-            setDescription={setDescription}
-            setImages={setImages}
-            setCurStep={setCurStep}
+        <Styled.AddFundingBody>
+          {/* STEPPER*/}
+          <Stepper
+            step={curStep}
+            onChangeCurStep={(step: number) => {
+              setCurStep(step)
+            }}
           />
-        )}
 
-        {/* 3. 설정 확인 */}
-        {curStep === 3 && deadline && (
-          <Styled.Flex direction="column" gap={8}>
-            <FundingCard
-              brand={brand}
-              deadline={deadline}
-              totalPrice={totalPrice}
-              description={description}
-              images={images}
-            />
+          {/* CONTENT */}
+          {/* 1. 브랜드 설정 */}
+          {curStep === 1 && (
+            <BrandSetting brandList={brandListData?.data} setCurStep={setCurStep} setSelectedBrand={setSelectedBrand} />
+          )}
 
-            <Button
-              style={{ width: '100%', height: 56 }}
-              onClick={() => {
-                setCurStep(4)
-                console.log({
-                  starter,
-                  brand,
-                  deadline,
-                  totalPrice,
-                  images,
-                })
-              }}
-            >
-              펀딩 만들기
-            </Button>
-          </Styled.Flex>
-        )}
+          {/* 2. 추가 설정 */}
+          {curStep === 2 && <AdditionalSetting setCurStep={setCurStep} />}
 
-        {/* 4. 생성 완료 */}
-        {curStep === 4 && deadline && (
-          <Styled.Flex direction="column" gap={8}>
-            <FundingCard
-              isSuccess={true}
-              brand={brand}
-              deadline={deadline}
-              totalPrice={totalPrice}
-              description={description}
-              images={images}
-            />
+          {/* 3. 설정 확인 */}
+          {curStep === 3 && deadline && (
+            <Styled.Flex direction="column" gap={8}>
+              <FundingCard brandImage={selectedBrand?.menuImage} />
 
-            <Button style={{ width: '100%', height: 56 }}>펀딩으로 이동</Button>
-          </Styled.Flex>
-        )}
-      </Styled.AddFundingBody>
+              <Button style={{ width: '100%', height: 56 }} onClick={handleSubmit(handleAddFunding)}>
+                펀딩 만들기
+              </Button>
+            </Styled.Flex>
+          )}
+
+          {/* 4. 생성 완료 */}
+          {curStep === 4 && deadline && (
+            <Styled.Flex direction="column" gap={8}>
+              <FundingCard isSuccess={true} brandImage={selectedBrand?.menuImage} />
+
+              <Button style={{ width: '100%', height: 56 }}>펀딩으로 이동</Button>
+            </Styled.Flex>
+          )}
+        </Styled.AddFundingBody>
+      </FormProvider>
     </>
   )
 }

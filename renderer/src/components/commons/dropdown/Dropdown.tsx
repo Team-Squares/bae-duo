@@ -9,7 +9,7 @@ interface DropdownProps {
   onSelect: (option: string | number) => void
 }
 
-const Dropdown = ({ optionList, placeholder = '', onSelect }: DropdownProps) => {
+const Dropdown = ({ optionList, defaultValue, placeholder = '', onSelect }: DropdownProps) => {
   const [selectedOption, setSelectedOption] = useState<string | number | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [topPosition, setTopPosition] = useState('40px')
@@ -21,9 +21,9 @@ const Dropdown = ({ optionList, placeholder = '', onSelect }: DropdownProps) => 
   useClickOutside(dropdownOptionListRef, handleClickOutside)
 
   useEffect(() => {
-    if (!selectedOption) return
-    onSelect(selectedOption)
-  }, [selectedOption])
+    if (defaultValue === null || defaultValue === undefined) return
+    setSelectedOption(defaultValue)
+  }, [defaultValue])
 
   useEffect(() => {
     if (!dropdownInputRef) return
@@ -54,8 +54,12 @@ const Dropdown = ({ optionList, placeholder = '', onSelect }: DropdownProps) => 
   return (
     <Styled.Dropdown>
       <Styled.DropdownSelectInput ref={dropdownInputRef} onClick={() => setIsOpen(prev => !prev)}>
-        {selectedOption && <span>{selectedOption}</span>}
-        {!selectedOption && <Styled.Placeholder>{placeholder}</Styled.Placeholder>}
+        {selectedOption !== null || selectedOption !== undefined ? (
+          <span>{selectedOption}</span>
+        ) : (
+          <Styled.Placeholder>{placeholder}</Styled.Placeholder>
+        )}
+        {/* {!selectedOption && <Styled.Placeholder>{placeholder}</Styled.Placeholder>} */}
       </Styled.DropdownSelectInput>
 
       {isOpen && (
@@ -66,6 +70,7 @@ const Dropdown = ({ optionList, placeholder = '', onSelect }: DropdownProps) => 
               onClick={() => {
                 setSelectedOption(() => option)
                 setIsOpen(false)
+                onSelect(option)
               }}
             >
               {option}

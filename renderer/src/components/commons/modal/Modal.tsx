@@ -65,11 +65,11 @@ const Modal = (props: ModalPropsType) => {
   }, [closeModal, mode, submitBtnContent, submitFunc])
 
   return (
-    <Styled.BackGround onClick={closeModal}>
+    <Styled.BackGround>
       <Styled.Modal width={width} height={height} left={left} top={top}>
         <Styled.TopBox>
           <Styled.Title>{title}</Styled.Title>
-          <Styled.CloseBtn>
+          <Styled.CloseBtn onClick={closeModal}>
             <Image src={XmarkImg} alt="none"></Image>
           </Styled.CloseBtn>
         </Styled.TopBox>
