@@ -20,7 +20,7 @@ export const SkeletonContainer = styled.div`
   border: 0.2px solid #e5e7eb;
   height: fit-content;
   min-height: 160px;
-  min-width: 336px;
+  min-width: 309px;
   max-width: 900px;
   padding: 16px;
   border-radius: 8px;
@@ -34,6 +34,8 @@ export const SkeletonImg = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: ${color.$lightGray};
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `
 export const SkeletonCircle = styled.div<SkeletonProps>`
   border-radius: 100%;
