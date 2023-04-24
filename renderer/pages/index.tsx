@@ -1,3 +1,4 @@
+import { withAuth } from '@/src/components/commons/hocs/withAuth'
 import DefaultLayout from '@/src/components/commons/layout/DefaultLayout'
 import Home from '@/src/components/units/home/Home'
 
@@ -9,4 +10,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default withAuth(HomePage)

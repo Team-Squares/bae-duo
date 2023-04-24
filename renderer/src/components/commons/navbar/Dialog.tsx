@@ -1,7 +1,6 @@
 import useRoutePage from '@/src/commons/hooks/useRoutePage'
 import * as Styled from './Dialog.styles'
 import Image from 'next/image'
-import { useState } from 'react'
 
 import IconDarkmode from '@/public/icons/darkmode.svg'
 import IconHistory from '@/public/icons/history.svg'
@@ -68,6 +67,12 @@ const Dialog = ({ ...props }) => {
             <Image src={IconLogin} alt="none"></Image>
           </Styled.MenuIcon>
           <Styled.MenuTitle>로그아웃</Styled.MenuTitle>
+        </Styled.Row>
+        <Styled.Row onClick={() => routePage('/login')}>
+          <Styled.MenuIcon>
+            <Image src={IconLogin} alt="none"></Image>
+          </Styled.MenuIcon>
+          <Styled.MenuTitle>로그인 화면</Styled.MenuTitle>
         </Styled.Row>
       </Styled.Dialog>
     </Styled.DialogLayer>
