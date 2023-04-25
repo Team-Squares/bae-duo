@@ -20,6 +20,13 @@ export const createBrand = (brand: Partial<BrandType>) => {
   })
 }
 
+export const updateBrand = (brand: Partial<BrandType>) => {
+  return apiInstance.put('/brands', {
+    ...brand,
+    defaultDeadLine: moment(brand.defaultDeadLine).format('YYYY-MM-DD HH:mm:ss'),
+  })
+}
+
 export const deleteBrand = (brandId: number) => {
   return apiInstance.delete(`/brands/${brandId}`)
 }

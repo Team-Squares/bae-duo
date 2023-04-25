@@ -12,7 +12,7 @@ import Dropdown from '@/src/components/commons/dropdown/Dropdown'
 import Image from 'next/image'
 
 import { useMutation, useQueryClient } from 'react-query'
-import { createBrand } from '@/src/commons/api/addFundingApi'
+import { createBrand, updateBrand } from '@/src/commons/api/addFundingApi'
 
 interface AddBrandModalProps {
   brand?: BrandType
@@ -51,6 +51,16 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
     },
   })
 
+  const modifyBrandMutation = useMutation(updateBrand, {
+    onSuccess: () => {
+      setShowModal(false)
+      return queryClient.invalidateQueries('getBrandListKey')
+    },
+    onError: error => {
+      console.dir(error)
+    },
+  })
+
   const handleChangeImage = (e: ChangeEvent) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList
     handleSetImageList(targetFiles)
@@ -66,6 +76,13 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
     addBrandMutation.mutate(data)
   }
 
+  const handleModifyBrand = (data: AddBrandType) => {
+    modifyBrandMutation.mutate({
+      id: brand?.id,
+      ...data,
+    })
+  }
+
   return (
     <Modal
       id="1"
@@ -75,10 +92,11 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
       left={'50%'}
       top={'50%'}
       mode="submit"
-      submitBtnContent="추가"
+      submitBtnContent={isEditingMode ? '수정' : '추가'}
       cancelBtnContent="취소"
       submitFunc={() => {
         if (isEditingMode) {
+          handleSubmit(handleModifyBrand)()
         } else {
           handleSubmit(handleAddBrand)()
         }
