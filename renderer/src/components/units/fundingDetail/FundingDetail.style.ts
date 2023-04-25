@@ -189,6 +189,12 @@ export const MenuContainer = styled.div`
       margin-bottom: 3x;
     }
 
+    .menuDesc {
+      color: ${color.$secondaryText};
+      ${typography.body2.light};
+      margin-bottom: 5px;
+    }
+
     .menuPrice {
       color: ${color.$secondaryText};
       ${typography.body2.medium};

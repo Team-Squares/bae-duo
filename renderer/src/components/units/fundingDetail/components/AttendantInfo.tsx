@@ -4,54 +4,62 @@ import { colorPalette } from '../../../../commons/styles/color'
 import Button from '../../../commons/button/Button'
 import Input from '../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
-import { Menu } from '../FundingDetail.types'
+import { AttendantInfo } from '../FundingDetail.types'
+import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
 
 const AttendantInfo = ({ ...props }) => {
   const { data } = props
+  // 임시 사용자 정보, description은 메뉴에서 받아오는 정보?
   const [menu, setMenu] = useState({
-    userId: 2,
+    id: 51,
+    userName: 'front team',
     menuName: '',
     menuPrice: '',
+    menuDesc: 'description',
   })
-  const [attendData, setAttendData] = useState<Menu[]>(data)
+  const [attendData, setAttendData] = useState<AttendantInfo[]>(data)
 
-  useEffect(() => {
-    console.log(data)
-  }, [])
+  const handlePutData = () => {
+    // 메뉴 등록시 (처음 등록(0): post, 두번째 등록(default): put)
+    const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.id).length
+    switch (_menuNum) {
+      case 0: {
+        const obj = {
+          id: 53,
+          fundingId: 1,
+          userId: menu.id,
+          userName: menu.userName,
+          hasPaid: false,
+          menuInfo: `[{'id': 52,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
+        }
+        postAttendant(obj)
+          .then(res => {
+            console.log('postAttendant:', res.data)
+            setAttendData([...attendData, res.data])
+            setMenu({ ...menu, menuName: '', menuPrice: '' })
+          })
+          .catch(e => console.log(e))
 
-  const addMenuList = () => {
-    if (!menu.menuName || !menu.menuPrice) return
-    const _sameUser = attendData.filter((data: Menu) => data.userId === menu.userId)
-    if (_sameUser.length) {
-      _sameUser[0].menuInfo.push({
-        [menu.menuName]: menu.menuPrice,
-      })
-      setAttendData([
-        {
-          userId: menu.userId,
-          menuInfo: [..._sameUser[0].menuInfo],
-        },
-        ...attendData.filter(data => data.userId !== menu.userId),
-      ])
-    } else {
-      setAttendData([
-        {
-          userId: 2,
-          menuInfo: [
-            {
-              [menu.menuName]: menu.menuPrice,
-            },
-          ],
-        },
-        ...attendData,
-      ])
+        break
+      }
+      default: {
+        const obj = {
+          id: 53,
+          fundingId: 1,
+          userId: menu.id,
+          userName: menu.userName,
+          hasPaid: false,
+          menuInfo: `[{'id': 12,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}}]`,
+        }
+        putAttendant(obj)
+          .then(res => {
+            console.log(res.data)
+            setMenu({ ...menu, menuName: '', menuPrice: '' })
+          })
+          .catch(e => console.log(e))
+        break
+      }
     }
-
-    setMenu({
-      userId: 2,
-      menuName: '',
-      menuPrice: '',
-    })
   }
 
   const handleChangeData = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
@@ -89,13 +97,13 @@ const AttendantInfo = ({ ...props }) => {
           backgroundColor: `${colorPalette.gray.gray10}`,
           marginBottom: '32px',
         }}
-        onClick={addMenuList}
+        onClick={handlePutData}
       >
         + 메뉴담기
       </Button>
 
-      {attendData.map((item, idx) => (
-        <AttendantMenu item={item} key={idx} setAttendData={setAttendData} attendData={attendData} />
+      {data?.map((item: AttendantInfo, idx: number) => (
+        <AttendantMenu item={item} key={idx} attendData={data} />
       ))}
     </Styled.AttendantInfo>
   )

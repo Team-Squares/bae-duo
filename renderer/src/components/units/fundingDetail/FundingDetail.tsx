@@ -1,43 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from './FundingDetail.style'
-import { getAttendant, getSubDataList } from '@/src/commons/api/subApi'
+import { getAttendant } from '@/src/commons/api/progressFundingApi'
 import { typography } from '../../../commons/styles/typography'
 import { color } from '@/src/commons/styles/styles'
 import Tag from '../../commons/tag/Tag'
 import Button from '../../commons/button/Button'
 import FundingInfoList from './components/FundingInfoList'
 import AttendantInfo from './components/AttendantInfo'
-import axios from 'axios'
 
 const FundingDetail = () => {
   const [attendantData, setAttendantData] = useState(null)
-  const dummyData = [
-    {
-      userId: 1,
-      menuInfo: [
-        {
-          '참치마요 덮밥': 5700,
-        },
-        {
-          '김치 볶음밥': 5000,
-        },
-      ],
-    },
-    {
-      userId: 2,
-      menuInfo: [
-        {
-          '참치마요 덮밥': 5700,
-        },
-      ],
-    },
-  ]
 
-  // useEffect(() => {
-  //   getSubDataList()
-  //     .then(res => setAttendantData(res.data))
-  //     .catch(e => console.log(e))
-  // }, [])
+  useEffect(() => {
+    getAttendant()
+      .then((res: { data: React.SetStateAction<null> }) => {
+        setAttendantData(res.data)
+      })
+      .catch((e: any) => console.log(e))
+  }, [])
 
   return (
     <Styled.Container>
@@ -74,8 +54,8 @@ const FundingDetail = () => {
         </div>
       </Styled.Header>
       <Styled.Content>
-        <FundingInfoList />
-        <AttendantInfo data={dummyData} />
+        <FundingInfoList data={attendantData} />
+        <AttendantInfo data={attendantData} />
       </Styled.Content>
     </Styled.Container>
   )

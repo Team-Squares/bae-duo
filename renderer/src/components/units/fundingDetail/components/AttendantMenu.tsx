@@ -1,37 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from '../FundingDetail.style'
 import CloseIcon from '@mui/icons-material/Close'
-import { InfoProps } from '../FundingDetail.types'
+import { InfoProps, Menu } from '../FundingDetail.types'
+import { deleteAttendant } from '@/src/commons/api/progressFundingApi'
 
-const AttendantMenu: React.FC<InfoProps> = ({ item, setAttendData, attendData }) => {
-  const removeMenu = (idx: number) => {
-    if (item.menuInfo.length === 1) {
-      console.log('LENGTH !')
-      const _filtered = attendData.filter(data => item.userId !== data.userId)
-      setAttendData(_filtered)
-    } else {
-      // TODO 여러 메뉴 있을때 하나만 삭제하기
+const AttendantMenu: React.FC<InfoProps> = ({ item, attendData }) => {
+  const [OriginUserId, setOriginUserId] = useState(51) // 임시 사용자 정보
+
+  const removeMenu = (ele: Menu) => {
+    // 사용자 메뉴 수에 따라 (1개 : 전체 삭제, 2개 이상: 해당 아이디의 menu info만 삭제)
+    const _menuNum = attendData.filter(data => data.id === ele.attendantId).length
+    switch (_menuNum) {
+      case 1: {
+        deleteAttendant(ele.attendantId)
+          .then(res => console.log(res.data))
+          .catch(e => console.log(e))
+        break
+      }
+      default: {
+        console.log('menu info delete 하는 api')
+        break
+      }
     }
   }
-
-  useEffect(() => {
-    console.log(Object.keys(item.menuInfo[0]))
-  }, [])
 
   return (
     <Styled.MenuContainer>
       <div className="userInfo">
         <div className="img"></div>
-        <span className="userName">{item.userId}</span>
+        <span className="userName">{item.userName}</span>
       </div>
       <div className="menuGroup">
         {item.menuInfo.map((ele, idx) => (
           <div className="menuItem" key={idx}>
             <div className="menuItemInfo">
-              <div className="menuName">{Object.keys(ele)}</div>
-              <div className="menuPrice">가격 : {Object.values(ele)}원</div>
+              <div className="menuName">{ele.menuName}</div>
+              <div className="menuDesc">{ele.description}</div>
+              <div className="menuPrice">가격 : {ele.menuPrice}원</div>
             </div>
-            <CloseIcon onClick={() => removeMenu(idx)} />
+            {item.userId === OriginUserId && <CloseIcon onClick={() => removeMenu(ele)} />}
           </div>
         ))}
       </div>

@@ -2,14 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as Styled from '../FundingDetail.style'
 
 const Progress = ({ ...props }) => {
-  const { type } = props
-  const [value, setValue] = useState()
-  const data = {
-    img: '',
-    price: 16000,
-    deadLine: '11:50',
-    participant: 4,
-  }
+  const { type, data } = props
 
   const getFundingInfoItem = () => {
     switch (type) {
@@ -22,11 +15,14 @@ const Progress = ({ ...props }) => {
                 <span>목표 금액</span>
               </div>
               <div className="value">
-                <span>{data.price}</span>
+                <span>{data.toLocaleString()}</span>
                 <span>30,000</span>
               </div>
               <div className="progressBar">
-                <div className="progressValue" style={{ width: `${(data.price / 30000) * 100}%` }}></div>
+                <div
+                  className="progressValue"
+                  style={data >= 3000 ? { width: '100%' } : { width: `${(data / 30000) * 100}%` }}
+                ></div>
               </div>
             </Styled.FundingInfoItem>
           </>
@@ -41,10 +37,10 @@ const Progress = ({ ...props }) => {
               </div>
               <div className="value">
                 <span>-</span>
-                <span>{data.deadLine}</span>
+                <span>{data}</span>
               </div>
               <div className="progressBar">
-                <div className="progressValue" style={{ width: `${(data.price / 30000) * 100}%` }}></div>
+                <div className="progressValue" style={{ width: `${(data / 30000) * 100}%` }}></div>
               </div>
             </Styled.FundingInfoItem>
           </>
@@ -58,11 +54,14 @@ const Progress = ({ ...props }) => {
                 <span>목표 인원</span>
               </div>
               <div className="value">
+                <span>{data}</span>
                 <span>3</span>
-                <span>{data.participant}</span>
               </div>
               <div className="progressBar">
-                <div className="progressValue" style={{ width: `${(3 / data.participant) * 100}%` }}></div>
+                <div
+                  className="progressValue"
+                  style={data >= 2 ? { width: '100%' } : { width: `${(3 / data) * 100}%` }}
+                ></div>
               </div>
             </Styled.FundingInfoItem>
           </>

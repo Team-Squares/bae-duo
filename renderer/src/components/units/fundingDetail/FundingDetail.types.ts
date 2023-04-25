@@ -3,12 +3,27 @@ interface MenuInfo {
 }
 
 export interface Menu {
+  id: number
+  attendantId: number
   userId: number
-  menuInfo: MenuInfo[]
+  count: number
+  description: string
+  menuName: string
+  menuPrice: number
+}
+
+export interface AttendantInfo {
+  description: string
+  id: number
+  userId: number
+  userName: string
+  fundingId: number
+  createdAt: string
+  hasPaid: boolean
+  menuInfo: Menu[]
 }
 
 export interface InfoProps {
-  item: Menu
-  setAttendData: React.Dispatch<React.SetStateAction<Menu[]>>
-  attendData: Menu[]
+  item: AttendantInfo
+  attendData: AttendantInfo[]
 }
