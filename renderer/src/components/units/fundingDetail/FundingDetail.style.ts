@@ -221,3 +221,119 @@ export const MenuContainer = styled.div`
     padding-top: 16px;
   }
 `
+
+export const BillInfo = styled.div`
+  flex: 1;
+  width: calc((100% - 40px) / 2);
+
+  .title {
+    ${typography.heading4}
+    margin-bottom: 24px;
+  }
+
+  .billContainer {
+    border: 1px dashed ${color.$defaultBorder};
+    padding: 10px 40px 40px 40px;
+    border-radius: 20px;
+  }
+
+  .attendantInfo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 30px 0;
+  }
+
+  .attendantInfo + .attendantInfo {
+    border-top: 1px solid ${color.$defaultBorder};
+  }
+
+  .userInfo {
+    width: calc(100% / 3);
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .userName {
+      ${typography.body1.bold}
+    }
+  }
+
+  .menuList {
+    width: calc((100% / 3) * 2 - 20px);
+  }
+  .menuInfo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    ${typography.body2.medium}
+  }
+
+  .img {
+    width: 36px;
+    height: 36px;
+    background-color: ${color.$defaultGray};
+    border-radius: 50px;
+  }
+
+  .billInfoContainer {
+    border-top: 1px dashed ${color.$defaultBorder};
+    border-bottom: 1px dashed ${color.$defaultBorder};
+    padding-bottom: 30px;
+  }
+
+  .billInfoGroup {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+
+    .billTitle {
+      ${typography.body2.medium}
+    }
+  }
+
+  .price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    input {
+      padding: 5px 14px;
+    }
+  }
+
+  .totalPrice {
+    color: ${color.$point};
+    ${typography.body1.bold}
+  }
+
+  .billInfoGroup.total {
+    margin-top: 30px;
+  }
+
+  .accountInfoContainer {
+    margin-top: 20px;
+    p {
+      ${typography.caption.light}
+    }
+  }
+
+  .accountGroup {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+
+    input {
+      font-size: 14px;
+    }
+
+    label {
+      ${typography.caption.light}
+      color: ${color.$secondaryText};
+    }
+  }
+`

@@ -15,3 +15,7 @@ export const postAttendant = (body: any) => {
 export const deleteAttendant = (id: number) => {
   return apiInstance.delete(`/attendant/${id}`)
 }
+
+export const postBill = (body: any) => {
+  return apiInstance.post(`/bill`, body)
+}
