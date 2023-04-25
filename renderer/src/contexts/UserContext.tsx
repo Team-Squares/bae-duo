@@ -11,7 +11,7 @@ interface User {
 }
 
 export const UserContextProvider = ({ children }: { children: JSX.Element[] }) => {
-  const [user, setUser] = useState<User>({ name: 'Woo', account: 'woo@gmail.com' })
+  const [user, setUser] = useState<User>({ name: '', account: '' })
   const userValue = {
     user,
     setUser,

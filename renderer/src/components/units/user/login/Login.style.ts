@@ -5,7 +5,10 @@ export const LoginContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid red;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 300px;
-  height: 400px;
+  height: 300px;
 `
