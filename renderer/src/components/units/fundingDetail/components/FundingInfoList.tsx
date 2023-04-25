@@ -4,21 +4,7 @@ import Progress from './Progress'
 import { AttendantInfo } from '../FundingDetail.types'
 
 const FundingInfoList = ({ ...props }) => {
-  const { data } = props
-  const [totalPrice, setTotalPrice] = useState(0)
-
-  useEffect(() => {
-    let _totalPrice = 0
-    const _menuInfoArr = data?.map((el: AttendantInfo) => el.menuInfo) || []
-    for (let i = 0; i < _menuInfoArr.length; i++) {
-      for (let j = 0; j < _menuInfoArr[i].length; j++) {
-        _totalPrice += _menuInfoArr[i][j].menuPrice
-      }
-    }
-
-    setTotalPrice(_totalPrice)
-  }, [data])
-
+  const { data, totalPrice } = props
   return (
     <Styled.FundingInfoList>
       <div className="fundingImg"></div>

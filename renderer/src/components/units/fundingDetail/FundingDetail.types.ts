@@ -1,7 +1,3 @@
-interface MenuInfo {
-  [x: string]: string
-}
-
 export interface Menu {
   id: number
   attendantId: number

@@ -8,7 +8,7 @@ export interface InputProps {
   disabled?: boolean
   helperText?: string
   helperTextColor?: 'error' | 'success' | 'notice'
-  value?: string
+  value?: string | number
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   style?: any

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import * as Styled from '../FundingDetail.style'
+import * as Styled from '../../FundingDetail.style'
 import CloseIcon from '@mui/icons-material/Close'
-import { InfoProps, Menu } from '../FundingDetail.types'
+import { InfoProps, Menu } from '../../FundingDetail.types'
 import { deleteAttendant } from '@/src/commons/api/progressFundingApi'
 
 const AttendantMenu: React.FC<InfoProps> = ({ item, attendData }) => {

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import * as Styled from '../FundingDetail.style'
-import { colorPalette } from '../../../../commons/styles/color'
-import Button from '../../../commons/button/Button'
-import Input from '../../../commons/input/Input'
+import * as Styled from '../../FundingDetail.style'
+import { colorPalette } from '../../../../../commons/styles/color'
+import Button from '../../../../commons/button/Button'
+import Input from '../../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
-import { AttendantInfo } from '../FundingDetail.types'
+import { AttendantInfo } from '../../FundingDetail.types'
 import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
 
 const AttendantInfo = ({ ...props }) => {
