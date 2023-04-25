@@ -18,7 +18,7 @@ export interface BrandType {
   orderType: number
   orderCnt: number
   menuImage: string
-  defaultDeadLine: string | null
+  defaultDeadLine: Date | null
   defaultMinPrice: number | null
 }
 

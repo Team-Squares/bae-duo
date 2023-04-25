@@ -12,6 +12,7 @@ export interface ModalPropsType {
   top: string
   children: JSX.Element
   submitBtnContent?: string
+  cancelBtnContent?: string
   closeModal: () => any
   submitFunc?: () => any
   mode: 'submit' | 'info'
@@ -29,6 +30,7 @@ const Modal = (props: ModalPropsType) => {
     submitFunc = () => {},
     children,
     submitBtnContent = 'Submit',
+    cancelBtnContent = 'cancel',
     mode,
   } = props
 
@@ -37,7 +39,7 @@ const Modal = (props: ModalPropsType) => {
       return (
         <Styled.BtnBox>
           <Styled.CancleBtn onClick={closeModal}>
-            <div>Cancle</div>
+            <div>{cancelBtnContent}</div>
           </Styled.CancleBtn>
           <Styled.SubmitBtn
             onClick={e => {

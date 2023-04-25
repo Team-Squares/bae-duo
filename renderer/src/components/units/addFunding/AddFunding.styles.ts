@@ -85,6 +85,14 @@ export const Brand = styled.div<{ isActive?: boolean }>`
 
   :hover {
     background-color: ${color.secondary};
+
+    .buttons {
+      transition: all 0.3s;
+      visibility: visible;
+      opacity: 1;
+
+      transition: visibility 0.2s linear, opacity 0.2s linear;
+    }
   }
 `
 
@@ -103,6 +111,7 @@ export const BrandImageContainer = styled.div<{ isActive?: boolean }>`
 `
 
 export const BrandInfo = styled.div<{ isActive?: boolean }>`
+  flex: 1;
   .title {
     ${typography.body2.bold}
     color: ${props => props.isActive && color.primary};
