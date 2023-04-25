@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/react'
 import { color } from '@/src/commons/styles/styles'
 import hansotImg from '@/public/images/hansot.svg'
+import { typography } from '@/src/commons/styles/typography'
 
 const displayCenter = css`
   display: flex;
@@ -21,7 +22,7 @@ export const CategoryBox = styled.div<{ category: number }>`
     height: 37px;
     border-radius: 100px;
     border: none;
-    background-color: ${color.$transparentBg};
+    background-color: ${color.$lightGray};
     color: ${color.$disabledText};
     cursor: pointer;
   }
@@ -46,7 +47,8 @@ export const BrandsCard = styled.div`
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   transition: all 0.3s cubic-bezier(0.3, 0, 0.2, 1);
   :hover {
-    transform: translateY(-3%);
+    box-shadow: 0 2px 8px hsl(212deg 7% 43% / 32%);
+    transform: translateY(-0.2%);
   }
 `
 
@@ -124,12 +126,13 @@ export const LimitBox = styled.span`
 // Progress
 export const ProgressBox = styled.div`
   padding: 0 20px 20px;
+  font-size: 14px;
 `
 
 export const Percentage = styled.div<{ percentage: number }>`
+  ${displayCenter}
   span:nth-of-type(1) {
     margin-right: 5px;
-    font-size: 14px;
     font-weight: bold;
     color: ${props => `${props.percentage > 100 && color.$mainText}`};
   }
@@ -149,5 +152,21 @@ export const ProgressBar = styled.div<{ percentage: number }>`
     width: ${props => `${props.percentage > 100 ? 100 : props.percentage}%`};
     background-color: ${color.$point};
     border-radius: 10px;
+  }
+`
+
+export const EmptySection = styled.section`
+  width: 100%;
+  height: 292px;
+  background-color: ${color.$lightestGray};
+  color: ${color.$secondaryText};
+  ${displayCenter};
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  text-transform: capitalize;
+  /*${typography.body1.medium};*/
+  path {
+    color: ${color.$secondaryText};
   }
 `

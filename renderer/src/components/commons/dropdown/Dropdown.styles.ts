@@ -1,7 +1,9 @@
+import { typography } from '@/src/commons/styles/typography'
 import styled from '@emotion/styled'
 
 export const Dropdown = styled.div`
   position: relative;
+  ${typography.body2.medium}
 `
 export const DropdownSelectInput = styled.div`
   padding: 10px;
