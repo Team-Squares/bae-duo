@@ -1,4 +1,3 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
 import * as Styled from '@/src/components/units/addFunding/AddFunding.styles'
 import Button from '@/src/components/commons/button/Button'
 import Dropdown from '@/src/components/commons/dropdown/Dropdown'
@@ -9,22 +8,11 @@ import Input from '@/src/components/commons/input/Input'
 import { SetCurStepProps } from '@/src/components/units/addFunding/AddFunding.types'
 
 const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
-  const [deadlineHour, setDeadlineHour] = useState<number>()
-  const [deadlineMinute, setDeadlineMinute] = useState<number>()
-
   const { register, setValue, control } = useFormContext()
   const [deadline, images] = useWatch({
     control,
     name: ['deadline', 'images'],
   })
-
-  useEffect(() => {
-    const hours = new Date(deadline).getHours()
-    const minutes = new Date(deadline).getMinutes()
-
-    setDeadlineHour(hours)
-    setDeadlineMinute(minutes)
-  }, [deadline])
 
   return (
     <Styled.Flex direction="column" gap={8}>
@@ -34,29 +22,37 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
           <Styled.SettingCardHeader style={{ marginBottom: 0 }}>
             <h2>마감시간</h2>
             <Styled.Flex alignItems="center" gap={4}>
-              <div style={{ width: 70 }}>
-                <Dropdown
-                  defaultValue={deadlineHour}
-                  optionList={[9, 10, 11, 12]}
-                  placeholder="시"
-                  onSelect={option => {
-                    setDeadlineHour(+option)
-                    setValue('deadline', new Date(moment(deadline).hours(+option).format()))
-                  }}
-                />
-              </div>
-              <div>:</div>
-              <div style={{ width: 70 }}>
-                <Dropdown
-                  defaultValue={deadlineMinute}
-                  optionList={[0, 10, 20, 30, 40, 50]}
-                  placeholder="분"
-                  onSelect={option => {
-                    setDeadlineMinute(+option)
-                    setValue('deadline', new Date(moment(deadline).minutes(+option).format()))
-                  }}
-                />
-              </div>
+              <Controller
+                control={control}
+                name="deadline"
+                render={({ field: { onChange } }) => {
+                  return (
+                    <>
+                      <div style={{ width: 70 }}>
+                        <Dropdown
+                          defaultValue={moment(deadline).hour()}
+                          optionList={[9, 10, 11, 12]}
+                          placeholder="시"
+                          onSelect={option => {
+                            onChange(new Date(moment(deadline).hours(+option).format()))
+                          }}
+                        />
+                      </div>
+                      <div>:</div>
+                      <div style={{ width: 70 }}>
+                        <Dropdown
+                          defaultValue={moment(deadline).minute()}
+                          optionList={[0, 10, 20, 30, 40, 50]}
+                          placeholder="분"
+                          onSelect={option => {
+                            onChange(new Date(moment(deadline).minutes(+option).format()))
+                          }}
+                        />
+                      </div>
+                    </>
+                  )
+                }}
+              />
             </Styled.Flex>
           </Styled.SettingCardHeader>
         </Styled.SettingCard>
@@ -65,25 +61,21 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
         <Styled.SettingCard style={{ flex: 1 }}>
           <Styled.SettingCardHeader style={{ marginBottom: 0 }}>
             <h2>최소금액</h2>
-            <input
-              type="number"
-              {...register('minPrice', {
-                valueAsNumber: true,
-              })}
-            />
-            {/* <Controller
+            <Controller
+              control={control}
               name="minPrice"
-              render={({ field: { onChange } }) => {
+              render={({ field: { onChange, value } }) => {
                 return (
                   <Input
+                    value={value}
                     size="sm"
                     onChange={e => {
-                      onChange(e.target.value)
+                      onChange(+e.target.value)
                     }}
                   />
                 )
               }}
-            /> */}
+            />
           </Styled.SettingCardHeader>
         </Styled.SettingCard>
       </Styled.Flex>
@@ -91,25 +83,21 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
       <Styled.SettingCard style={{ flex: 1 }}>
         <Styled.SettingCardHeader style={{ marginBottom: 0 }}>
           <h2>최소인원</h2>
-          <input
-            type="number"
-            {...register('minMember', {
-              valueAsNumber: true,
-            })}
+          <Controller
+            control={control}
+            name="minMember"
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Input
+                  size="sm"
+                  value={value}
+                  onChange={e => {
+                    onChange(+e.target.value)
+                  }}
+                />
+              )
+            }}
           />
-          {/* <Controller
-              name="minPrice"
-              render={({ field: { onChange } }) => {
-                return (
-                  <Input
-                    size="sm"
-                    onChange={e => {
-                      onChange(e.target.value)
-                    }}
-                  />
-                )
-              }}
-            /> */}
         </Styled.SettingCardHeader>
       </Styled.SettingCard>
 
