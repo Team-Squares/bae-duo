@@ -5,6 +5,7 @@ import Footer from '@/src/components/commons/footer/Footer'
 import { useToast } from '@/src/commons/hooks/useToast'
 //import { useRecoilState, useSetRecoilState } from 'recoil'
 import { toastArray } from '@/src/commons/atom/atom'
+import Link from 'next/link'
 
 type Props = {
   children: React.ReactNode
@@ -25,7 +26,10 @@ const DefaultLayout = ({ children, isNav = true, title }: Props) => {
         {title && <Styled.HeaderLayout>{title}</Styled.HeaderLayout>}
         {children}
       </Styled.Container>
-      <Footer />
+      <Link href="/1">
+        {' '}
+        <Footer />
+      </Link>
     </Styled.Main>
   )
 }
