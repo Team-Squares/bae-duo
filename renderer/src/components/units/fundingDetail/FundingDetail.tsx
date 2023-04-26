@@ -21,7 +21,7 @@ const FundingDetail = () => {
         setAttendantData(res.data)
       })
       .catch((e: any) => console.log(e))
-  }, [attendantData])
+  }, [])
 
   useEffect(() => {
     let _totalPrice = 0
