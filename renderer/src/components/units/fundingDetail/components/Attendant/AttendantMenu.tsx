@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from '../../FundingDetail.style'
 import CloseIcon from '@mui/icons-material/Close'
-import { InfoProps, Menu } from '../../FundingDetail.types'
+import { InfoPropsType, Menu } from '../../FundingDetail.types'
 import { deleteAttendant } from '@/src/commons/api/progressFundingApi'
 
-const AttendantMenu: React.FC<InfoProps> = ({ item, attendData }) => {
+const AttendantMenu: React.FC<InfoPropsType> = ({ item, attendData }) => {
   const [OriginUserId, setOriginUserId] = useState(51) // 임시 사용자 정보
 
   const removeMenu = (ele: Menu) => {

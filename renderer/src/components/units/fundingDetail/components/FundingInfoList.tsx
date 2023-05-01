@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from '../FundingDetail.style'
 import Progress from './Progress'
-import { AttendantInfo } from '../FundingDetail.types'
+import { AttendantInfoType } from '../FundingDetail.types'
 
 const FundingInfoList = ({ ...props }) => {
   const { data, totalPrice } = props

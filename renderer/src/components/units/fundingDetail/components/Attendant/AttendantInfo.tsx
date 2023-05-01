@@ -4,7 +4,7 @@ import { colorPalette } from '../../../../../commons/styles/color'
 import Button from '../../../../commons/button/Button'
 import Input from '../../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
-import { AttendantInfo } from '../../FundingDetail.types'
+import { AttendantInfoType } from '../../FundingDetail.types'
 import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
 
 const AttendantInfo = ({ ...props }) => {
@@ -17,7 +17,7 @@ const AttendantInfo = ({ ...props }) => {
     menuPrice: '',
     menuDesc: 'description',
   })
-  const [attendData, setAttendData] = useState<AttendantInfo[]>(data)
+  const [attendData, setAttendData] = useState<AttendantInfoType[]>(data)
 
   const handlePutData = () => {
     // 메뉴 등록시 (처음 등록(0): post, 두번째 등록(default): put)
@@ -102,7 +102,7 @@ const AttendantInfo = ({ ...props }) => {
         + 메뉴담기
       </Button>
 
-      {data?.map((item: AttendantInfo, idx: number) => (
+      {data?.map((item: AttendantInfoType, idx: number) => (
         <AttendantMenu item={item} key={idx} attendData={data} />
       ))}
     </Styled.AttendantInfo>

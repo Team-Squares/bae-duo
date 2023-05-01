@@ -8,7 +8,7 @@ export interface Menu {
   menuPrice: number
 }
 
-export interface AttendantInfo {
+export interface AttendantInfoType {
   description: string
   id: number
   userId: number
@@ -19,7 +19,7 @@ export interface AttendantInfo {
   menuInfo: Menu[]
 }
 
-export interface InfoProps {
-  item: AttendantInfo
-  attendData: AttendantInfo[]
+export interface InfoPropsType {
+  item: AttendantInfoType
+  attendData: AttendantInfoType[]
 }
