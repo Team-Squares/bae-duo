@@ -1,5 +1,9 @@
 import { apiInstance } from '.'
 
+export const getFundingData = (id: number) => {
+  return apiInstance.get(`/funding/${id}`)
+}
+
 export const getAttendant = () => {
   return apiInstance.get('/attendant')
 }

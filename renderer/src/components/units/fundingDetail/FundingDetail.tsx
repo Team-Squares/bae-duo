@@ -1,27 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from './FundingDetail.style'
-import { getAttendant } from '@/src/commons/api/progressFundingApi'
+import { useRouter } from 'next/router'
+import { useQuery } from 'react-query'
+import moment from 'moment'
+import { getAttendant, getFundingData } from '@/src/commons/api/progressFundingApi'
+
 import { typography } from '../../../commons/styles/typography'
 import { color } from '@/src/commons/styles/styles'
+
+import { FundingListType } from '../home/Home.types'
+import { AttendantInfoType } from './FundingDetail.types'
+
 import Tag from '../../commons/tag/Tag'
 import Button from '../../commons/button/Button'
+
 import FundingInfoList from './components/FundingInfoList'
 import AttendantInfo from './components/Attendant/AttendantInfo'
 import BillInfo from './components/Bill/BillInfo'
 
 const FundingDetail = () => {
-  const [attendantData, setAttendantData] = useState([])
+  const router = useRouter()
+  const [fundingData, setFundingData] = useState<FundingListType | null>(null)
+  const [attendantData, setAttendantData] = useState<AttendantInfoType[]>([])
   const [fundingMode, setFundingMode] = useState('attendant')
-  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalPrice, setTotalPrice] = useState<number>(0)
+  const [queryId, setQueryId] = useState(0)
+  const { data, isSuccess } = useQuery(['getAllAttendantList'], () => getAttendant())
+
+  useEffect(() => {
+    const id = typeof router.query.id === 'string' ? parseInt(router.query.id) : 0
+    setQueryId(id)
+    if (!id) return
+    getFundingData(id)
+      .then(res => {
+        setFundingData(res.data)
+      })
+      .catch(e => console.log(e))
+  }, [router])
 
   // 데이터 get
   useEffect(() => {
-    getAttendant()
-      .then(res => {
-        setAttendantData(res.data)
-      })
-      .catch((e: any) => console.log(e))
-  }, [attendantData])
+    if (isSuccess) {
+      const _filtered = data.data.filter((data: { fundingId: number }) => data.fundingId === queryId)
+      setAttendantData(_filtered)
+    }
+  }, [data, isSuccess])
 
   useEffect(() => {
     let _totalPrice = 0
@@ -39,10 +62,10 @@ const FundingDetail = () => {
     <Styled.Container>
       <Styled.Header>
         <div className="fundingInfo">
-          <h2>한솥 도시락</h2>
+          <h2>{fundingData?.brand}</h2>
           <div className="fundingSubInfo">
             <Tag text={'펀딩 진행 중'} />
-            <span className="fundingDate">2023.00.00</span>
+            <span className="fundingDate">{moment(fundingData?.createdAt).format('YYYY.MM.DD')}</span>
           </div>
         </div>
         <div className="buttonGroup">
