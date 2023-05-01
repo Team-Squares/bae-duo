@@ -105,6 +105,7 @@ const AttendantInfo = ({ ...props }) => {
       {data?.map((item: AttendantInfoType, idx: number) => (
         <AttendantMenu item={item} key={idx} attendData={data} />
       ))}
+      {!data.length && <h2>지금 펀딩에 참여해보세요!</h2>}
     </Styled.AttendantInfo>
   )
 }
