@@ -109,7 +109,7 @@ const FundingDetail = () => {
         </div>
       </Styled.Header>
       <Styled.Content>
-        <FundingInfoList data={attendantData} totalPrice={totalPrice} />
+        <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
         {fundingMode === 'attendant' && <AttendantInfo data={attendantData} />}
         {fundingMode === 'bill' && <BillInfo attendantData={attendantData} totalPrice={totalPrice} />}
       </Styled.Content>

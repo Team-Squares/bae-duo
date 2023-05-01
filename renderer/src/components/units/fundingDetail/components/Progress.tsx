@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import * as Styled from '../FundingDetail.style'
 
 const Progress = ({ ...props }) => {
-  const { type, data } = props
+  const { type, data, defaultPrice, defaultMember } = props
 
   const getFundingInfoItem = () => {
     switch (type) {
@@ -16,7 +16,7 @@ const Progress = ({ ...props }) => {
               </div>
               <div className="value">
                 <span>{data.toLocaleString()}</span>
-                <span>30,000</span>
+                <span>{defaultPrice}</span>
               </div>
               <div className="progressBar">
                 <div
@@ -55,7 +55,7 @@ const Progress = ({ ...props }) => {
               </div>
               <div className="value">
                 <span>{data}</span>
-                <span>3</span>
+                <span>{defaultMember}</span>
               </div>
               <div className="progressBar">
                 <div
