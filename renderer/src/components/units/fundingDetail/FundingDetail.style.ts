@@ -337,3 +337,13 @@ export const BillInfo = styled.div`
     }
   }
 `
+
+export const FunidngMenuContainer = styled.section`
+  height: 420px;
+  width: 100%;
+  padding-bottom: 20px;
+  img {
+    height: 360px;
+    object-fit: contain;
+  }
+`

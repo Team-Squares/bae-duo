@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import * as Styled from './Modal.styles'
 import XmarkImg from '@/public/images/xmark_grey.svg'
 import Image from 'next/image'
+import { FlexCenter } from '../../units/addFunding/AddFunding.styles'
 
 export interface ModalPropsType {
   id: string
@@ -15,7 +16,7 @@ export interface ModalPropsType {
   cancelBtnContent?: string
   closeModal: () => any
   submitFunc?: () => any
-  mode: 'submit' | 'info'
+  mode: 'submit' | 'info' | 'none'
 }
 
 const Modal = (props: ModalPropsType) => {
@@ -51,7 +52,7 @@ const Modal = (props: ModalPropsType) => {
           </Styled.SubmitBtn>
         </Styled.BtnBox>
       )
-    else
+    else if (mode === 'info')
       return (
         <Styled.CheckBox>
           <input
@@ -64,7 +65,8 @@ const Modal = (props: ModalPropsType) => {
           <span>오늘 하루 보지 않기</span>
         </Styled.CheckBox>
       )
-  }, [closeModal, mode, submitBtnContent, submitFunc])
+    else return <FlexCenter></FlexCenter>
+  }, [cancelBtnContent, closeModal, mode, submitBtnContent, submitFunc])
 
   return (
     <Styled.BackGround>
