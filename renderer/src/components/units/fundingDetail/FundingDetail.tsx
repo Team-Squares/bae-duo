@@ -110,7 +110,9 @@ const FundingDetail = () => {
       </Styled.Header>
       <Styled.Content>
         <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
-        {fundingMode === 'attendant' && <AttendantInfo data={attendantData} />}
+        {fundingMode === 'attendant' && (
+          <AttendantInfo data={attendantData} fundingId={queryId} totalPrice={totalPrice} />
+        )}
         {fundingMode === 'bill' && <BillInfo attendantData={attendantData} totalPrice={totalPrice} />}
       </Styled.Content>
     </Styled.Container>

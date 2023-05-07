@@ -5,7 +5,7 @@ import { InfoPropsType, Menu } from '../../FundingDetail.types'
 import { deleteAttendant } from '@/src/commons/api/progressFundingApi'
 
 const AttendantMenu: React.FC<InfoPropsType> = ({ item, attendData }) => {
-  const [OriginUserId, setOriginUserId] = useState(51) // 임시 사용자 정보
+  const [OriginUserId, setOriginUserId] = useState(53) // 임시 사용자 정보
 
   const removeMenu = (ele: Menu) => {
     // 사용자 메뉴 수에 따라 (1개 : 전체 삭제, 2개 이상: 해당 아이디의 menu info만 삭제)
@@ -34,7 +34,9 @@ const AttendantMenu: React.FC<InfoPropsType> = ({ item, attendData }) => {
         {item.menuInfo.map((ele, idx) => (
           <div className="menuItem" key={idx}>
             <div className="menuItemInfo">
-              <div className="menuName">{ele.menuName}</div>
+              <div className="menuName">
+                {ele.menuName}- id: {ele.id}
+              </div>
               <div className="menuDesc">{ele.description}</div>
               <div className="menuPrice">가격 : {ele.menuPrice}원</div>
             </div>

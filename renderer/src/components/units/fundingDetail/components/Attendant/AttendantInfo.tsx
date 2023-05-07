@@ -1,66 +1,88 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 import * as Styled from '../../FundingDetail.style'
 import { colorPalette } from '../../../../../commons/styles/color'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import Button from '../../../../commons/button/Button'
 import Input from '../../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
 import { AttendantInfoType } from '../../FundingDetail.types'
 import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
+import { putFunding } from '@/src/commons/api/fundingApi'
 
 const AttendantInfo = ({ ...props }) => {
-  const { data } = props
+  const { data, fundingId, totalPrice } = props
+  const queryClient = useQueryClient()
   // 임시 사용자 정보, description은 메뉴에서 받아오는 정보?
+  const [attendantId, setAttendantId] = useState()
+  const [attendantData, setAttendantData] = useState([])
   const [menu, setMenu] = useState({
-    id: 51,
-    userName: 'front team',
+    id: 56,
+    userName: '히히',
     menuName: '',
     menuPrice: '',
     menuDesc: 'description',
   })
-  const [attendData, setAttendData] = useState<AttendantInfoType[]>(data)
 
-  const handlePutData = () => {
-    // 메뉴 등록시 (처음 등록(0): post, 두번째 등록(default): put)
+  useLayoutEffect(() => {
+    if (!attendantData) return
+    const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.id)[0]
+    if (!_filtered) return
+    setAttendantId(_filtered.id)
+  }, [attendantData])
+
+  useLayoutEffect(() => {
+    setAttendantData(data)
+  }, [data])
+
+  const validationFunc = () => {
     const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.id).length
+    const obj = {
+      id: attendantId,
+      fundingId: fundingId,
+      userId: menu.id,
+      userName: menu.userName,
+      hasPaid: false,
+      menuInfo: `[{'id': 15,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
+    }
+
     switch (_menuNum) {
       case 0: {
-        const obj = {
-          id: 53,
-          fundingId: 1,
-          userId: menu.id,
-          userName: menu.userName,
-          hasPaid: false,
-          menuInfo: `[{'id': 52,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
-        }
-        postAttendant(obj)
-          .then(res => {
-            console.log('postAttendant:', res.data)
-            setAttendData([...attendData, res.data])
-            setMenu({ ...menu, menuName: '', menuPrice: '' })
-          })
-          .catch(e => console.log(e))
-
+        console.log('POST')
+        PostAttendantMutation.mutate(obj)
+        setMenu({ ...menu, menuName: '', menuPrice: '' })
         break
       }
       default: {
-        const obj = {
-          id: 53,
-          fundingId: 1,
-          userId: menu.id,
-          userName: menu.userName,
-          hasPaid: false,
-          menuInfo: `[{'id': 12,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}}]`,
-        }
-        putAttendant(obj)
-          .then(res => {
-            console.log(res.data)
-            setMenu({ ...menu, menuName: '', menuPrice: '' })
-          })
-          .catch(e => console.log(e))
+        console.log('PUT')
+        PutAttendantMutation.mutate(obj)
+        setMenu({ ...menu, menuName: '', menuPrice: '' })
         break
       }
     }
   }
+  // put attendant data
+  const PutAttendantMutation = useMutation(putAttendant, {
+    onError: error => {
+      console.log('error', error)
+    },
+    onSuccess: variables => {
+      console.log('success', variables)
+      setMenu({ ...menu, menuName: '', menuPrice: '' })
+      return queryClient.invalidateQueries('getAllAttendantList')
+    },
+  })
+
+  // post attendant data
+  const PostAttendantMutation = useMutation(postAttendant, {
+    onError: error => {
+      console.log('error', error)
+    },
+    onSuccess: variables => {
+      console.log('success', variables)
+      setMenu({ ...menu, menuName: '', menuPrice: '' })
+      return queryClient.invalidateQueries('getAllAttendantList')
+    },
+  })
 
   const handleChangeData = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
     switch (type) {
@@ -97,12 +119,12 @@ const AttendantInfo = ({ ...props }) => {
           backgroundColor: `${colorPalette.gray.gray10}`,
           marginBottom: '32px',
         }}
-        onClick={handlePutData}
+        onClick={validationFunc}
       >
         + 메뉴담기
       </Button>
 
-      {data?.map((item: AttendantInfoType, idx: number) => (
+      {data.map((item: AttendantInfoType, idx: number) => (
         <AttendantMenu item={item} key={idx} attendData={data} />
       ))}
       {!data.length && <h2>지금 펀딩에 참여해보세요!</h2>}

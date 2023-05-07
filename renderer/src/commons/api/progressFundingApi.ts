@@ -20,6 +20,10 @@ export const deleteAttendant = (id: number) => {
   return apiInstance.delete(`/attendant/${id}`)
 }
 
+export const deleteAttendantMenuInfo = (id: number) => {
+  return apiInstance.delete(`/attendantMenuInfo/${id}`)
+}
+
 export const postBill = (body: any) => {
   return apiInstance.post(`/bill`, body)
 }
