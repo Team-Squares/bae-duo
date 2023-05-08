@@ -14,6 +14,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   onKeyDown,
   style,
+  value,
 }) => {
   return (
     <Styled.InputContainer size={size} style={{ ...style }}>
@@ -38,6 +39,7 @@ const Input: React.FC<InputProps> = ({
             type={type}
             disabled={disabled}
             variant={variant}
+            value={value}
           />
         </>
       )}

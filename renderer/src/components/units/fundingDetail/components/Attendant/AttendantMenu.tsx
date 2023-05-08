@@ -1,28 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from '../../FundingDetail.style'
+import { useMutation, useQueryClient } from 'react-query'
 import CloseIcon from '@mui/icons-material/Close'
 import { InfoPropsType, Menu } from '../../FundingDetail.types'
-import { deleteAttendant } from '@/src/commons/api/progressFundingApi'
+import { deleteAttendant, deleteAttendantMenuInfo } from '@/src/commons/api/progressFundingApi'
 
 const AttendantMenu: React.FC<InfoPropsType> = ({ item, attendData }) => {
-  const [OriginUserId, setOriginUserId] = useState(53) // 임시 사용자 정보
+  const [OriginUserId, setOriginUserId] = useState(56) // 임시 사용자 정보
+  const queryClient = useQueryClient()
 
   const removeMenu = (ele: Menu) => {
     // 사용자 메뉴 수에 따라 (1개 : 전체 삭제, 2개 이상: 해당 아이디의 menu info만 삭제)
-    const _menuNum = attendData.filter(data => data.id === ele.attendantId).length
-    switch (_menuNum) {
+    const _menuNum = attendData.filter(data => data.id === ele.attendantId)[0]
+    switch (_menuNum.menuInfo.length) {
       case 1: {
-        deleteAttendant(ele.attendantId)
-          .then(res => console.log(res.data))
-          .catch(e => console.log(e))
+        DeleteAttendantMutation.mutate(ele.attendantId)
         break
       }
       default: {
-        console.log('menu info delete 하는 api')
+        DeleteAttendantMenuInfoMutation.mutate(ele.id)
         break
       }
     }
   }
+
+  // delete attendant
+  const DeleteAttendantMutation = useMutation(deleteAttendant, {
+    onError: error => {
+      console.log('error', error)
+    },
+    onSuccess: variables => {
+      console.log('success', variables)
+      return queryClient.invalidateQueries('getAllAttendantList')
+    },
+  })
+
+  // delete attendant menuInfo
+  const DeleteAttendantMenuInfoMutation = useMutation(deleteAttendantMenuInfo, {
+    onError: error => {
+      console.log('error', error)
+    },
+    onSuccess: variables => {
+      console.log('success', variables)
+      return queryClient.invalidateQueries('getAllAttendantList')
+    },
+  })
 
   return (
     <Styled.MenuContainer>

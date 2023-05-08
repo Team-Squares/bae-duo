@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
 import * as Styled from '../../FundingDetail.style'
 import { colorPalette } from '../../../../../commons/styles/color'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import Button from '../../../../commons/button/Button'
 import Input from '../../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
@@ -42,7 +42,7 @@ const AttendantInfo = ({ ...props }) => {
       userId: menu.id,
       userName: menu.userName,
       hasPaid: false,
-      menuInfo: `[{'id': 15,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
+      menuInfo: `[{'id': 16,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
     }
 
     switch (_menuNum) {

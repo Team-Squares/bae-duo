@@ -21,7 +21,7 @@ const Progress = ({ ...props }) => {
               <div className="progressBar">
                 <div
                   className="progressValue"
-                  style={data >= 3000 ? { width: '100%' } : { width: `${(data / defaultPrice) * 100}%` }}
+                  style={data >= defaultPrice ? { width: '100%' } : { width: `${(data / defaultPrice) * 100}%` }}
                 ></div>
               </div>
             </Styled.FundingInfoItem>
