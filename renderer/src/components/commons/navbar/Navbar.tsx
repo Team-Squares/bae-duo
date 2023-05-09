@@ -1,7 +1,7 @@
 import useRoutePage from '@/src/commons/hooks/useRoutePage'
 import * as Styled from './Navbar.styles'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import IconAlarm from '@/public/icons/alarm.svg'
 import IconBack from '@/public/icons/back.svg'
@@ -20,12 +20,33 @@ import tempProfileImg from '@/public/images/profile_medium.svg'
 
 import Dialog from '@/src/components/commons/navbar/Dialog'
 import { useRouter } from 'next/router'
-
+import { useInterval } from '@/src/commons/hooks/useInterval'
 const Navbar = () => {
   const { routePage } = useRoutePage()
   const router = useRouter()
-
   const [toggleDialog, setToggleDialog] = useState(false)
+  const sendMessage = () => {
+    const title = '배달해듀오'
+    const body = '펀딩 마감 10분전입니다!'
+    const options = { body }
+
+    const notif = new Notification(title, options)
+  }
+
+  const notiHandler = async (hours: number, minutes: number) => {
+    const result = await Notification.requestPermission()
+    const today = new Date()
+
+    console.log('today: ', today.getHours())
+    console.log('getTime: ', today.getMinutes())
+    if (result === 'granted') {
+      sendMessage()
+    }
+  }
+
+  // ? 1분마다 시간체크
+  // useInterval(notiHandler, 60 * 1000)
+
   return (
     <Styled.Header>
       <Styled.Navbar>
@@ -42,7 +63,7 @@ const Navbar = () => {
             <div
               onClick={() => {
                 console.log('앞으로가기')
-                // router.forward()
+                console.log('33', router)
               }}
             >
               <ArrowForwardIosIcon />
@@ -66,7 +87,7 @@ const Navbar = () => {
               <Image src={IconMessage} alt="none"></Image>
             </Styled.Menu>
             <Styled.Menu>
-              <Image src={IconAlarm} alt="none"></Image>
+              <Image src={IconAlarm} alt="none" onClick={notiHandler}></Image>
             </Styled.Menu>
           </Styled.MenuBox>
           <Styled.Profile onClick={() => setToggleDialog(!toggleDialog)}>
