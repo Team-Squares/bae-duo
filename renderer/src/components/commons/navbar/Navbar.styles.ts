@@ -111,7 +111,7 @@ export const Profile = styled.div`
   align-items: center;
   cursor: pointer;
 
-  > img:nth-child(2) {
+  > img:nth-of-type(2) {
     margin: 0 5px;
   }
 `
