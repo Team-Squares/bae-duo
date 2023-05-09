@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { getAttendant, getFundingData } from '@/src/commons/api/progressFundingApi'
+import { getFundingItem } from '@/src/commons/api/fundingApi'
 
 import { typography } from '../../../commons/styles/typography'
 import { color } from '@/src/commons/styles/styles'
@@ -27,6 +28,7 @@ const FundingDetail = () => {
   const [queryId, setQueryId] = useState(0)
   const { data, isSuccess } = useQuery(['getAllAttendantList'], () => getAttendant())
 
+  // get funding data
   useEffect(() => {
     const id = typeof router.query.id === 'string' ? parseInt(router.query.id) : 0
     setQueryId(id)
@@ -38,7 +40,7 @@ const FundingDetail = () => {
       .catch(e => console.log(e))
   }, [router])
 
-  // 데이터 get
+  // get attendant data
   useEffect(() => {
     if (isSuccess) {
       const _filtered = data.data.filter((data: { fundingId: number }) => data.fundingId === queryId)
@@ -46,6 +48,7 @@ const FundingDetail = () => {
     }
   }, [data, isSuccess])
 
+  // get total price
   useEffect(() => {
     let _totalPrice = 0
     const _menuInfoArr = attendantData.map((el: { menuInfo: any }) => el.menuInfo) || []
@@ -111,7 +114,7 @@ const FundingDetail = () => {
       <Styled.Content>
         <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
         {fundingMode === 'attendant' && (
-          <AttendantInfo data={attendantData} fundingId={queryId} totalPrice={totalPrice} />
+          <AttendantInfo data={attendantData} funding={fundingData} totalPrice={totalPrice} />
         )}
         {fundingMode === 'bill' && <BillInfo attendantData={attendantData} totalPrice={totalPrice} />}
       </Styled.Content>
