@@ -6,7 +6,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import DefaultLayout from '@/src/components/commons/layout/DefaultLayout'
 import { UserContextProvider } from '@/src/contexts/UserContext'
-//import { RecoilRoot } from 'recoil'
+import { RecoilRoot } from 'recoil'
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
@@ -23,9 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Global styles={globalStyles} />
       <UserContextProvider>
         <Head>{/*<script></script>*/}</Head>
-        {/*<RecoilRoot>*/}
-        <Component {...pageProps} />
-        {/*</RecoilRoot>*/}
+        <RecoilRoot>
+          <Component {...pageProps} />
+        </RecoilRoot>
       </UserContextProvider>
     </QueryClientProvider>
   )

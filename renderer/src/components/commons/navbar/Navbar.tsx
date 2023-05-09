@@ -21,14 +21,20 @@ import tempProfileImg from '@/public/images/profile_medium.svg'
 import Dialog from '@/src/components/commons/navbar/Dialog'
 import { useRouter } from 'next/router'
 import { useInterval } from '@/src/commons/hooks/useInterval'
+import { useToast } from '@/src/commons/hooks/useToast'
+import { useSetRecoilState } from 'recoil'
+import { toastArray } from '@/src/commons/atom/atom'
 
 const HOURS = 23
-const MINUTES = 41
+const MINUTES = 56
 
 const Navbar = () => {
   const { routePage } = useRoutePage()
   const router = useRouter()
   const [toggleDialog, setToggleDialog] = useState(false)
+  const { pushToastQueue } = useToast()
+  const setToastQueue = useSetRecoilState(toastArray)
+
   const sendMessage = () => {
     const title = '배달해듀오'
     const body = '펀딩 마감 10분전입니다!'
@@ -45,6 +51,7 @@ const Navbar = () => {
     if (today.getHours() === HOURS && today.getMinutes() === MINUTES) {
       if (result === 'granted') {
         sendMessage()
+        pushToastQueue('success', '펀딩 마감직전!', setToastQueue, 3000)
       }
     }
   }
@@ -65,12 +72,7 @@ const Navbar = () => {
             >
               <ArrowBackIosNewIcon />
             </div>
-            <div
-              onClick={() => {
-                console.log('앞으로가기')
-                console.log('33', router)
-              }}
-            >
+            <div>
               <ArrowForwardIosIcon />
             </div>
           </Styled.HistoryButtons>
