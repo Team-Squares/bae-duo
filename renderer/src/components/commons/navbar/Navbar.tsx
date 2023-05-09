@@ -21,6 +21,10 @@ import tempProfileImg from '@/public/images/profile_medium.svg'
 import Dialog from '@/src/components/commons/navbar/Dialog'
 import { useRouter } from 'next/router'
 import { useInterval } from '@/src/commons/hooks/useInterval'
+
+const HOURS = 23
+const MINUTES = 41
+
 const Navbar = () => {
   const { routePage } = useRoutePage()
   const router = useRouter()
@@ -36,16 +40,17 @@ const Navbar = () => {
   const notiHandler = async (hours: number, minutes: number) => {
     const result = await Notification.requestPermission()
     const today = new Date()
-
-    console.log('today: ', today.getHours())
-    console.log('getTime: ', today.getMinutes())
-    if (result === 'granted') {
-      sendMessage()
+    console.log(`${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`)
+    // 추후 알림시간을 지정받아서 설정하기
+    if (today.getHours() === HOURS && today.getMinutes() === MINUTES) {
+      if (result === 'granted') {
+        sendMessage()
+      }
     }
   }
 
   // ? 1분마다 시간체크
-  // useInterval(notiHandler, 60 * 1000)
+  useInterval(notiHandler, 60 * 1000)
 
   return (
     <Styled.Header>
