@@ -1,7 +1,7 @@
 import useRoutePage from '@/src/commons/hooks/useRoutePage'
 import * as Styled from './Navbar.styles'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import IconAlarm from '@/public/icons/alarm.svg'
 import IconBack from '@/public/icons/back.svg'
@@ -20,12 +20,45 @@ import tempProfileImg from '@/public/images/profile_medium.svg'
 
 import Dialog from '@/src/components/commons/navbar/Dialog'
 import { useRouter } from 'next/router'
+import { useInterval } from '@/src/commons/hooks/useInterval'
+import { useToast } from '@/src/commons/hooks/useToast'
+import { useSetRecoilState } from 'recoil'
+import { toastArray } from '@/src/commons/atom/atom'
+
+const HOURS = 23
+const MINUTES = 56
 
 const Navbar = () => {
   const { routePage } = useRoutePage()
   const router = useRouter()
-
   const [toggleDialog, setToggleDialog] = useState(false)
+  const { pushToastQueue } = useToast()
+  const setToastQueue = useSetRecoilState(toastArray)
+
+  const sendMessage = () => {
+    const title = '배달해듀오'
+    const body = '펀딩 마감 10분전입니다!'
+    const options = { body }
+
+    const notif = new Notification(title, options)
+  }
+
+  const notiHandler = async (hours: number, minutes: number) => {
+    const result = await Notification.requestPermission()
+    const today = new Date()
+    console.log(`${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`)
+    // 추후 알림시간을 지정받아서 설정하기
+    if (today.getHours() === HOURS && today.getMinutes() === MINUTES) {
+      if (result === 'granted') {
+        sendMessage()
+        pushToastQueue('success', '펀딩 마감직전!', setToastQueue, 3000)
+      }
+    }
+  }
+
+  // ? 1분마다 시간체크
+  useInterval(notiHandler, 60 * 1000)
+
   return (
     <Styled.Header>
       <Styled.Navbar>
@@ -39,12 +72,7 @@ const Navbar = () => {
             >
               <ArrowBackIosNewIcon />
             </div>
-            <div
-              onClick={() => {
-                console.log('앞으로가기')
-                // router.forward()
-              }}
-            >
+            <div>
               <ArrowForwardIosIcon />
             </div>
           </Styled.HistoryButtons>
@@ -66,7 +94,7 @@ const Navbar = () => {
               <Image src={IconMessage} alt="none"></Image>
             </Styled.Menu>
             <Styled.Menu>
-              <Image src={IconAlarm} alt="none"></Image>
+              <Image src={IconAlarm} alt="none" onClick={notiHandler}></Image>
             </Styled.Menu>
           </Styled.MenuBox>
           <Styled.Profile onClick={() => setToggleDialog(!toggleDialog)}>

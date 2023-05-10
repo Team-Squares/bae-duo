@@ -22,14 +22,14 @@ export const useToast = () => {
   /**
    * 새롭게 받은 toast를 toast queue에 push해줍니다.
    */
-  const pushToastQueue = (type: string, content: string, setToastQueue: any) => {
+  const pushToastQueue = (type: string, content: string, setToastQueue: any, delay: number) => {
     if (Object.keys(type).length === 0) return
     setToastQueue((prev: Toast[]) => {
       let temp = [...prev]
       return [...temp, { type, content }]
     })
 
-    //if (delay) setTimeout(() => removeToast(setToastQueue), 3000)
+    if (delay) setTimeout(() => removeToast(setToastQueue), 3000)
   }
 
   /**

@@ -56,7 +56,7 @@ export const Row = styled.div`
   padding: 5px;
   border-radius: 5px;
 
-  &:not(:nth-child(2)):hover {
+  &:not(:nth-of-type(2)):hover {
     background-color: #e9e9e9;
     cursor: pointer;
   }

@@ -41,7 +41,7 @@ export const Header = styled.div`
     button > span {
       font-size: ${typography.body1.medium};
     }
-    button:nth-child(1) > span {
+    button:nth-of-type(1) > span {
       color: ${color.$point};
     }
   }
@@ -138,10 +138,10 @@ export const AttendantInfo = styled.div`
     align-items: center;
     gap: 16px;
     margin-bottom: 16px;
-    div:nth-child(1) {
+    div:nth-of-type(1) {
       width: calc((100% - 16px) / 2);
     }
-    div:nth-child(2) {
+    div:nth-of-type(2) {
       width: calc((100% - 16px) / 2);
     }
   }
