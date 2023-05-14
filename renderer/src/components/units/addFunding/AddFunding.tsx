@@ -10,10 +10,13 @@ import FundingCard from '@/src/components/units/addFunding/fundingCard/FundingCa
 import { BrandType, FundingType } from '@/src/components/units/addFunding/AddFunding.types'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { createFunding, getBrandList } from '@/src/commons/api/addFundingApi'
+import { useRouter } from 'next/router'
 
 const AddFunding = () => {
   const queryClient = useQueryClient()
+  const router = useRouter()
   const [curStep, setCurStep] = useState(1)
+  const [createdFundingId, setCreatedFundingId] = useState<number | null>(null)
   const [selectedBrand, setSelectedBrand] = useState<BrandType | null>(null)
 
   const methods = useForm<FundingType>({
@@ -35,15 +38,13 @@ const AddFunding = () => {
   })
 
   const addFundingMutation = useMutation(createFunding, {
-    onSuccess: () => {
+    onSuccess: data => {
+      setCreatedFundingId(data.data.id)
       setCurStep(4)
       return queryClient.invalidateQueries('createFundingKey')
     },
     onError: error => {
       console.dir(error)
-    },
-    onSettled: () => {
-      // alert('성공하든 실패하든 UI 먼저 보여줌. 예를들면 페이스북 따봉이 있음.')
     },
   })
 
@@ -123,7 +124,9 @@ const AddFunding = () => {
             <Styled.Flex direction="column" gap={8}>
               <FundingCard isSuccess={true} brandImage={selectedBrand?.menuImage} />
 
-              <Button style={{ width: '100%', height: 56 }}>펀딩으로 이동</Button>
+              <Button style={{ width: '100%', height: 56 }} onClick={() => router.push(`/${createdFundingId}`)}>
+                펀딩으로 이동
+              </Button>
             </Styled.Flex>
           )}
         </Styled.AddFundingBody>

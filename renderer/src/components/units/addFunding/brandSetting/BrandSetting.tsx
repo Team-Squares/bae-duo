@@ -7,8 +7,11 @@ import { BrandType, SetCurStepProps } from '../AddFunding.types'
 import AddIcon from '@mui/icons-material/Add'
 import { color, colorPalette } from '@/src/commons/styles/color'
 import { typography } from '@/src/commons/styles/typography'
-import Modal from '@/src/components/commons/modal/Modal'
-import Input from '@/src/components/commons/input/Input'
+import AddBrandModal from '../addBrandModal/AddBrandModal'
+import DefaultFoodImage from '@/public/images/food.svg'
+import Button from '@/src/components/commons/button/Button'
+import { useMutation, useQueryClient } from 'react-query'
+import { deleteBrand, getBrandList } from '@/src/commons/api/addFundingApi'
 
 interface BranSettingProps extends SetCurStepProps {
   brandList: BrandType[]
@@ -16,13 +19,27 @@ interface BranSettingProps extends SetCurStepProps {
 }
 
 const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingProps) => {
+  const queryClient = useQueryClient()
   const [addingBrandModal, setAddingBrandModal] = useState(false)
   const [viewBrandList, setViewBrandList] = useState<BrandType[]>()
   const [filtered, setFiltered] = useState<'all' | 'delivery' | 'toGo'>('all')
+  const [modifiedBrand, setModifiedBrand] = useState<BrandType>()
   const { control } = useFormContext()
   const [brandName] = useWatch({
     control,
     name: ['brand'],
+  })
+
+  const deleteBrandMutation = useMutation(deleteBrand, {
+    onSuccess: () => {
+      return queryClient.invalidateQueries('getBrandListKey')
+    },
+    onError: error => {
+      console.dir(error)
+    },
+    onSettled: () => {
+      queryClient.refetchQueries()
+    },
   })
 
   useEffect(() => {
@@ -83,13 +100,43 @@ const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingPr
               isActive={brand.name === brandName}
             >
               <Styled.BrandImageContainer isActive={brand.name === brandName}>
-                <Image src={brand.menuImage} alt={brand.name} width={80} height={80} />
+                <Image src={brand.menuImage || DefaultFoodImage} alt={brand.name} width={80} height={80} />
               </Styled.BrandImageContainer>
               <Styled.BrandInfo isActive={brand.name === brandName}>
-                <h3 className="title">
-                  [{brand.orderType === 1 ? '배달' : '포장'}] {brand.name}
-                </h3>
-                <p className="funding-count">지난 펀딩 횟수: {brand.orderCnt}회</p>
+                <Styled.Flex justifyContent="space-between">
+                  <div>
+                    <h3 className="title">
+                      [{brand.orderType === 1 ? '배달' : '포장'}] {brand.name}
+                    </h3>
+                    <p className="funding-count">지난 펀딩 횟수: {brand.orderCnt}회</p>
+                  </div>
+                  <Buttons className="buttons">
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={e => {
+                        e.stopPropagation()
+                        setAddingBrandModal(true)
+                        setModifiedBrand(brand)
+                      }}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      size="small"
+                      style={{ backgroundColor: colorPalette.red.red40 }}
+                      onClick={e => {
+                        e.stopPropagation()
+                        const message = confirm(`'${brand.name}'을(를) 정말 삭제하실건가요? 🥲`)
+                        if (message) {
+                          deleteBrandMutation.mutate(brand.id)
+                        }
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </Buttons>
+                </Styled.Flex>
               </Styled.BrandInfo>
             </Styled.Brand>
           ))}
@@ -97,71 +144,9 @@ const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingPr
         </Styled.SettingCardBody>
       </Styled.SettingCard>
 
+      {/* 브랜드 추가 모달 */}
       {addingBrandModal && (
-        <Modal
-          id="1"
-          title="브랜드 추가"
-          width={'400px'}
-          height={'500px'}
-          left={'50%'}
-          top={'50%'}
-          mode="submit"
-          closeModal={() => setAddingBrandModal(false)}
-        >
-          <AddBrandContainer>
-            <SettingItem>
-              <SettingItemTitle>
-                <div
-                  style={{
-                    width: 80,
-                    height: 80,
-                    border: `2px dashed ${color.border.default}`,
-                    borderRadius: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                  }}
-                >
-                  <AddIcon sx={{ fill: color.border.default }} />
-                  <p>대표이미지</p>
-                </div>
-              </SettingItemTitle>
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <SettingItemBody>
-                  <Styled.Flex alignItems="center" gap={4}>
-                    <input type="radio" id="orderType1" name="orderType" />
-                    <label htmlFor="orderType1">배달</label>
-                  </Styled.Flex>
-                  <Styled.Flex alignItems="center" gap={4}>
-                    <input type="radio" id="orderType2" name="orderType" />
-                    <label htmlFor="orderType2">포장</label>
-                  </Styled.Flex>
-                </SettingItemBody>
-                <Input size="sm" placeholder="브랜드명" style={{ width: '100%' }} />
-              </div>
-            </SettingItem>
-            <SettingItem>
-              <SettingItemTitle>기본 마감시간</SettingItemTitle>
-              <SettingItemBody>
-                <Input size="sm" style={{ width: '100%' }} />
-              </SettingItemBody>
-            </SettingItem>
-            <SettingItem>
-              <SettingItemTitle>기본 최소금액</SettingItemTitle>
-              <SettingItemBody>
-                <Input size="sm" style={{ width: '100%' }} />
-              </SettingItemBody>
-            </SettingItem>
-            <SettingItem>
-              <SettingItemTitle>기본 최소인원</SettingItemTitle>
-              <SettingItemBody>
-                <Input size="sm" style={{ width: '100%' }} />
-              </SettingItemBody>
-            </SettingItem>
-          </AddBrandContainer>
-        </Modal>
+        <AddBrandModal brand={modifiedBrand} isEditingMode={true} setShowModal={setAddingBrandModal} />
       )}
     </>
   )
@@ -187,40 +172,15 @@ const AddBrandButton = styled.button`
   }
 `
 
-const AddBrandContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-
-  p {
-    ${typography.caption.light}
-    color: ${color.text.gray};
-    position: absolute;
-    bottom: 8px;
-  }
-`
-
-const SettingItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 20px;
-  ${typography.body2.medium}
-`
-const SettingItemTitle = styled.div`
-  width: 84px;
-  color: ${color.text.gray};
-`
-const SettingItemBody = styled.div`
-  flex: 1;
-  display: flex;
-  gap: 16px;
-`
-
 const EmptyList = styled(Styled.FlexCenter)`
   height: 200px;
   color: ${color.text.gray};
   ${typography.body2.medium}
+`
+
+export const Buttons = styled.div`
+  display: flex;
+  gap: 4px;
+  visibility: hidden;
+  opacity: 0;
 `

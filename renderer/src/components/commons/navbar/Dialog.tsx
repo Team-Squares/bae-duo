@@ -1,7 +1,6 @@
 import useRoutePage from '@/src/commons/hooks/useRoutePage'
 import * as Styled from './Dialog.styles'
 import Image from 'next/image'
-import { useState } from 'react'
 
 import IconDarkmode from '@/public/icons/darkmode.svg'
 import IconHistory from '@/public/icons/history.svg'
@@ -13,9 +12,12 @@ import tempProfileImg from '@/public/images/profile_medium.svg'
 import { Switch } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import css from 'styled-jsx/css'
+import { useContext } from 'react'
+import { UserContext } from '@/src/contexts/UserContext'
 
 const Dialog = ({ ...props }) => {
   const { routePage } = useRoutePage()
+  const { setUser } = useContext(UserContext)
   const { setToggleDialog } = props
   return (
     <Styled.DialogLayer
@@ -63,7 +65,12 @@ const Dialog = ({ ...props }) => {
           </Styled.MenuIcon>
           <Styled.MenuTitle>설정</Styled.MenuTitle>
         </Styled.Row>
-        <Styled.Row>
+        <Styled.Row
+          onClick={() => {
+            setUser && setUser({ name: '', account: '' })
+            routePage('/login')
+          }}
+        >
           <Styled.MenuIcon>
             <Image src={IconLogin} alt="none"></Image>
           </Styled.MenuIcon>

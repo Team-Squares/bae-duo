@@ -27,6 +27,7 @@ const Input: React.FC<InputProps> = ({
             type={type}
             disabled={disabled}
             variant={variant}
+            value={value}
           />
         </Styled.LabelWrapper>
       ) : (

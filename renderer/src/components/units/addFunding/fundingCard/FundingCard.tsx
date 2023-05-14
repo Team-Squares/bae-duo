@@ -8,6 +8,7 @@ import { typography } from '@/src/commons/styles/typography'
 import SuccessIcon from '@/public/icons/success_icon.svg'
 import moment from 'moment'
 import { useFormContext, useWatch } from 'react-hook-form'
+import DefaultFoodImage from '@/public/images/food.svg'
 
 interface FundingCardProps {
   brandImage?: string
@@ -30,7 +31,7 @@ const FundingCard = ({ brandImage, isSuccess }: FundingCardProps) => {
       )}
       <FundingCardHeader>
         <FundingBrandImageContainer>
-          {brandImage && <Image src={brandImage} alt={'브랜드 이미지'} width={60} height={60} />}
+          <Image src={brandImage || DefaultFoodImage} alt={'브랜드 이미지'} width={60} height={60} />
         </FundingBrandImageContainer>
         <h3>{brand}</h3>
       </FundingCardHeader>

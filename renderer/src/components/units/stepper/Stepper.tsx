@@ -13,7 +13,14 @@ interface StepBarProps {
 const StepBar = ({ step, onChangeCurStep }: StepBarProps) => {
   return (
     <Styled.StepBar>
-      <Styled.StepItem isActive={step === 1 ? true : false} cursor="pointer" onClick={() => onChangeCurStep(1)}>
+      <Styled.StepItem
+        isActive={step === 1 ? true : false}
+        cursor={step === 4 ? 'auto' : 'pointer'}
+        onClick={() => {
+          if (step === 4) return
+          onChangeCurStep(1)
+        }}
+      >
         {step <= 1 ? <StoreIcon /> : <Styled.CheckIcon />}
         <span>1. 브랜드 설정</span>
       </Styled.StepItem>
