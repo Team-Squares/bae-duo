@@ -61,7 +61,7 @@ const Home = () => {
         <Styled.BrandsBox>
           {fundingList?.map(item => (
             <Fragment key={item.createdAt}>
-              <Styled.BrandsCard>
+              <Styled.BrandsCard onClick={() => router.push(`/attendant/${item.id}`)}>
                 <Styled.FundingInfo>
                   <Styled.StatusBox>
                     <Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>

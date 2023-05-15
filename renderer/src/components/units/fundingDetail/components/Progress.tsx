@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import * as Styled from '../FundingDetail.style'
 
 const Progress = ({ ...props }) => {
-  const { type, data } = props
+  const { type, data, defaultPrice, defaultMember } = props
 
   const getFundingInfoItem = () => {
     switch (type) {
@@ -16,12 +16,12 @@ const Progress = ({ ...props }) => {
               </div>
               <div className="value">
                 <span>{data.toLocaleString()}</span>
-                <span>30,000</span>
+                <span>{defaultPrice}</span>
               </div>
               <div className="progressBar">
                 <div
                   className="progressValue"
-                  style={data >= 3000 ? { width: '100%' } : { width: `${(data / 30000) * 100}%` }}
+                  style={data >= defaultPrice ? { width: '100%' } : { width: `${(data / defaultPrice) * 100}%` }}
                 ></div>
               </div>
             </Styled.FundingInfoItem>
@@ -55,12 +55,12 @@ const Progress = ({ ...props }) => {
               </div>
               <div className="value">
                 <span>{data}</span>
-                <span>3</span>
+                <span>{defaultMember}</span>
               </div>
               <div className="progressBar">
                 <div
                   className="progressValue"
-                  style={data >= 2 ? { width: '100%' } : { width: `${(3 / data) * 100}%` }}
+                  style={data >= defaultMember ? { width: '100%' } : { width: `${(data / defaultMember) * 100}%` }}
                 ></div>
               </div>
             </Styled.FundingInfoItem>

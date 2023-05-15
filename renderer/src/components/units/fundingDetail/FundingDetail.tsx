@@ -1,31 +1,54 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Styled from './FundingDetail.style'
-import { getAttendant } from '@/src/commons/api/progressFundingApi'
+import { useRouter } from 'next/router'
+import { useQuery } from 'react-query'
+import moment from 'moment'
+import { getAttendant, getFundingData } from '@/src/commons/api/progressFundingApi'
+import { getFundingItem } from '@/src/commons/api/fundingApi'
+
 import { typography } from '../../../commons/styles/typography'
 import { color } from '@/src/commons/styles/styles'
+
+import { FundingListType } from '../home/Home.types'
+import { AttendantInfoType } from './FundingDetail.types'
+
 import Tag from '../../commons/tag/Tag'
 import Button from '../../commons/button/Button'
+
 import FundingInfoList from './components/FundingInfoList'
 import AttendantInfo from './components/Attendant/AttendantInfo'
 import BillInfo from './components/Bill/BillInfo'
-import Modal from '../../commons/modal/Modal'
-import FundingMenuModal from './components/FundingMenuModal'
 
 const FundingDetail = () => {
-  const [attendantData, setAttendantData] = useState([])
+  const router = useRouter()
+  const [fundingData, setFundingData] = useState<FundingListType | null>(null)
+  const [attendantData, setAttendantData] = useState<AttendantInfoType[]>([])
   const [fundingMode, setFundingMode] = useState('attendant')
-  const [totalPrice, setTotalPrice] = useState(0)
-  const [isOpenMenu, setIsOpenMenu] = useState(false)
+  const [totalPrice, setTotalPrice] = useState<number>(0)
+  const [queryId, setQueryId] = useState(0)
+  const { data, isSuccess } = useQuery(['getAllAttendantList'], () => getAttendant())
 
-  // 데이터 get
+  // get funding data
   useEffect(() => {
-    getAttendant()
+    const id = typeof router.query.id === 'string' ? parseInt(router.query.id) : 0
+    setQueryId(id)
+    if (!id) return
+    getFundingData(id)
       .then(res => {
-        setAttendantData(res.data)
+        setFundingData(res.data)
       })
-      .catch((e: any) => console.log(e))
-  }, [])
+      .catch(e => console.log(e))
+  }, [router])
 
+  // get attendant data
+  useEffect(() => {
+    if (isSuccess) {
+      const _filtered = data.data.filter((data: { fundingId: number }) => data.fundingId === queryId)
+      setAttendantData(_filtered)
+    }
+  }, [data, isSuccess])
+
+  // get total price
   useEffect(() => {
     let _totalPrice = 0
     const _menuInfoArr = attendantData.map((el: { menuInfo: any }) => el.menuInfo) || []
@@ -38,18 +61,14 @@ const FundingDetail = () => {
     setTotalPrice(_totalPrice)
   }, [attendantData])
 
-  const handleOpenMenu = useCallback(() => {
-    setIsOpenMenu(prev => !prev)
-  }, [])
-
   return (
     <Styled.Container>
       <Styled.Header>
         <div className="fundingInfo">
-          <h2>한솥 도시락</h2>
+          <h2>{fundingData?.brand}</h2>
           <div className="fundingSubInfo">
             <Tag text={'펀딩 진행 중'} />
-            <span className="fundingDate">2023.00.00</span>
+            <span className="fundingDate">{moment(fundingData?.createdAt).format('YYYY.MM.DD')}</span>
           </div>
         </div>
         <div className="buttonGroup">
@@ -62,7 +81,6 @@ const FundingDetail = () => {
                 width: '100%',
                 marginBottom: '32px',
               }}
-              onClick={handleOpenMenu}
             >
               메뉴 보기
             </Button>
@@ -94,25 +112,12 @@ const FundingDetail = () => {
         </div>
       </Styled.Header>
       <Styled.Content>
-        <FundingInfoList data={attendantData} totalPrice={totalPrice} />
-        {fundingMode === 'attendant' && <AttendantInfo data={attendantData} />}
+        <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
+        {fundingMode === 'attendant' && (
+          <AttendantInfo data={attendantData} funding={fundingData} totalPrice={totalPrice} />
+        )}
         {fundingMode === 'bill' && <BillInfo attendantData={attendantData} totalPrice={totalPrice} />}
       </Styled.Content>
-
-      {isOpenMenu && (
-        <Modal
-          id="1"
-          title="메뉴 이미지"
-          width={'400px'}
-          height={'500px'}
-          left={'50%'}
-          top={'50%'}
-          mode="none"
-          closeModal={() => setIsOpenMenu(false)}
-        >
-          <FundingMenuModal />
-        </Modal>
-      )}
     </Styled.Container>
   )
 }

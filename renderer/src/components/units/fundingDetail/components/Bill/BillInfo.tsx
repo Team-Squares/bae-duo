@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as Styled from '../../FundingDetail.style'
 import Button from '../../../../commons/button/Button'
 import Input from '../../../../commons/input/Input'
-import { AttendantInfo, Menu } from '../../FundingDetail.types'
+import { AttendantInfoType, Menu } from '../../FundingDetail.types'
 import { postBill } from '@/src/commons/api/progressFundingApi'
 
 const BillInfo = ({ ...props }) => {
@@ -22,7 +22,7 @@ const BillInfo = ({ ...props }) => {
 
   // bill attendants data
   useEffect(() => {
-    setAttendants(attendantData.map((data: AttendantInfo) => data.userId))
+    setAttendants(attendantData.map((data: AttendantInfoType) => data.userId))
   }, [attendantData])
 
   const handlePostBill = () => {
@@ -44,7 +44,7 @@ const BillInfo = ({ ...props }) => {
     <Styled.BillInfo>
       <div className="title">주문서</div>
       <div className="billContainer">
-        {attendantData.map((data: AttendantInfo, idx: number) => (
+        {attendantData.map((data: AttendantInfoType, idx: number) => (
           <div className="attendantInfo" key={idx}>
             <div className="userInfo">
               <div className="img"></div>
