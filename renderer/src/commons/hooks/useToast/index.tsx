@@ -1,5 +1,5 @@
 import * as Styled from './useToast.styles'
-import { createElement, useEffect } from 'react'
+import { createElement, useEffect, useState } from 'react'
 // mui icon
 import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
@@ -26,10 +26,10 @@ export const useToast = () => {
     if (Object.keys(type).length === 0) return
     setToastQueue((prev: Toast[]) => {
       let temp = [...prev]
-      return [...temp, { type, content }]
+      return [...temp, { type, content, delay }]
     })
 
-    if (delay) setTimeout(() => removeToast(setToastQueue), 3000)
+    if (delay) setTimeout(() => removeToast(setToastQueue), delay)
   }
 
   /**
@@ -48,10 +48,12 @@ export const useToast = () => {
 
   const ToastArea = ({ ...props }) => {
     const { toastQueue, setToastQueue } = props
+    const isExistToast = toastQueue.length > 0
+
     return (
       <Styled.Container>
         {toastQueue.length > 0 && (
-          <Styled.ToastArea>
+          <Styled.ToastArea isExistToast={isExistToast}>
             {toastQueue.map((toast: Toast, i: number) => {
               return <Toast key={i} toast={toast} index={i} setToastQueue={setToastQueue} />
             })}
@@ -69,6 +71,15 @@ export const useToast = () => {
  */
 const Toast = (props: ToastProps) => {
   const { index, toast, setToastQueue } = props
+  const hideDelay = toast.delay - 600
+  // ? hideDelay 시간 후, translateX(110%)을 주어야함.
+
+  const [popToast, setPopToast] = useState(true)
+
+  setTimeout(() => {
+    setPopToast(true)
+    console.log('popToast: ', popToast)
+  }, hideDelay)
 
   /**
    * 토스트의 삭제버튼을 클릭했을 때 발생하는 이벤트입니다.
@@ -83,12 +94,9 @@ const Toast = (props: ToastProps) => {
   }
 
   return (
-    <Styled.Toast type={toast.type}>
+    <Styled.Toast type={toast.type} hideDelay={hideDelay}>
       <Styled.Icon type={toast.type}>{createElement(ToastIcon[toast.type])}</Styled.Icon>
       <Styled.Contents>
-        <p>
-          안녕 나는 {index}번째 {toast.type}맛 토스트야
-        </p>
         <p>{toast.content}</p>
       </Styled.Contents>
       <Styled.Close onClick={onClickClose}>

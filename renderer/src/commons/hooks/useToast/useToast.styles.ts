@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { keyframes } from '@emotion/react'
 import { ToastColorProps } from './useToast.types'
 
 // Toast
@@ -15,33 +16,56 @@ const ToastBackgroundColor: ToastColorProps = {
   fail: '#FCA5A5',
 }
 
-export const Toast = styled.div<{ type: string }>`
+export const showToast = keyframes`
+  to {
+    transform: translateX(0);
+  }
+`
+
+export const hideToast = keyframes`
+  to {
+    transform: translateX(110%);
+  }
+`
+
+export const Toast = styled.div<{ type: string; hideDelay: number }>`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   width: 100%;
   padding: 20px 0;
-  border: 1px solid ${({ type }) => ToastColor[type]};
   margin: 1.5px 0;
   border-radius: 5px;
-  background-color: ${({ type }) => ToastBackgroundColor[type]};
-
-  transform: 'translateX(0)';
-  // transform: translateX(100%);
-  // transition: all 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
+  border: 1px solid #eee;
+  border-left: 3px solid ${({ type }) => ToastColor[type]};
+  background-color: #fff;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
+  transform: translateX(0);
+  /* animation: ${showToast} 0.5s ease; */
+  /* animation-fill-mode: forwards; */
 `
 
 export const Icon = styled.div<{ type: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0 20px;
-  color: ${({ type }) => ToastColor[type]};
+  color: ${({ type }) => ToastColor[type]} !important;
 `
 
 export const Contents = styled.div`
+  display: flex;
+  justify-content: flex-start;
   width: 100%;
 `
 export const Close = styled.div`
-  margin: 0 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 10px;
+  color: #999;
   cursor: pointer;
 `
 
@@ -55,16 +79,17 @@ export const Container = styled.div`
   /* height: 300px; */
 `
 
-export const ToastArea = styled.div`
+export const ToastArea = styled.div<{ isExistToast: boolean }>`
   position: absolute;
   right: 0;
-  top: 0;
-  display: flex;
+  top: 70px;
+  display: ${({ isExistToast }) => (isExistToast ? 'flex' : 'none')};
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   width: 400px;
   padding: 10px;
+  z-index: 999;
 `
 
 export const TestButtonArea = styled.div`

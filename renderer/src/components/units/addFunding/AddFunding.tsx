@@ -11,6 +11,9 @@ import { BrandType, FundingType } from '@/src/components/units/addFunding/AddFun
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { createFunding, getBrandList } from '@/src/commons/api/addFundingApi'
 import { useRouter } from 'next/router'
+import { useSetRecoilState } from 'recoil'
+import { useToast } from '@/src/commons/hooks/useToast'
+import { toastArray } from '@/src/commons/atom/atom'
 
 const AddFunding = () => {
   const queryClient = useQueryClient()
@@ -18,6 +21,8 @@ const AddFunding = () => {
   const [curStep, setCurStep] = useState(1)
   const [createdFundingId, setCreatedFundingId] = useState<number | null>(null)
   const [selectedBrand, setSelectedBrand] = useState<BrandType | null>(null)
+  const { pushToastQueue } = useToast()
+  const setToastQueue = useSetRecoilState(toastArray)
 
   const methods = useForm<FundingType>({
     defaultValues: {
@@ -41,6 +46,7 @@ const AddFunding = () => {
     onSuccess: data => {
       setCreatedFundingId(data.data.id)
       setCurStep(4)
+      pushToastQueue('success', '펀딩이 성공적으로 등록되었습니다.', setToastQueue, 3000)
       return queryClient.invalidateQueries('createFundingKey')
     },
     onError: error => {
