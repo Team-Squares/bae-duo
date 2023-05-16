@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import * as Styled from './FundingDetail.style'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
@@ -27,10 +27,12 @@ const FundingDetail = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0)
   const [queryId, setQueryId] = useState(0)
   const { data, isSuccess } = useQuery(['getAllAttendantList'], () => getAttendant())
+  const { data: fetchedFundingData, isSuccess: isFundingSuccess } = useQuery(['getAllFundingList'], () =>
+    getFundingData(parseInt(router.query.id as string))
+  )
 
-  // get funding data
-  useEffect(() => {
-    const id = typeof router.query.id === 'string' ? parseInt(router.query.id) : 0
+  const _getFundingData = useCallback(() => {
+    const id = Number(router.query.id as string)
     setQueryId(id)
     if (!id) return
     getFundingData(id)
@@ -38,6 +40,17 @@ const FundingDetail = () => {
         setFundingData(res.data)
       })
       .catch(e => console.log(e))
+  }, [router.query.id])
+
+  useEffect(() => {
+    if (isFundingSuccess) {
+      _getFundingData()
+    }
+  }, [_getFundingData, isFundingSuccess])
+
+  // get funding data
+  useEffect(() => {
+    _getFundingData()
   }, [router])
 
   // get attendant data

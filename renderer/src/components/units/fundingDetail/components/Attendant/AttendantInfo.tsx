@@ -16,8 +16,8 @@ const AttendantInfo = ({ ...props }) => {
   const [attendantId, setAttendantId] = useState()
   const [attendantData, setAttendantData] = useState([])
   const [menu, setMenu] = useState({
-    id: 56,
-    userName: '히히',
+    id: 67,
+    userName: '하이루',
     menuName: '',
     menuPrice: '',
     menuDesc: 'description',
@@ -27,6 +27,7 @@ const AttendantInfo = ({ ...props }) => {
   // attendantId 판별
   useLayoutEffect(() => {
     if (!attendantData) return
+    // TODO menu.id 는 user.id 를 context에서 받아와서 사용해야 하는데 아직 로그인이 구현 안 되어 있으므로 보류
     const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.id)[0]
     if (!_filtered) return
     setAttendantId(_filtered.id)
@@ -37,13 +38,13 @@ const AttendantInfo = ({ ...props }) => {
   }, [data])
 
   // funding data
-  useEffect(() => {
-    setFundingData({
-      ...funding,
-      curPrice: totalPrice,
-      curMember: data.length,
-    })
-  }, [totalPrice, data, funding])
+  // useEffect(() => {
+  //   setFundingData({
+  //     ...funding,
+  //     curPrice: totalPrice,
+  //     curMember: data.length,
+  //   })
+  // }, [totalPrice, data, funding])
 
   const validationFunc = () => {
     const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.id).length
@@ -80,6 +81,7 @@ const AttendantInfo = ({ ...props }) => {
       console.log('success', variables)
       setMenu({ ...menu, menuName: '', menuPrice: '' })
       // PutFundingMutation.mutate(JSON.stringify(fundingData))
+
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
@@ -89,24 +91,25 @@ const AttendantInfo = ({ ...props }) => {
     onError: error => {
       console.log('error', error)
     },
-    onSuccess: variables => {
+    onSuccess: async variables => {
       console.log('success', variables)
       setMenu({ ...menu, menuName: '', menuPrice: '' })
       // PutFundingMutation.mutate(JSON.stringify(fundingData))
+      await queryClient.invalidateQueries('getAllFundingList')
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
 
   // put funding data
-  const PutFundingMutation = useMutation(putFunding, {
-    onError: error => {
-      console.log('error', error)
-    },
-    onSuccess: variables => {
-      console.log('success', variables)
-      return queryClient.invalidateQueries('getAllFundingList')
-    },
-  })
+  // const PutFundingMutation = useMutation(putFunding, {
+  //   onError: error => {
+  //     console.log('error', error)
+  //   },
+  //   onSuccess: variables => {
+  //     console.log('success', variables)
+  //     return queryClient.invalidateQueries('getAllFundingList')
+  //   },
+  // })
 
   const handleChangeData = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
     switch (type) {
