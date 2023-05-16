@@ -27,3 +27,7 @@ export const deleteAttendantMenuInfo = (id: number) => {
 export const postBill = (body: any) => {
   return apiInstance.post(`/bill`, body)
 }
+
+export const getBill = (id: number) => {
+  return apiInstance.get(`/bill/${id}`)
+}

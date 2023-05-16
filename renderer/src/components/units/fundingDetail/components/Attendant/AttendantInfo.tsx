@@ -9,24 +9,27 @@ import { AttendantInfoType } from '../../FundingDetail.types'
 import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
 
 const AttendantInfo = ({ ...props }) => {
-  const { data, funding } = props
+  const { data, funding, user } = props
   const queryClient = useQueryClient()
   // 임시 사용자 정보, description은 메뉴에서 받아오는 정보?
   const [attendantId, setAttendantId] = useState()
   const [attendantData, setAttendantData] = useState([])
   const [menu, setMenu] = useState({
-    id: 67,
-    userName: '하이루',
+    userId: user.userId,
+    userName: user.name,
     menuName: '',
     menuPrice: '',
     menuDesc: 'description',
   })
 
+  useEffect(() => {
+    setMenu({ ...menu, userId: user.userId, userName: user.name })
+  }, [user])
+
   // attendantId 판별
   useLayoutEffect(() => {
     if (!attendantData) return
-    // TODO menu.id 는 user.id 를 context에서 받아와서 사용해야 하는데 아직 로그인이 구현 안 되어 있으므로 보류
-    const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.id)[0]
+    const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.userId)[0]
     if (!_filtered) return
     setAttendantId(_filtered.id)
   }, [attendantData])
@@ -36,15 +39,12 @@ const AttendantInfo = ({ ...props }) => {
   }, [data])
 
   const validationFunc = () => {
-    const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.id).length
+    const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.userId).length
     const obj = {
-      id: attendantId,
       fundingId: funding.id,
-      userId: menu.id,
+      userId: menu.userId,
       userName: menu.userName,
-      hasPaid: false,
-      // id 부분 동적으로 받아야함
-      menuInfo: `[{'id': 17,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
+      menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '설명입니다'}]`,
     }
 
     switch (_menuNum) {
@@ -70,8 +70,6 @@ const AttendantInfo = ({ ...props }) => {
     onSuccess: variables => {
       console.log('success', variables)
       setMenu({ ...menu, menuName: '', menuPrice: '' })
-      // PutFundingMutation.mutate(JSON.stringify(fundingData))
-
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
@@ -131,7 +129,7 @@ const AttendantInfo = ({ ...props }) => {
       </Button>
 
       {data.map((item: AttendantInfoType, idx: number) => (
-        <AttendantMenu item={item} key={idx} attendData={data} />
+        <AttendantMenu item={item} key={idx} attendData={data} user={user} />
       ))}
       {!data.length && <h2>지금 펀딩에 참여해보세요!</h2>}
     </Styled.AttendantInfo>

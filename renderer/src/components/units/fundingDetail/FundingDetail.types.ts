@@ -22,4 +22,25 @@ export interface AttendantInfoType {
 export interface InfoPropsType {
   item: AttendantInfoType
   attendData: AttendantInfoType[]
+  user: {
+    id: number
+    name: string
+  }
+}
+
+export interface billPriceInfoType {
+  hasPaid: boolean
+  totalPrice: number
+  userId: number
+  userName: string
+}
+
+export interface billType {
+  bankAccount: string
+  bankName: string
+  createdAt: string
+  deliveryFee: number
+  fundingId: number
+  id: number
+  priceInfo: billPriceInfoType[]
 }
