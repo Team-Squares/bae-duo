@@ -30,7 +30,7 @@ const Navbar = () => {
     <Styled.Header>
       <Styled.Navbar>
         <Styled.LeftSection>
-          <Styled.Logo>BAEDUO</Styled.Logo>
+          <Styled.Logo onClick={() => router.push('/')}>BAEDUO</Styled.Logo>
           <Styled.HistoryButtons>
             <div
               onClick={() => {

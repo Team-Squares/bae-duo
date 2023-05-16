@@ -7,11 +7,11 @@ interface UserContextValue {
 
 interface User {
   name?: string
-  account?: string
+  id?: number
 }
 
 export const UserContextProvider = ({ children }: { children: JSX.Element[] }) => {
-  const [user, setUser] = useState<User>({ name: '', account: '' })
+  const [user, setUser] = useState<User>({ name: '', id: 0 })
   const userValue = {
     user,
     setUser,
