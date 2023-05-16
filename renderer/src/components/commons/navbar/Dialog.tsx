@@ -17,7 +17,7 @@ import { UserContext } from '@/src/contexts/UserContext'
 
 const Dialog = ({ ...props }) => {
   const { routePage } = useRoutePage()
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const { setToggleDialog } = props
   return (
     <Styled.DialogLayer
@@ -67,14 +67,14 @@ const Dialog = ({ ...props }) => {
         </Styled.Row>
         <Styled.Row
           onClick={() => {
-            setUser && setUser({ name: '', account: '' })
+            setUser && setUser({ name: '', id: 0 })
             routePage('/login')
           }}
         >
           <Styled.MenuIcon>
             <Image src={IconLogin} alt="none"></Image>
           </Styled.MenuIcon>
-          <Styled.MenuTitle>로그아웃</Styled.MenuTitle>
+          <Styled.MenuTitle>{user?.name && user.name !== '' ? '로그아웃' : '로그인'}</Styled.MenuTitle>
         </Styled.Row>
       </Styled.Dialog>
     </Styled.DialogLayer>
