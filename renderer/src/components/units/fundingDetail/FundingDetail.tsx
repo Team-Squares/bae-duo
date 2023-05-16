@@ -45,8 +45,9 @@ const FundingDetail = () => {
   useEffect(() => {
     if (isFundingSuccess) {
       _getFundingData()
+      setTotalPrice(fetchedFundingData.data.curPrice)
     }
-  }, [_getFundingData, isFundingSuccess])
+  }, [_getFundingData, isFundingSuccess, attendantData])
 
   // get funding data
   useEffect(() => {
@@ -60,19 +61,6 @@ const FundingDetail = () => {
       setAttendantData(_filtered)
     }
   }, [data, isSuccess])
-
-  // get total price
-  useEffect(() => {
-    let _totalPrice = 0
-    const _menuInfoArr = attendantData.map((el: { menuInfo: any }) => el.menuInfo) || []
-    for (let i = 0; i < _menuInfoArr.length; i++) {
-      for (let j = 0; j < _menuInfoArr[i].length; j++) {
-        _totalPrice += _menuInfoArr[i][j].menuPrice
-      }
-    }
-
-    setTotalPrice(_totalPrice)
-  }, [attendantData])
 
   return (
     <Styled.Container>
@@ -126,9 +114,7 @@ const FundingDetail = () => {
       </Styled.Header>
       <Styled.Content>
         <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
-        {fundingMode === 'attendant' && (
-          <AttendantInfo data={attendantData} funding={fundingData} totalPrice={totalPrice} />
-        )}
+        {fundingMode === 'attendant' && <AttendantInfo data={attendantData} funding={fundingData} />}
         {fundingMode === 'bill' && <BillInfo attendantData={attendantData} totalPrice={totalPrice} />}
       </Styled.Content>
     </Styled.Container>

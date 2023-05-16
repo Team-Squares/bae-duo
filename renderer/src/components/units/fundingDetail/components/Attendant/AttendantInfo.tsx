@@ -7,10 +7,9 @@ import Input from '../../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
 import { AttendantInfoType } from '../../FundingDetail.types'
 import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
-import { putFunding } from '@/src/commons/api/fundingApi'
 
 const AttendantInfo = ({ ...props }) => {
-  const { data, funding, totalPrice } = props
+  const { data, funding } = props
   const queryClient = useQueryClient()
   // 임시 사용자 정보, description은 메뉴에서 받아오는 정보?
   const [attendantId, setAttendantId] = useState()
@@ -22,7 +21,6 @@ const AttendantInfo = ({ ...props }) => {
     menuPrice: '',
     menuDesc: 'description',
   })
-  const [fundingData, setFundingData] = useState(null)
 
   // attendantId 판별
   useLayoutEffect(() => {
@@ -37,15 +35,6 @@ const AttendantInfo = ({ ...props }) => {
     setAttendantData(data)
   }, [data])
 
-  // funding data
-  // useEffect(() => {
-  //   setFundingData({
-  //     ...funding,
-  //     curPrice: totalPrice,
-  //     curMember: data.length,
-  //   })
-  // }, [totalPrice, data, funding])
-
   const validationFunc = () => {
     const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.id).length
     const obj = {
@@ -54,6 +43,7 @@ const AttendantInfo = ({ ...props }) => {
       userId: menu.id,
       userName: menu.userName,
       hasPaid: false,
+      // id 부분 동적으로 받아야함
       menuInfo: `[{'id': 17,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
     }
 
@@ -99,17 +89,6 @@ const AttendantInfo = ({ ...props }) => {
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
-
-  // put funding data
-  // const PutFundingMutation = useMutation(putFunding, {
-  //   onError: error => {
-  //     console.log('error', error)
-  //   },
-  //   onSuccess: variables => {
-  //     console.log('success', variables)
-  //     return queryClient.invalidateQueries('getAllFundingList')
-  //   },
-  // })
 
   const handleChangeData = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
     switch (type) {
