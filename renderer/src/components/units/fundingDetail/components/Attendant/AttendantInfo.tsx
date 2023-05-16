@@ -49,7 +49,7 @@ const AttendantInfo = ({ ...props }) => {
     const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.id).length
     const obj = {
       id: attendantId,
-      fundingId: funding.fundingId,
+      fundingId: funding.id,
       userId: menu.id,
       userName: menu.userName,
       hasPaid: false,
