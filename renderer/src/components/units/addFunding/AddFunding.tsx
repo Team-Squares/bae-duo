@@ -59,6 +59,7 @@ const AddFunding = () => {
     setValue('brand', selectedBrand.name)
     setValue('brandId', selectedBrand.id)
     setValue('minPrice', selectedBrand?.defaultMinPrice || 0)
+    setValue('minMember', selectedBrand?.defaultMinMember || 0)
     if (selectedBrand.defaultDeadLine) {
       setValue(
         'deadline',
