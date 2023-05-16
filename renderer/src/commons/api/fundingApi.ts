@@ -2,7 +2,10 @@ import { FundingType } from '@/src/components/units/addFunding/AddFunding.types'
 import moment from 'moment'
 import { apiInstance } from '.'
 
-export const getFundingList = () => {
+export const getFundingList = (status?: number) => {
+  if (status) {
+    return apiInstance.get(`/funding?status=${status}`)
+  }
   return apiInstance.get('/funding')
 }
 
@@ -11,7 +14,8 @@ export const getFundingItem = (id: number) => {
 }
 
 export const putFunding = (body: any) => {
-  return apiInstance.put('/funding', body)
+  delete body.id
+  return apiInstance.put(`/funding/${body.id}`, body)
 }
 
 export const postFunding = (body: any) => {
