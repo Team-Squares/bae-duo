@@ -10,5 +10,5 @@ export const login = (id: string, password: string) => {
 }
 
 export const addUser = (param: UserParam) => {
-  return apiInstance.post('/user', param)
+  return apiInstance.post('/user/add', param)
 }
