@@ -74,13 +74,6 @@ const Toast = (props: ToastProps) => {
   const hideDelay = toast.delay - 600
   // ? hideDelay 시간 후, translateX(110%)을 주어야함.
 
-  const [popToast, setPopToast] = useState(true)
-
-  setTimeout(() => {
-    setPopToast(true)
-    console.log('popToast: ', popToast)
-  }, hideDelay)
-
   /**
    * 토스트의 삭제버튼을 클릭했을 때 발생하는 이벤트입니다.
    * 해당 토스트의 index를 찾아 삭제합니다.
