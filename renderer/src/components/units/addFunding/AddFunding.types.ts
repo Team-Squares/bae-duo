@@ -12,14 +12,15 @@ export interface FundingType {
 }
 
 export interface BrandType {
-  id: number
-  createdId: number
+  id?: number
+  createdUserId: number
   name: string
   orderType: number
-  orderCnt: number
-  menuImage: string
-  defaultDeadLine: Date | null
-  defaultMinPrice: number | null
+  orderCnt?: number
+  brandImage?: string
+  defaultDeadLine: Date
+  defaultMinPrice?: number | null
+  defaultMinMember?: number | null
 }
 
 export interface SetCurStepProps {

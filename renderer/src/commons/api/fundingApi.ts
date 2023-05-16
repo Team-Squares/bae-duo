@@ -1,3 +1,5 @@
+import { FundingType } from '@/src/components/units/addFunding/AddFunding.types'
+import moment from 'moment'
 import { apiInstance } from '.'
 
 export const getFundingList = () => {
@@ -18,4 +20,11 @@ export const postFunding = (body: any) => {
 
 export const deleteFunding = (id: number) => {
   return apiInstance.delete(`/funding/${id}`)
+}
+
+export const createFunding = (funding: FundingType) => {
+  return apiInstance.post(`/funding`, {
+    ...funding,
+    deadline: moment(funding.deadline).format('YYYY-MM-DD HH:mm:ss'),
+  })
 }

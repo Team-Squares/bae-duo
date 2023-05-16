@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef } from 'react'
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import * as AddFundingStyled from '@/src/components/units/addFunding/AddFunding.styles'
 import * as Styled from '@/src/components/units/addFunding/addBrandModal/AddBrandModal.styles'
 import AddIcon from '@mui/icons-material/Add'
@@ -10,9 +10,9 @@ import moment from 'moment'
 import { BrandType } from '../AddFunding.types'
 import Dropdown from '@/src/components/commons/dropdown/Dropdown'
 import Image from 'next/image'
-
 import { useMutation, useQueryClient } from 'react-query'
-import { createBrand, updateBrand } from '@/src/commons/api/addFundingApi'
+import { createBrand, updateBrand } from '@/src/commons/api/brandApi'
+import { serialize } from 'object-to-formdata'
 
 interface AddBrandModalProps {
   brand?: BrandType
@@ -20,25 +20,26 @@ interface AddBrandModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>
 }
 
-type AddBrandType = Partial<BrandType>
-
 const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandModalProps) => {
   const queryClient = useQueryClient()
   const imgInputRef = useRef<HTMLInputElement | null>(null)
-  const { setValue, handleSubmit, control } = useForm<AddBrandType>({
+  const [brandImageFile, setBrandImageFile] = useState<File>()
+  const { setValue, handleSubmit, control } = useForm<BrandType>({
     defaultValues: {
-      createdId: brand?.createdId || 1,
+      id: brand?.id,
+      createdUserId: brand?.createdUserId || 1,
       name: brand?.name || '',
       orderType: brand?.orderType || 1,
-      menuImage: brand?.menuImage || '',
+      brandImage: brand?.brandImage || '',
       defaultDeadLine: brand?.defaultDeadLine || new Date(moment().hours(11).minutes(0).seconds(0).format()), // 기본 11:00 세팅
       defaultMinPrice: brand?.defaultMinPrice || 0,
+      defaultMinMember: brand?.defaultMinMember || 0,
     },
   })
 
-  const [orderType, menuImage, defaultDeadLine] = useWatch({
+  const [orderType, brandImage, defaultDeadLine] = useWatch({
     control,
-    name: ['orderType', 'menuImage', 'defaultDeadLine'],
+    name: ['orderType', 'brandImage', 'defaultDeadLine'],
   })
 
   const addBrandMutation = useMutation(createBrand, {
@@ -51,6 +52,7 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
     },
   })
 
+  // const modifyBrandMutation = useMutation(updateBrand, {
   const modifyBrandMutation = useMutation(updateBrand, {
     onSuccess: () => {
       setShowModal(false)
@@ -63,24 +65,39 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
 
   const handleChangeImage = (e: ChangeEvent) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList
-    handleSetImageList(targetFiles)
+    handleSetImage(targetFiles)
   }
 
-  const handleSetImageList = (fileList: FileList) => {
+  const handleSetImage = (fileList: FileList) => {
     const targetFilesArray = Array.from(fileList)
     const selectedFiles: string[] = targetFilesArray.map(file => URL.createObjectURL(file))
-    setValue('menuImage', selectedFiles[0])
+    setValue('brandImage', selectedFiles[0])
+    setBrandImageFile(targetFilesArray[0])
   }
 
-  const handleAddBrand = (data: AddBrandType) => {
-    addBrandMutation.mutate(data)
-  }
-
-  const handleModifyBrand = (data: AddBrandType) => {
-    modifyBrandMutation.mutate({
-      id: brand?.id,
+  const handleAddBrand = (data: BrandType) => {
+    delete data.brandImage
+    const convertedData = {
       ...data,
-    })
+      defaultDeadLine: moment(data.defaultDeadLine).format('YYYY-MM-DD HH:mm:ss'),
+    }
+
+    const formData = serialize(convertedData)
+    formData.append('file', brandImageFile as File)
+
+    addBrandMutation.mutate(formData)
+  }
+
+  const handleModifyBrand = (data: BrandType) => {
+    const convertedData = {
+      ...data,
+      defaultDeadLine: moment(data.defaultDeadLine).format('YYYY-MM-DD HH:mm:ss'),
+    }
+
+    const formData = serialize(convertedData)
+    formData.append('file', brandImageFile as File)
+
+    modifyBrandMutation.mutate(formData)
   }
 
   return (
@@ -106,7 +123,7 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
       <Styled.AddBrandContainer>
         <Styled.SettingItem>
           <Styled.SettingItemTitle>
-            {!menuImage && (
+            {!brandImage && (
               <Styled.AddImageContainer
                 onClick={() => {
                   if (!imgInputRef.current) return
@@ -123,12 +140,12 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
                 />
               </Styled.AddImageContainer>
             )}
-            {menuImage && (
+            {brandImage && (
               <Styled.ImagePreview>
-                <Image width={80} height={80} src={menuImage} alt="브랜드 대표 이미지" />
+                <Image width={80} height={80} src={brandImage} alt="브랜드 대표 이미지" />
                 <Styled.ImageRemoveIcon
                   onClick={() => {
-                    setValue('menuImage', '')
+                    setValue('brandImage', '')
                   }}
                 />
               </Styled.ImagePreview>
@@ -219,10 +236,11 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
             <Controller
               control={control}
               name="defaultMinPrice"
-              render={({ field: { onChange } }) => {
+              render={({ field: { onChange, value } }) => {
                 return (
                   <Input
                     size="sm"
+                    value={value || 0}
                     placeholder="선택사항"
                     style={{ width: '100%' }}
                     onChange={e => {
@@ -237,7 +255,23 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
         <Styled.SettingItem>
           <Styled.SettingItemTitle>기본 최소인원</Styled.SettingItemTitle>
           <Styled.SettingItemBody>
-            <Input size="sm" placeholder="선택사항" style={{ width: '100%' }} />
+            <Controller
+              control={control}
+              name="defaultMinMember"
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <Input
+                    size="sm"
+                    value={value || 0}
+                    placeholder="선택사항"
+                    style={{ width: '100%' }}
+                    onChange={e => {
+                      onChange(+e.target.value)
+                    }}
+                  />
+                )
+              }}
+            />
           </Styled.SettingItemBody>
         </Styled.SettingItem>
       </Styled.AddBrandContainer>
