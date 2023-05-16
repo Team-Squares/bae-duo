@@ -30,6 +30,11 @@ export const Navbar = styled.nav`
 export const Logo = styled.div`
   font-family: 'Noto Sans', sans-serif;
   font-size: 22px;
+  cursor: pointer;
+
+  :hover {
+    color: #354fbc;
+  }
 `
 
 export const LeftSection = styled.div`
