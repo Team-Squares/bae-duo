@@ -29,7 +29,6 @@ const HOURS = 23
 const MINUTES = 56
 
 const Navbar = () => {
-  const { routePage } = useRoutePage()
   const router = useRouter()
   const [toggleDialog, setToggleDialog] = useState(false)
   const { pushToastQueue } = useToast()
@@ -46,7 +45,9 @@ const Navbar = () => {
   const notiHandler = async (hours: number, minutes: number) => {
     const result = await Notification.requestPermission()
     const today = new Date()
-    console.log(`${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`)
+    pushToastQueue('success', '[success]', setToastQueue, 3000)
+    pushToastQueue('warning', '[warning]', setToastQueue, 3000)
+    pushToastQueue('fail', '[fail]', setToastQueue, 3000)
     // 추후 알림시간을 지정받아서 설정하기
     if (today.getHours() === HOURS && today.getMinutes() === MINUTES) {
       if (result === 'granted') {
