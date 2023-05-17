@@ -11,31 +11,27 @@ import starterImg from '@/public/images/starter.svg'
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
 import { useQuery, useQueryClient } from 'react-query'
-import { getAllFundingList } from '@/src/commons/api/main/mainApi'
-import { getAllFundingListProps } from '@/src/commons/types/mainApi'
 import { useRouter } from 'next/router'
 import Skeleton from '../../commons/skeleton/Skeleton'
 import { Flex } from '../addFunding/AddFunding.styles'
+import { getFundingList } from '@/src/commons/api/fundingApi'
+import { FundingType } from '../addFunding/AddFunding.types'
 
 const Home = () => {
   const router = useRouter()
   const queryClient = useQueryClient() //delete할때 필요.
   const [category, setCategory] = useState(0)
-  const [fundingList, setFundingList] = useState<getAllFundingListProps[]>([])
-  const { isLoading, isFetching, data, isSuccess } = useQuery(['getAllFundingList'], () => getAllFundingList())
-
-  useEffect(() => {
-    if (isSuccess) {
-      const sortByReverse = data.sort((a, b) => moment(b.createdAt).diff(a.createdAt))
-      const filterByCategory =
-        category === 1
-          ? sortByReverse.filter(list => list.status === 1)
-          : category === 2
-          ? sortByReverse.filter(list => list.status === 2)
-          : sortByReverse
-      setFundingList(filterByCategory)
+  const {
+    isLoading,
+    isFetching,
+    data: fundingList,
+    isSuccess,
+  } = useQuery(['getAllFundingList', category], () => {
+    if (category === 0) {
+      return getFundingList()
     }
-  }, [category, data, isSuccess])
+    return getFundingList(category)
+  })
 
   return (
     <div>
@@ -59,16 +55,16 @@ const Home = () => {
         </Flex>
       ) : (
         <Styled.BrandsBox>
-          {fundingList?.map(item => (
+          {fundingList?.data?.map((item: FundingType) => (
             <Fragment key={item.createdAt}>
               <Styled.BrandsCard onClick={() => router.push(`/attendant/${item.id}`)}>
                 <Styled.FundingInfo>
                   <Styled.StatusBox>
                     <Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>
                     <Tag
-                      text={`펀딩 ${categoryName[item.status] ?? '실패'}`}
-                      color={tagByStatus(item.status)?.color}
-                      background={tagByStatus(item.status)?.background}
+                      text={`펀딩 ${categoryName[item.status || 0] ?? '실패'}`}
+                      color={tagByStatus(item.status || 0)?.color}
+                      background={tagByStatus(item.status || 0)?.background}
                     />
                   </Styled.StatusBox>
                   <section>
@@ -99,13 +95,15 @@ const Home = () => {
                   </div>
                 </Styled.LimitBox>
                 <Styled.ProgressBox>
-                  <Styled.Percentage percentage={getPercentage(item.curPrice, item.curPrice * item.curMember)}>
+                  <Styled.Percentage
+                    percentage={getPercentage(item.curPrice, (item.curPrice || 0) * (item.curMember || 0))}
+                  >
                     {item.curMember ? (
-                      <span>{`${getPercentage(item.curPrice, item.minPrice)}% 달성했어요`}</span>
+                      <span>{`${getPercentage(item?.curPrice, item.minPrice)}% 달성했어요`}</span>
                     ) : (
                       <span>참여인원이 없습니다.</span>
                     )}
-                    <span>{`${getKORMoneyString(item.curPrice)}원 / ${getKORMoneyString(item.minPrice)}원`}</span>
+                    <span>{`${getKORMoneyString(item?.curPrice)}원 / ${getKORMoneyString(item.minPrice)}원`}</span>
                   </Styled.Percentage>
                   <Styled.ProgressBar percentage={getPercentage(item.curPrice, item.minPrice)}>
                     <div></div>
@@ -116,7 +114,7 @@ const Home = () => {
           ))}
         </Styled.BrandsBox>
       )}
-      {fundingList.length === 0 && !isLoading && (
+      {fundingList?.data?.length === 0 && !isLoading && (
         <Styled.EmptySection>
           <TbNotesOff style={{ width: '24px', height: '24px' }} />
           empty data
