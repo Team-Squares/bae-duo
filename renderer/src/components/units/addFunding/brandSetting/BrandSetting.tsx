@@ -11,7 +11,7 @@ import AddBrandModal from '../addBrandModal/AddBrandModal'
 import DefaultFoodImage from '@/public/images/food.svg'
 import Button from '@/src/components/commons/button/Button'
 import { useMutation, useQueryClient } from 'react-query'
-import { deleteBrand, getBrandList } from '@/src/commons/api/addFundingApi'
+import { deleteBrand } from '@/src/commons/api/brandApi'
 
 interface BranSettingProps extends SetCurStepProps {
   brandList: BrandType[]
@@ -21,6 +21,7 @@ interface BranSettingProps extends SetCurStepProps {
 const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingProps) => {
   const queryClient = useQueryClient()
   const [addingBrandModal, setAddingBrandModal] = useState(false)
+  const [modifyBrandModal, setModifyBrandModal] = useState(false)
   const [viewBrandList, setViewBrandList] = useState<BrandType[]>()
   const [filtered, setFiltered] = useState<'all' | 'delivery' | 'toGo'>('all')
   const [modifiedBrand, setModifiedBrand] = useState<BrandType>()
@@ -100,7 +101,7 @@ const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingPr
               isActive={brand.name === brandName}
             >
               <Styled.BrandImageContainer isActive={brand.name === brandName}>
-                <Image src={brand.menuImage || DefaultFoodImage} alt={brand.name} width={80} height={80} />
+                <Image src={brand.brandImage || DefaultFoodImage} alt={brand.name} width={80} height={80} />
               </Styled.BrandImageContainer>
               <Styled.BrandInfo isActive={brand.name === brandName}>
                 <Styled.Flex justifyContent="space-between">
@@ -116,7 +117,7 @@ const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingPr
                       variant="outlined"
                       onClick={e => {
                         e.stopPropagation()
-                        setAddingBrandModal(true)
+                        setModifyBrandModal(true)
                         setModifiedBrand(brand)
                       }}
                     >
@@ -128,7 +129,7 @@ const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingPr
                       onClick={e => {
                         e.stopPropagation()
                         const message = confirm(`'${brand.name}'을(를) 정말 삭제하실건가요? 🥲`)
-                        if (message) {
+                        if (message && brand.id) {
                           deleteBrandMutation.mutate(brand.id)
                         }
                       }}
@@ -145,8 +146,10 @@ const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingPr
       </Styled.SettingCard>
 
       {/* 브랜드 추가 모달 */}
-      {addingBrandModal && (
-        <AddBrandModal brand={modifiedBrand} isEditingMode={true} setShowModal={setAddingBrandModal} />
+      {addingBrandModal && <AddBrandModal isEditingMode={false} setShowModal={setAddingBrandModal} />}
+      {/* 브랜드 수정 모달 */}
+      {modifyBrandModal && (
+        <AddBrandModal brand={modifiedBrand} isEditingMode={true} setShowModal={setModifyBrandModal} />
       )}
     </>
   )

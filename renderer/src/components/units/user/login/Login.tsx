@@ -48,7 +48,7 @@ const Login = () => {
         <input placeholder="비밀번호를 입력해주세요." {...register('password')} />
       </div>
       <div>
-        <Button variant="outlined" style={{ width: '100%', marginBottom: 20 }}>
+        <Button variant="outlined" onClick={() => router.push('/signUp')} style={{ width: '100%', marginBottom: 20 }}>
           회원 가입
         </Button>
         <Button onClick={handleSubmit(onSubmit)} style={{ width: '100%' }}>
