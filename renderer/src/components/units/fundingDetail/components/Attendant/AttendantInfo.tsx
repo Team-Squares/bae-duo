@@ -7,27 +7,29 @@ import Input from '../../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
 import { AttendantInfoType } from '../../FundingDetail.types'
 import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
-import { putFunding } from '@/src/commons/api/fundingApi'
 
 const AttendantInfo = ({ ...props }) => {
-  const { data, funding, totalPrice } = props
+  const { data, funding, user } = props
   const queryClient = useQueryClient()
   // 임시 사용자 정보, description은 메뉴에서 받아오는 정보?
   const [attendantId, setAttendantId] = useState()
   const [attendantData, setAttendantData] = useState([])
   const [menu, setMenu] = useState({
-    id: 56,
-    userName: '히히',
+    userId: user.userId,
+    userName: user.name,
     menuName: '',
     menuPrice: '',
     menuDesc: 'description',
   })
-  const [fundingData, setFundingData] = useState(null)
+
+  useEffect(() => {
+    setMenu({ ...menu, userId: user.userId, userName: user.name })
+  }, [user])
 
   // attendantId 판별
   useLayoutEffect(() => {
     if (!attendantData) return
-    const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.id)[0]
+    const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.userId)[0]
     if (!_filtered) return
     setAttendantId(_filtered.id)
   }, [attendantData])
@@ -36,24 +38,13 @@ const AttendantInfo = ({ ...props }) => {
     setAttendantData(data)
   }, [data])
 
-  // funding data
-  useEffect(() => {
-    setFundingData({
-      ...funding,
-      curPrice: totalPrice,
-      curMember: data.length,
-    })
-  }, [totalPrice, data, funding])
-
   const validationFunc = () => {
-    const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.id).length
+    const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.userId).length
     const obj = {
-      id: attendantId,
-      fundingId: funding.fundingId,
-      userId: menu.id,
+      fundingId: funding.id,
+      userId: menu.userId,
       userName: menu.userName,
-      hasPaid: false,
-      menuInfo: `[{'id': 17,  'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '${menu.menuDesc}'}]`,
+      menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '설명입니다'}]`,
     }
 
     switch (_menuNum) {
@@ -79,7 +70,6 @@ const AttendantInfo = ({ ...props }) => {
     onSuccess: variables => {
       console.log('success', variables)
       setMenu({ ...menu, menuName: '', menuPrice: '' })
-      // PutFundingMutation.mutate(JSON.stringify(fundingData))
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
@@ -89,22 +79,12 @@ const AttendantInfo = ({ ...props }) => {
     onError: error => {
       console.log('error', error)
     },
-    onSuccess: variables => {
+    onSuccess: async variables => {
       console.log('success', variables)
       setMenu({ ...menu, menuName: '', menuPrice: '' })
       // PutFundingMutation.mutate(JSON.stringify(fundingData))
+      await queryClient.invalidateQueries('getAllFundingList')
       return queryClient.invalidateQueries('getAllAttendantList')
-    },
-  })
-
-  // put funding data
-  const PutFundingMutation = useMutation(putFunding, {
-    onError: error => {
-      console.log('error', error)
-    },
-    onSuccess: variables => {
-      console.log('success', variables)
-      return queryClient.invalidateQueries('getAllFundingList')
     },
   })
 
@@ -149,7 +129,7 @@ const AttendantInfo = ({ ...props }) => {
       </Button>
 
       {data.map((item: AttendantInfoType, idx: number) => (
-        <AttendantMenu item={item} key={idx} attendData={data} />
+        <AttendantMenu item={item} key={idx} attendData={data} user={user} />
       ))}
       {!data.length && <h2>지금 펀딩에 참여해보세요!</h2>}
     </Styled.AttendantInfo>

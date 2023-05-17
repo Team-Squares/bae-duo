@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useContext } from 'react'
 import * as Styled from './FundingDetail.style'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { getAttendant, getFundingData } from '@/src/commons/api/progressFundingApi'
-import { getFundingItem } from '@/src/commons/api/fundingApi'
-
+import { UserContext } from '@/src/contexts/UserContext'
 import { typography } from '../../../commons/styles/typography'
 import { color } from '@/src/commons/styles/styles'
-
 import { FundingListType } from '../home/Home.types'
 import { AttendantInfoType } from './FundingDetail.types'
-
 import Tag from '../../commons/tag/Tag'
 import Button from '../../commons/button/Button'
-
 import FundingInfoList from './components/FundingInfoList'
 import AttendantInfo from './components/Attendant/AttendantInfo'
 import BillInfo from './components/Bill/BillInfo'
 
 const FundingDetail = () => {
+  const { user } = useContext(UserContext)
   const router = useRouter()
   const [fundingData, setFundingData] = useState<FundingListType | null>(null)
   const [attendantData, setAttendantData] = useState<AttendantInfoType[]>([])
@@ -27,10 +24,13 @@ const FundingDetail = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0)
   const [queryId, setQueryId] = useState(0)
   const { data, isSuccess } = useQuery(['getAllAttendantList'], () => getAttendant())
+  const { data: fetchedFundingData, isSuccess: isFundingSuccess } = useQuery(['getAllFundingList'], () =>
+    getFundingData(parseInt(router.query.id as string))
+  )
+  const [isCompleteOrder, setIsCompleteOrder] = useState(false)
 
-  // get funding data
-  useEffect(() => {
-    const id = typeof router.query.id === 'string' ? parseInt(router.query.id) : 0
+  const _getFundingData = useCallback(() => {
+    const id = Number(router.query.id as string)
     setQueryId(id)
     if (!id) return
     getFundingData(id)
@@ -38,6 +38,18 @@ const FundingDetail = () => {
         setFundingData(res.data)
       })
       .catch(e => console.log(e))
+  }, [router.query.id])
+
+  useEffect(() => {
+    if (isFundingSuccess) {
+      _getFundingData()
+      setTotalPrice(fetchedFundingData.data.curPrice)
+    }
+  }, [_getFundingData, isFundingSuccess, attendantData])
+
+  // get funding data
+  useEffect(() => {
+    _getFundingData()
   }, [router])
 
   // get attendant data
@@ -47,19 +59,6 @@ const FundingDetail = () => {
       setAttendantData(_filtered)
     }
   }, [data, isSuccess])
-
-  // get total price
-  useEffect(() => {
-    let _totalPrice = 0
-    const _menuInfoArr = attendantData.map((el: { menuInfo: any }) => el.menuInfo) || []
-    for (let i = 0; i < _menuInfoArr.length; i++) {
-      for (let j = 0; j < _menuInfoArr[i].length; j++) {
-        _totalPrice += _menuInfoArr[i][j].menuPrice
-      }
-    }
-
-    setTotalPrice(_totalPrice)
-  }, [attendantData])
 
   return (
     <Styled.Container>
@@ -98,25 +97,53 @@ const FundingDetail = () => {
               이전
             </Button>
           )}
-          <Button
-            style={{
-              backgroundColor: `${color.$point}`,
-              fontSize: `${typography.body1.light}`,
-              width: '100%',
-              marginBottom: '32px',
-            }}
-            onClick={() => setFundingMode('bill')}
-          >
-            주문 하기
-          </Button>
+
+          {/* 스타터 아이디로 변경 필요 , 임시 데이터 */}
+          {fetchedFundingData?.data.starter === 'seung' ? (
+            <Button
+              style={{
+                backgroundColor: `${color.$point}`,
+                fontSize: `${typography.body1.light}`,
+                width: '100%',
+                marginBottom: '32px',
+              }}
+              onClick={() => setFundingMode('bill')}
+            >
+              주문 하기
+            </Button>
+          ) : (
+            <Button
+              style={{
+                backgroundColor: `${color.$blue30}`,
+                fontSize: `${typography.body1.light}`,
+                width: '100%',
+                marginBottom: '32px',
+              }}
+              onClick={() => {
+                if (isCompleteOrder) {
+                  setFundingMode('bill')
+                } else {
+                  alert('스타터가 주문중입니다')
+                }
+              }}
+            >
+              주문서 확인하기
+            </Button>
+          )}
         </div>
       </Styled.Header>
       <Styled.Content>
         <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
-        {fundingMode === 'attendant' && (
-          <AttendantInfo data={attendantData} funding={fundingData} totalPrice={totalPrice} />
+        {fundingMode === 'attendant' && <AttendantInfo data={attendantData} funding={fundingData} user={user} />}
+        {fundingMode === 'bill' && (
+          <BillInfo
+            attendantData={attendantData}
+            totalPrice={totalPrice}
+            userId={user?.id}
+            fundingData={fundingData}
+            setIsCompleteOrder={setIsCompleteOrder}
+          />
         )}
-        {fundingMode === 'bill' && <BillInfo attendantData={attendantData} totalPrice={totalPrice} />}
       </Styled.Content>
     </Styled.Container>
   )
