@@ -2,11 +2,13 @@ import { login } from '@/src/commons/api/loginApi'
 import Button from '@/src/components/commons/button/Button'
 import Input from '@/src/components/commons/input/Input'
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import * as Styled from './Login.style'
 import { UserContext } from '@/src/contexts/UserContext'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { useRecoilState } from 'recoil'
+import { userInfoState } from '@/src/commons/atom/user'
 
 interface FormData {
   id: string
@@ -22,18 +24,25 @@ const Login = () => {
     },
   })
 
-  const { user, setUser } = useContext(UserContext)
+  // const { user, setUser } = useContext(UserContext)
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const router = useRouter()
 
   const onSubmit = async (param: FormData) => {
     try {
       const { data } = await login(param.id, param.password)
       console.log(data)
-      setUser &&
-        setUser({
-          name: data?.name,
-          id: data?.id,
-        })
+
+      // setUser &&
+      //   setUser({
+      //     name: data?.name,
+      //     id: data?.id,
+      //   })
+      setUserInfo({
+        name: data?.name,
+        id: data?.id,
+        isLogin: true,
+      })
       router.push('/')
     } catch (error) {
       console.log(error)

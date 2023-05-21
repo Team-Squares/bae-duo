@@ -14,10 +14,15 @@ import { styled } from '@mui/material/styles'
 import css from 'styled-jsx/css'
 import { useContext } from 'react'
 import { UserContext } from '@/src/contexts/UserContext'
+import { useRecoilState, useResetRecoilState } from 'recoil'
+import { userInfoState } from '@/src/commons/atom/user'
 
 const Dialog = ({ ...props }) => {
   const { routePage } = useRoutePage()
-  const { user, setUser } = useContext(UserContext)
+  // const { user, setUser } = useContext(UserContext)
+  const [userInfo] = useRecoilState(userInfoState)
+  const userLogout = useResetRecoilState(userInfoState)
+
   const { setToggleDialog } = props
   return (
     <Styled.DialogLayer
@@ -67,14 +72,16 @@ const Dialog = ({ ...props }) => {
         </Styled.Row>
         <Styled.Row
           onClick={() => {
-            setUser && setUser({ name: '', id: 0 })
+            // setUser && setUser({ name: '', id: 0 })
+            if (userInfo.isLogin) userLogout()
             routePage('/login')
           }}
         >
           <Styled.MenuIcon>
             <Image src={IconLogin} alt="none"></Image>
           </Styled.MenuIcon>
-          <Styled.MenuTitle>{user?.name && user.name !== '' ? '로그아웃' : '로그인'}</Styled.MenuTitle>
+          {/* <Styled.MenuTitle>{user?.name && user.name !== '' ? '로그아웃' : '로그인'}</Styled.MenuTitle> */}
+          <Styled.MenuTitle>{userInfo?.name && userInfo.name !== '' ? '로그아웃' : '로그인'}</Styled.MenuTitle>
         </Styled.Row>
       </Styled.Dialog>
     </Styled.DialogLayer>
