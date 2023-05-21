@@ -191,6 +191,11 @@ export const MenuContainer = styled.div`
       margin-bottom: 5px;
     }
 
+    .menuCount {
+      color: ${color.$secondaryText};
+      ${typography.body2.medium};
+    }
+
     .menuPrice {
       color: ${color.$secondaryText};
       ${typography.body2.medium};

@@ -32,7 +32,7 @@ const AttendantInfo = ({ ...props }) => {
       fundingId: funding.id,
       userId: user.id,
       userName: user.name,
-      menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '설명입니다'}]`,
+      menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': ${menu.menuDesc}, 'count':${menu.menuCount}}]`,
     }
 
     switch (_menuNum) {

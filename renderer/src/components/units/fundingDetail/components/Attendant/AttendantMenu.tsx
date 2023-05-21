@@ -58,6 +58,7 @@ const AttendantMenu: React.FC<InfoPropsType> = props => {
             <div className="menuItemInfo">
               <div className="menuName">{ele.menuName}</div>
               <div className="menuDesc">{ele.description}</div>
+              <div className="menuCount">수량 : {ele.count}개</div>
               <div className="menuPrice">가격 : {ele.menuPrice}원</div>
             </div>
             {item.userId === user?.id && <CloseIcon onClick={() => removeMenu(ele)} />}

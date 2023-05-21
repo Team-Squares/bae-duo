@@ -5,6 +5,7 @@ export interface Menu {
   count: number
   description: string
   menuName: string
+
   menuPrice: number
 }
 
