@@ -138,12 +138,12 @@ export const AttendantInfo = styled.div`
     align-items: center;
     gap: 16px;
     margin-bottom: 16px;
-    div:nth-of-type(1) {
+    /* div:nth-of-type(1) {
       width: calc((100% - 16px) / 2);
     }
     div:nth-of-type(2) {
       width: calc((100% - 16px) / 2);
-    }
+    } */
   }
 
   button > span {

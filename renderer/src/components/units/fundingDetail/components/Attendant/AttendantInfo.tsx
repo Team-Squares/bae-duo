@@ -12,38 +12,24 @@ const AttendantInfo = ({ ...props }) => {
   const { data, funding, user } = props
   const queryClient = useQueryClient()
   // 임시 사용자 정보, description은 메뉴에서 받아오는 정보?
-  const [attendantId, setAttendantId] = useState()
   const [attendantData, setAttendantData] = useState([])
   const [menu, setMenu] = useState({
-    userId: user.userId,
-    userName: user.name,
     menuName: '',
-    menuPrice: '',
-    menuDesc: 'description',
+    menuPrice: 0,
+    menuDesc: '',
+    menuCount: 0,
   })
-
-  useEffect(() => {
-    setMenu({ ...menu, userId: user.userId, userName: user.name })
-  }, [user])
-
-  // attendantId 판별
-  useLayoutEffect(() => {
-    if (!attendantData) return
-    const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.userId)[0]
-    if (!_filtered) return
-    setAttendantId(_filtered.id)
-  }, [attendantData])
 
   useLayoutEffect(() => {
     setAttendantData(data)
   }, [data])
 
   const validationFunc = () => {
-    const _menuNum = data.filter((el: { userId: number }) => el.userId === menu.userId).length
+    const _menuNum = data.filter((el: { userId: number }) => el.userId === user.id).length
     const obj = {
       fundingId: funding.id,
-      userId: menu.userId,
-      userName: menu.userName,
+      userId: user.id,
+      userName: user.name,
       menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '설명입니다'}]`,
     }
 
@@ -51,13 +37,13 @@ const AttendantInfo = ({ ...props }) => {
       case 0: {
         console.log('POST')
         PostAttendantMutation.mutate(obj)
-        setMenu({ ...menu, menuName: '', menuPrice: '' })
+        setMenu({ ...menu, menuName: '', menuPrice: 0 })
         break
       }
       default: {
         console.log('PUT')
         PutAttendantMutation.mutate(obj)
-        setMenu({ ...menu, menuName: '', menuPrice: '' })
+        setMenu({ ...menu, menuName: '', menuPrice: 0 })
         break
       }
     }
@@ -69,7 +55,7 @@ const AttendantInfo = ({ ...props }) => {
     },
     onSuccess: variables => {
       console.log('success', variables)
-      setMenu({ ...menu, menuName: '', menuPrice: '' })
+      setMenu({ ...menu, menuName: '', menuPrice: 0 })
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
@@ -81,7 +67,7 @@ const AttendantInfo = ({ ...props }) => {
     },
     onSuccess: async variables => {
       console.log('success', variables)
-      setMenu({ ...menu, menuName: '', menuPrice: '' })
+      setMenu({ ...menu, menuName: '', menuPrice: 0 })
       // PutFundingMutation.mutate(JSON.stringify(fundingData))
       await queryClient.invalidateQueries('getAllFundingList')
       return queryClient.invalidateQueries('getAllAttendantList')
@@ -94,8 +80,12 @@ const AttendantInfo = ({ ...props }) => {
         setMenu({ ...menu, menuName: e.target.value })
         break
       case 'price':
-        setMenu({ ...menu, menuPrice: e.target.value })
+        setMenu({ ...menu, menuPrice: Number(e.target.value) })
         break
+      case 'count':
+        setMenu({ ...menu, menuCount: Number(e.target.value) })
+      case 'description':
+        setMenu({ ...menu, menuDesc: e.target.value })
     }
   }
 
@@ -112,8 +102,20 @@ const AttendantInfo = ({ ...props }) => {
         <Input
           placeholder="가격을 입력하세요"
           size="md"
-          value={menu.menuPrice}
+          value={menu.menuPrice > 0 ? menu.menuPrice : undefined}
           onChange={e => handleChangeData(e, 'price')}
+        />
+        <Input
+          placeholder="수량을 입력하세요"
+          size="md"
+          value={menu.menuCount > 0 ? menu.menuCount : undefined}
+          onChange={e => handleChangeData(e, 'count')}
+        />
+        <Input
+          placeholder="설명을 입력하세요"
+          size="md"
+          value={menu.menuDesc}
+          onChange={e => handleChangeData(e, 'description')}
         />
       </div>
       <Button
