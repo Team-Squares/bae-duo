@@ -57,7 +57,6 @@ const AttendantInfo = ({ ...props }) => {
     },
     onSuccess: variables => {
       console.log('success', variables)
-      cleanMenu()
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
@@ -69,7 +68,6 @@ const AttendantInfo = ({ ...props }) => {
     },
     onSuccess: async variables => {
       console.log('success', variables)
-      cleanMenu()
       // PutFundingMutation.mutate(JSON.stringify(fundingData))
       await queryClient.invalidateQueries('getAllFundingList')
       return queryClient.invalidateQueries('getAllAttendantList')
@@ -106,13 +104,13 @@ const AttendantInfo = ({ ...props }) => {
         <Input
           placeholder="가격을 입력하세요"
           size="md"
-          value={menu.menuPrice > 0 ? menu.menuPrice : undefined}
+          value={menu.menuPrice > 0 ? menu.menuPrice : ''}
           onChange={e => handleChangeData(e, 'price')}
         />
         <Input
           placeholder="수량을 입력하세요"
           size="md"
-          value={menu.menuCount > 0 ? menu.menuCount : undefined}
+          value={menu.menuCount > 0 ? menu.menuCount : ''}
           onChange={e => handleChangeData(e, 'count')}
         />
         <Input
