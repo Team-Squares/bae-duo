@@ -14,7 +14,7 @@ import { getBrandList } from '@/src/commons/api/brandApi'
 import { useRouter } from 'next/router'
 import { useSetRecoilState } from 'recoil'
 import { useToast } from '@/src/commons/hooks/useToast'
-import { toastArray } from '@/src/commons/atom/atom'
+import { toastArray } from '@/src/commons/atom/toast'
 
 const AddFunding = () => {
   const queryClient = useQueryClient()

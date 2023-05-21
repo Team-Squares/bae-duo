@@ -4,7 +4,7 @@ import Navbar from '@/src/components/commons/navbar/Navbar'
 import Footer from '@/src/components/commons/footer/Footer'
 import { useToast } from '@/src/commons/hooks/useToast'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { toastArray } from '@/src/commons/atom/atom'
+import { toastArray } from '@/src/commons/atom/toast'
 import Link from 'next/link'
 
 type Props = {
