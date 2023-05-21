@@ -77,7 +77,6 @@ const FundingDetail = () => {
               style={{
                 backgroundColor: `${color.$secondaryBg}`,
                 fontSize: `${typography.body1.medium}`,
-                width: '100%',
                 marginBottom: '32px',
               }}
             >
@@ -89,7 +88,6 @@ const FundingDetail = () => {
               style={{
                 backgroundColor: `${color.$secondaryBg}`,
                 fontSize: `${typography.body1.medium}`,
-                width: '100%',
                 marginBottom: '32px',
               }}
               onClick={() => setFundingMode('attendant')}
@@ -104,7 +102,6 @@ const FundingDetail = () => {
               style={{
                 backgroundColor: `${color.$point}`,
                 fontSize: `${typography.body1.light}`,
-                width: '100%',
                 marginBottom: '32px',
               }}
               onClick={() => setFundingMode('bill')}
@@ -116,7 +113,6 @@ const FundingDetail = () => {
               style={{
                 backgroundColor: `${color.$blue30}`,
                 fontSize: `${typography.body1.light}`,
-                width: '100%',
                 marginBottom: '32px',
               }}
               onClick={() => {

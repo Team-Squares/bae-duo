@@ -11,8 +11,6 @@ import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingAp
 const AttendantInfo = ({ ...props }) => {
   const { data, funding, user } = props
   const queryClient = useQueryClient()
-  // 임시 사용자 정보, description은 메뉴에서 받아오는 정보?
-  const [attendantData, setAttendantData] = useState([])
   const [menu, setMenu] = useState({
     menuName: '',
     menuPrice: 0,
@@ -20,9 +18,13 @@ const AttendantInfo = ({ ...props }) => {
     menuCount: 0,
   })
 
-  useLayoutEffect(() => {
-    setAttendantData(data)
-  }, [data])
+  const cleanMenu = () =>
+    setMenu({
+      menuName: '',
+      menuPrice: 0,
+      menuDesc: '',
+      menuCount: 0,
+    })
 
   const validationFunc = () => {
     const _menuNum = data.filter((el: { userId: number }) => el.userId === user.id).length
@@ -37,13 +39,13 @@ const AttendantInfo = ({ ...props }) => {
       case 0: {
         console.log('POST')
         PostAttendantMutation.mutate(obj)
-        setMenu({ ...menu, menuName: '', menuPrice: 0 })
+        cleanMenu()
         break
       }
       default: {
         console.log('PUT')
         PutAttendantMutation.mutate(obj)
-        setMenu({ ...menu, menuName: '', menuPrice: 0 })
+        cleanMenu()
         break
       }
     }
@@ -55,7 +57,7 @@ const AttendantInfo = ({ ...props }) => {
     },
     onSuccess: variables => {
       console.log('success', variables)
-      setMenu({ ...menu, menuName: '', menuPrice: 0 })
+      cleanMenu()
       return queryClient.invalidateQueries('getAllAttendantList')
     },
   })
@@ -67,7 +69,7 @@ const AttendantInfo = ({ ...props }) => {
     },
     onSuccess: async variables => {
       console.log('success', variables)
-      setMenu({ ...menu, menuName: '', menuPrice: 0 })
+      cleanMenu()
       // PutFundingMutation.mutate(JSON.stringify(fundingData))
       await queryClient.invalidateQueries('getAllFundingList')
       return queryClient.invalidateQueries('getAllAttendantList')
