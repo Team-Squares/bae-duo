@@ -27,8 +27,16 @@ const AttendantInfo = ({ ...props }) => {
     })
 
   const validationFunc = () => {
+    const __menu = data.filter((el: { userId: number }) => el.userId === user.id)[0]
     const _menuNum = data.filter((el: { userId: number }) => el.userId === user.id).length
-    const obj = {
+    const postObj = {
+      fundingId: funding.id,
+      userId: user.id,
+      userName: user.name,
+      menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': ' ${menu.menuDesc}', 'count':${menu.menuCount}}]`,
+    }
+    const putObj = {
+      id: __menu?.id || -1,
       fundingId: funding.id,
       userId: user.id,
       userName: user.name,
@@ -38,13 +46,13 @@ const AttendantInfo = ({ ...props }) => {
     switch (_menuNum) {
       case 0: {
         console.log('POST')
-        PostAttendantMutation.mutate(obj)
+        PostAttendantMutation.mutate(postObj)
         cleanMenu()
         break
       }
       default: {
         console.log('PUT')
-        PutAttendantMutation.mutate(obj)
+        PutAttendantMutation.mutate(putObj)
         cleanMenu()
         break
       }

@@ -45,12 +45,12 @@ const FundingDetail = () => {
       _getFundingData()
       setTotalPrice(fetchedFundingData.data.curPrice)
     }
-  }, [_getFundingData, isFundingSuccess, attendantData])
+  }, [_getFundingData, fetchedFundingData?.data?.curPrice, isFundingSuccess])
 
   // get funding data
   useEffect(() => {
     _getFundingData()
-  }, [router])
+  }, [_getFundingData, router])
 
   // get attendant data
   useEffect(() => {
@@ -58,7 +58,7 @@ const FundingDetail = () => {
       const _filtered = data.data.filter((data: { fundingId: number }) => data.fundingId === queryId)
       setAttendantData(_filtered)
     }
-  }, [data, isSuccess])
+  }, [data, isSuccess, queryId])
 
   return (
     <Styled.Container>
