@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useContext } from 'react'
+import React, { useCallback, useEffect, useState, useContext, useMemo } from 'react'
 import * as Styled from './FundingDetail.style'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
@@ -28,6 +28,23 @@ const FundingDetail = () => {
     getFundingData(parseInt(router.query.id as string))
   )
   const [isCompleteOrder, setIsCompleteOrder] = useState(false)
+
+  const fundingStatusText = useMemo(() => {
+    if (!fundingData) return '상태 알 수 없음'
+    const DOING = 1
+    const SUCCESS = 2
+    const FAIL = 3
+    switch (fundingData.status) {
+      case DOING:
+        return '펀딩 진행 중'
+      case SUCCESS:
+        return '펀딩 성공'
+      case FAIL:
+        return '펀딩 실패'
+      default:
+        return '상태 알 수 없음'
+    }
+  }, [fundingData])
 
   const _getFundingData = useCallback(() => {
     const id = Number(router.query.id as string)
@@ -66,7 +83,7 @@ const FundingDetail = () => {
         <div className="fundingInfo">
           <h2>{fundingData?.brand}</h2>
           <div className="fundingSubInfo">
-            <Tag text={'펀딩 진행 중'} />
+            <Tag text={fundingStatusText} />
             <span className="fundingDate">{moment(fundingData?.createdAt).format('YYYY.MM.DD')}</span>
           </div>
         </div>
@@ -97,7 +114,7 @@ const FundingDetail = () => {
           )}
 
           {/* 스타터 아이디로 변경 필요 , 임시 데이터 */}
-          {fetchedFundingData?.data.starter === 'seung' ? (
+          {fetchedFundingData?.data.starter === user?.name ? (
             <Button
               style={{
                 backgroundColor: `${color.$point}`,
