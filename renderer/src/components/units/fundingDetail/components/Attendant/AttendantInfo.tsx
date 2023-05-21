@@ -32,7 +32,7 @@ const AttendantInfo = ({ ...props }) => {
       fundingId: funding.id,
       userId: user.id,
       userName: user.name,
-      menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': ${menu.menuDesc}, 'count':${menu.menuCount}}]`,
+      menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': ' ${menu.menuDesc}', 'count':${menu.menuCount}}]`,
     }
 
     switch (_menuNum) {
@@ -86,8 +86,10 @@ const AttendantInfo = ({ ...props }) => {
         break
       case 'count':
         setMenu({ ...menu, menuCount: Number(e.target.value) })
+        break
       case 'description':
         setMenu({ ...menu, menuDesc: e.target.value })
+        break
     }
   }
 
