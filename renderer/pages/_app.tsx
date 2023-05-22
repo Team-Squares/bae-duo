@@ -21,12 +21,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       {process.env.NODE_ENV !== 'production' ? <ReactQueryDevtools initialIsOpen={false} /> : null}
       <Global styles={globalStyles} />
-      <UserContextProvider>
-        <Head>{/*<script></script>*/}</Head>
-        <RecoilRoot>
-          <Component {...pageProps} />
-        </RecoilRoot>
-      </UserContextProvider>
+      {/* <UserContextProvider> */}
+      <Head>{/*<script></script>*/}</Head>
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
+      {/* </UserContextProvider> */}
     </QueryClientProvider>
   )
 }

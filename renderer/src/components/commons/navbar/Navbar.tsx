@@ -23,7 +23,7 @@ import { useRouter } from 'next/router'
 import { useInterval } from '@/src/commons/hooks/useInterval'
 import { useToast } from '@/src/commons/hooks/useToast'
 import { useSetRecoilState } from 'recoil'
-import { toastArray } from '@/src/commons/atom/atom'
+import { toastArray } from '@/src/commons/atom/toast'
 
 const HOURS = 23
 const MINUTES = 56
