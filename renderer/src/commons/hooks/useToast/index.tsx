@@ -71,8 +71,7 @@ export const useToast = () => {
  */
 const Toast = (props: ToastProps) => {
   const { index, toast, setToastQueue } = props
-  const hideDelay = toast.delay - 600
-  // ? hideDelay 시간 후, translateX(110%)을 주어야함.
+  const hideDelay = toast.delay / 1000
 
   /**
    * 토스트의 삭제버튼을 클릭했을 때 발생하는 이벤트입니다.
