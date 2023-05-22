@@ -95,7 +95,7 @@ const Navbar = () => {
               <Image src={IconMessage} alt="none"></Image>
             </Styled.Menu>
             <Styled.Menu>
-              <Image src={IconAlarm} alt="none" onClick={notiHandler}></Image>
+              <Image src={IconAlarm} alt="none" onClick={() => notiHandler(0, 0)}></Image>
             </Styled.Menu>
           </Styled.MenuBox>
           <Styled.Profile onClick={() => setToggleDialog(!toggleDialog)}>

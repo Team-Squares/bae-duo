@@ -35,6 +35,7 @@ export const Header = styled.div`
 
   .buttonGroup {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 16px;
 
@@ -134,16 +135,11 @@ export const AttendantInfo = styled.div`
   }
 
   .inputGroup {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 5px;
     margin-bottom: 16px;
-    div:nth-of-type(1) {
-      width: calc((100% - 16px) / 2);
-    }
-    div:nth-of-type(2) {
-      width: calc((100% - 16px) / 2);
-    }
   }
 
   button > span {
@@ -193,6 +189,11 @@ export const MenuContainer = styled.div`
       color: ${color.$secondaryText};
       ${typography.body2.light};
       margin-bottom: 5px;
+    }
+
+    .menuCount {
+      color: ${color.$secondaryText};
+      ${typography.body2.medium};
     }
 
     .menuPrice {

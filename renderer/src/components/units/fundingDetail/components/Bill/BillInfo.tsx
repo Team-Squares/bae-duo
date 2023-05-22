@@ -78,7 +78,7 @@ const BillInfo = ({ ...props }) => {
                 {data.menuInfo.map((menuInfo: Menu, idx: number) => (
                   <div className="menuInfo" key={idx}>
                     <div className="menuName">{menuInfo.menuName}</div>
-                    <div className="menuPrice">{menuInfo.menuPrice.toLocaleString()} 원</div>
+                    <div className="menuPrice">{menuInfo.menuPrice * menuInfo.count} 원</div>
                   </div>
                 ))}
               </div>
@@ -96,7 +96,7 @@ const BillInfo = ({ ...props }) => {
                   style={{ width: '80px' }}
                   value={deliveryFee}
                   placeholder="배달비"
-                  onChange={e => setDeliveryFee(parseInt(e.target.value))}
+                  onChange={e => setDeliveryFee(Number(e.target.value))}
                 />
                 <span>원</span>
               </div>

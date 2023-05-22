@@ -17,14 +17,14 @@ const ToastBackgroundColor: ToastColorProps = {
 }
 
 export const showToast = keyframes`
-  to {
+  0% {
+    transform: translateX(380px);
+  }
+  50% {
     transform: translateX(0);
   }
-`
-
-export const hideToast = keyframes`
-  to {
-    transform: translateX(110%);
+  100% {
+    transform: translateX(380px);
   }
 `
 
@@ -41,10 +41,9 @@ export const Toast = styled.div<{ type: string; hideDelay: number }>`
   border: 1px solid #eee;
   border-left: 3px solid ${({ type }) => ToastColor[type]};
   background-color: #fff;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
-  transform: translateX(0);
-  /* animation: ${showToast} 0.5s ease; */
-  /* animation-fill-mode: forwards; */
+  animation-name: ${showToast};
+  animation-duration: ${({ hideDelay }) => hideDelay + 's'};
+  animation-timing-function: ease;
 `
 
 export const Icon = styled.div<{ type: string }>`
