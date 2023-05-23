@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState, useContext, useMemo } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import * as Styled from './FundingDetail.style'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { getAttendant, getFundingData } from '@/src/commons/api/progressFundingApi'
-import { UserContext } from '@/src/contexts/UserContext'
 import { typography } from '../../../commons/styles/typography'
 import { color } from '@/src/commons/styles/styles'
 import { FundingListType } from '../home/Home.types'
@@ -17,6 +16,8 @@ import BillInfo from './components/Bill/BillInfo'
 import { userInfoState } from '@/src/commons/atom/user'
 import { useRecoilState } from 'recoil'
 import BillFinal from './components/Bill/BillFinal'
+import Modal from '../../commons/modal/Modal'
+import FundingMenuModal from './components/FundingMenuModal'
 
 const FundingDetail = () => {
   const [userInfo] = useRecoilState(userInfoState)
@@ -26,6 +27,7 @@ const FundingDetail = () => {
   const [fundingMode, setFundingMode] = useState('attendant')
   const [totalPrice, setTotalPrice] = useState<number>(0)
   const [queryId, setQueryId] = useState(0)
+  const [isOpenMenu, setIsOpenMenu] = useState(false)
   const { data, isSuccess } = useQuery(['getAllAttendantList'], () => getAttendant())
   const { data: fetchedFundingData, isSuccess: isFundingSuccess } = useQuery(['getAllFundingList'], () =>
     getFundingData(parseInt(router.query.id as string))
@@ -59,6 +61,10 @@ const FundingDetail = () => {
       })
       .catch(e => console.log(e))
   }, [router.query.id])
+
+  const handleOpenMenu = useCallback(() => {
+    setIsOpenMenu(prev => !prev)
+  }, [])
 
   useEffect(() => {
     if (isFundingSuccess) {
@@ -100,6 +106,7 @@ const FundingDetail = () => {
                   fontSize: `${typography.body1.medium}`,
                   marginBottom: '32px',
                 }}
+                onClick={handleOpenMenu}
               >
                 메뉴 보기
               </Button>
@@ -175,6 +182,20 @@ const FundingDetail = () => {
           />
         )}
       </Styled.Content>
+      {isOpenMenu && (
+        <Modal
+          id="1"
+          title="메뉴 이미지"
+          width={'400px'}
+          height={'500px'}
+          left={'50%'}
+          top={'50%'}
+          mode="none"
+          closeModal={() => setIsOpenMenu(false)}
+        >
+          <FundingMenuModal />
+        </Modal>
+      )}
     </Styled.Container>
   )
 }
