@@ -32,8 +32,6 @@ const FundingDetail = () => {
   )
   const [isCompleteOrder, setIsCompleteOrder] = useState(false)
 
-  console.log(fetchedFundingData)
-
   const fundingStatusText = useMemo(() => {
     if (!fundingData) return '상태 알 수 없음'
     const DOING = 1
