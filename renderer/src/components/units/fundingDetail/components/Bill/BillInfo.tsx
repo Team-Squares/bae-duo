@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from '../../FundingDetail.style'
-import Button from '../../../../commons/button/Button'
+import { useRouter } from 'next/router'
 import Input from '../../../../commons/input/Input'
+import Button from '../../../../commons/button/Button'
+
 import { useMutation, useQueryClient } from 'react-query'
 import { postBill, getBill } from '@/src/commons/api/progressFundingApi'
-import { AttendantInfoType, Menu, billType, billPriceInfoType } from '../../FundingDetail.types'
+import { AttendantInfoType, Menu, billType } from '../../FundingDetail.types'
 
 const BillInfo = ({ ...props }) => {
   const { attendantData, totalPrice: menuPrice, fundingData, setIsCompleteOrder, isCompleteOrder } = props
@@ -17,8 +19,7 @@ const BillInfo = ({ ...props }) => {
     bankName: '',
     bankAccount: '',
   })
-
-  console.log('fundingData', fundingData.status)
+  const router = useRouter()
 
   const GetBillMutation = useMutation(getBill, {
     onError: error => {
@@ -31,7 +32,7 @@ const BillInfo = ({ ...props }) => {
       console.log('BILL GET')
     },
   })
-
+  console.log('fundingData', fundingData)
   // post bill data
   const PostBillMutation = useMutation(postBill, {
     onError: error => {
@@ -40,6 +41,7 @@ const BillInfo = ({ ...props }) => {
     onSuccess: async variables => {
       console.log('success', variables.data.id)
       GetBillMutation.mutate(variables.data.id)
+      router.push(`/attendant/${fundingData.id}`)
       return queryClient.invalidateQueries('getBillList')
     },
   })
