@@ -14,9 +14,12 @@ import Button from '../../commons/button/Button'
 import FundingInfoList from './components/FundingInfoList'
 import AttendantInfo from './components/Attendant/AttendantInfo'
 import BillInfo from './components/Bill/BillInfo'
+import { userInfoState } from '@/src/commons/atom/user'
+import { useRecoilState } from 'recoil'
+import BillFinal from './components/Bill/BillFinal'
 
 const FundingDetail = () => {
-  const { user } = useContext(UserContext)
+  const [userInfo] = useRecoilState(userInfoState)
   const router = useRouter()
   const [fundingData, setFundingData] = useState<FundingListType | null>(null)
   const [attendantData, setAttendantData] = useState<AttendantInfoType[]>([])
@@ -28,6 +31,8 @@ const FundingDetail = () => {
     getFundingData(parseInt(router.query.id as string))
   )
   const [isCompleteOrder, setIsCompleteOrder] = useState(false)
+
+  console.log(fetchedFundingData)
 
   const fundingStatusText = useMemo(() => {
     if (!fundingData) return '상태 알 수 없음'
@@ -87,74 +92,88 @@ const FundingDetail = () => {
             <span className="fundingDate">{moment(fundingData?.createdAt).format('YYYY.MM.DD')}</span>
           </div>
         </div>
-        <div className="buttonGroup">
-          {fundingMode === 'attendant' ? (
-            <Button
-              variant={'text'}
-              style={{
-                backgroundColor: `${color.$secondaryBg}`,
-                fontSize: `${typography.body1.medium}`,
-                marginBottom: '32px',
-              }}
-            >
-              메뉴 보기
-            </Button>
-          ) : (
-            <Button
-              variant={'text'}
-              style={{
-                backgroundColor: `${color.$secondaryBg}`,
-                fontSize: `${typography.body1.medium}`,
-                marginBottom: '32px',
-              }}
-              onClick={() => setFundingMode('attendant')}
-            >
-              이전
-            </Button>
-          )}
+        {fundingData?.status === 1 && (
+          <div className="buttonGroup">
+            {fundingMode === 'attendant' ? (
+              <Button
+                variant={'text'}
+                style={{
+                  backgroundColor: `${color.$secondaryBg}`,
+                  fontSize: `${typography.body1.medium}`,
+                  marginBottom: '32px',
+                }}
+              >
+                메뉴 보기
+              </Button>
+            ) : (
+              <Button
+                variant={'text'}
+                style={{
+                  backgroundColor: `${color.$secondaryBg}`,
+                  fontSize: `${typography.body1.medium}`,
+                  marginBottom: '32px',
+                }}
+                onClick={() => setFundingMode('attendant')}
+              >
+                이전
+              </Button>
+            )}
 
-          {/* 스타터 아이디로 변경 필요 , 임시 데이터 */}
-          {fetchedFundingData?.data.starter === user?.name ? (
-            <Button
-              style={{
-                backgroundColor: `${color.$point}`,
-                fontSize: `${typography.body1.light}`,
-                marginBottom: '32px',
-              }}
-              onClick={() => setFundingMode('bill')}
-            >
-              주문 하기
-            </Button>
-          ) : (
-            <Button
-              style={{
-                backgroundColor: `${color.$blue30}`,
-                fontSize: `${typography.body1.light}`,
-                marginBottom: '32px',
-              }}
-              onClick={() => {
-                if (isCompleteOrder) {
-                  setFundingMode('bill')
-                } else {
-                  alert('스타터가 주문중입니다')
-                }
-              }}
-            >
-              주문서 확인하기
-            </Button>
-          )}
-        </div>
+            {/* 스타터 아이디로 변경 필요 , 임시 데이터 */}
+            {fetchedFundingData?.data.starter === 'seung' ? (
+              <Button
+                style={{
+                  backgroundColor: `${color.$point}`,
+                  fontSize: `${typography.body1.light}`,
+                  marginBottom: '32px',
+                }}
+                onClick={() => setFundingMode('bill')}
+              >
+                주문 하기
+              </Button>
+            ) : (
+              <Button
+                style={{
+                  backgroundColor: `${color.$blue30}`,
+                  fontSize: `${typography.body1.light}`,
+                  marginBottom: '32px',
+                }}
+                onClick={() => {
+                  if (isCompleteOrder) {
+                    setFundingMode('bill')
+                  } else {
+                    alert('스타터가 주문중입니다')
+                  }
+                }}
+              >
+                주문서 확인하기
+              </Button>
+            )}
+          </div>
+        )}
       </Styled.Header>
       <Styled.Content>
         <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
-        {fundingMode === 'attendant' && <AttendantInfo data={attendantData} funding={fundingData} user={user} />}
-        {fundingMode === 'bill' && (
+        {fundingMode === 'attendant' && fundingData?.status === 1 && (
+          <AttendantInfo data={attendantData} funding={fundingData} user={userInfo} />
+        )}
+        {fundingMode === 'bill' && fundingData?.status === 1 && (
           <BillInfo
             attendantData={attendantData}
             totalPrice={totalPrice}
-            userId={user?.id}
+            userId={userInfo?.id}
             fundingData={fundingData}
             setIsCompleteOrder={setIsCompleteOrder}
+          />
+        )}
+        {fundingData?.status === 2 && (
+          <BillFinal
+            attendantData={attendantData}
+            totalPrice={totalPrice}
+            userId={userInfo?.id}
+            fundingData={fundingData}
+            setIsCompleteOrder={setIsCompleteOrder}
+            fundingId={fetchedFundingData?.data.id}
           />
         )}
       </Styled.Content>

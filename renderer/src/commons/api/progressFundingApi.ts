@@ -29,5 +29,5 @@ export const postBill = (body: any) => {
 }
 
 export const getBill = (id: number) => {
-  return apiInstance.get(`/bill/${id}`)
+  return apiInstance.get(`/bill/fundingId/${id}`)
 }

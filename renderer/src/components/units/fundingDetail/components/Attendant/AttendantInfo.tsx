@@ -7,53 +7,45 @@ import Input from '../../../../commons/input/Input'
 import AttendantMenu from './AttendantMenu'
 import { AttendantInfoType } from '../../FundingDetail.types'
 import { putAttendant, postAttendant } from '@/src/commons/api/progressFundingApi'
+import { userInfoState } from '@/src/commons/atom/user'
+import { useRecoilState } from 'recoil'
 
 const AttendantInfo = ({ ...props }) => {
-  const { data, funding, user } = props
+  const { data, funding } = props
+  const [userInfo] = useRecoilState(userInfoState)
+
   const queryClient = useQueryClient()
   const [menu, setMenu] = useState({
-    userId: user.userId,
-    userName: user.name,
     menuName: '',
     menuPrice: 0,
     menuDesc: '',
     menuCount: 0,
   })
 
-  useEffect(() => {
-    setMenu({ ...menu, userId: user.userId, userName: user.name })
-  }, [user])
-
-  // attendantId 판별
-  useLayoutEffect(() => {
-    if (!attendantData) return
-    const _filtered: any = attendantData.filter((data: { userId: number }) => data.userId === menu.userId)[0]
-    if (!_filtered) return
-    setAttendantId(_filtered.id)
-  }, [attendantData])
-
-  useLayoutEffect(() => {
-    setAttendantData(data)
-  }, [data])
+  const cleanMenu = () =>
+    setMenu({
+      menuName: '',
+      menuPrice: 0,
+      menuDesc: '',
+      menuCount: 0,
+    })
 
   const validationFunc = () => {
-    const __menu = data.filter((el: { userId: number }) => el.userId === user.id)[0]
-    const _menuNum = data.filter((el: { userId: number }) => el.userId === user.id).length
+    const __menu = data.filter((el: { userId: number }) => el.userId === userInfo.id)[0]
+    const _menuNum = data.filter((el: { userId: number }) => el.userId === userInfo.id).length
     const postObj = {
       fundingId: funding.id,
-      userId: user.id,
-      userName: user.name,
+      userId: userInfo.id,
+      userName: userInfo.name,
       menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': ' ${menu.menuDesc}', 'count':${menu.menuCount}}]`,
     }
     const putObj = {
       id: __menu?.id || -1,
       fundingId: funding.id,
-      userId: user.id,
-      userName: user.name,
+      userId: userInfo.id,
+      userName: userInfo.name,
       menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': ' ${menu.menuDesc}', 'count':${menu.menuCount}}]`,
     }
-
-    console.log(obj)
 
     switch (_menuNum) {
       case 0: {
@@ -153,7 +145,7 @@ const AttendantInfo = ({ ...props }) => {
       </Button>
 
       {data.map((item: AttendantInfoType, idx: number) => (
-        <AttendantMenu item={item} key={idx} attendData={data} user={user} />
+        <AttendantMenu item={item} key={idx} attendData={data} user={userInfo} />
       ))}
       {!data.length && <h2>지금 펀딩에 참여해보세요!</h2>}
     </Styled.AttendantInfo>
