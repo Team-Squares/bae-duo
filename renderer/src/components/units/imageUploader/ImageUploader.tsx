@@ -7,14 +7,22 @@ import { color } from '@/src/commons/styles/color'
 import { typography } from '@/src/commons/styles/typography'
 
 interface ImageUploaderProps {
-  images: string[]
-  onChangeImages: (images: string[]) => void
+  imageUrlList: string[]
+  setImageUrlList: (imageUrlList: string[]) => void
+  onAddImageFiles: (images: File[]) => void
+  onRomoveImageFileByIndex: (index: number) => void
 }
 
-const ImageUploader = ({ images, onChangeImages }: ImageUploaderProps) => {
+const ImageUploader = ({
+  imageUrlList,
+  setImageUrlList,
+  onAddImageFiles,
+  onRomoveImageFileByIndex,
+}: ImageUploaderProps) => {
   const imgInputRef = useRef<HTMLInputElement | null>(null)
   const dragRef = useRef<HTMLDivElement | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  // const [imageUrlList, setImageUrlList] = useState<string[]>([])
 
   const handleChangeImage = (e: ChangeEvent) => {
     const targetFiles = (e.target as HTMLInputElement).files as FileList
@@ -24,8 +32,9 @@ const ImageUploader = ({ images, onChangeImages }: ImageUploaderProps) => {
   const handleSetImageList = (fileList: FileList) => {
     const targetFilesArray = Array.from(fileList)
     const selectedFiles: string[] = targetFilesArray.map(file => URL.createObjectURL(file))
-    const newImages = [...images, ...selectedFiles]
-    onChangeImages(newImages)
+    onAddImageFiles(targetFilesArray)
+    // const newImages = [...images, ...selectedFiles]
+    setImageUrlList([...imageUrlList, ...selectedFiles])
   }
 
   const handleDragIn = useCallback((e: DragEvent) => {
@@ -102,14 +111,15 @@ const ImageUploader = ({ images, onChangeImages }: ImageUploaderProps) => {
         />
       </UploadContainer>
       <ImagePreviewContainer>
-        {images &&
-          images.map((image, i) => (
+        {imageUrlList &&
+          imageUrlList.map((imageUrl, i) => (
             <ImagePreview key={`image-uploader-${i}`}>
-              <Image src={image} alt={`이미지 ${i}`} width={120} height={80} />
+              <Image src={imageUrl} alt={`이미지 ${i}`} width={120} height={80} />
               <ImageRemoveIcon
                 onClick={() => {
-                  const newImages = images.filter((image, index) => index !== i)
-                  onChangeImages(newImages)
+                  const newImages = imageUrlList.filter((image, index) => index !== i)
+                  setImageUrlList(newImages)
+                  onRomoveImageFileByIndex(i)
                 }}
               />
             </ImagePreview>

@@ -6,8 +6,13 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form'
 import moment from 'moment'
 import Input from '@/src/components/commons/input/Input'
 import { SetCurStepProps } from '@/src/components/units/addFunding/AddFunding.types'
+import { Dispatch, SetStateAction } from 'react'
 
-const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
+interface AdditionalSettingProps extends SetCurStepProps {
+  setImageFiles: Dispatch<SetStateAction<File[]>>
+}
+
+const AdditionalSetting = ({ setCurStep, setImageFiles }: AdditionalSettingProps) => {
   const { register, setValue, control } = useFormContext()
   const [deadline, images] = useWatch({
     control,
@@ -117,9 +122,15 @@ const AdditionalSetting = ({ setCurStep }: SetCurStepProps) => {
         </Styled.SettingCardHeader>
         <Styled.SettingCardBody style={{ padding: '0 30px' }}>
           <ImageUploader
-            images={images}
-            onChangeImages={images => {
-              setValue('images', images)
+            imageUrlList={images}
+            setImageUrlList={imageUrlList => {
+              setValue('images', imageUrlList)
+            }}
+            onAddImageFiles={imageFiles => {
+              setImageFiles(prev => [...prev, ...imageFiles])
+            }}
+            onRomoveImageFileByIndex={index => {
+              setImageFiles(prev => prev.filter((file, i) => i !== index))
             }}
           />
         </Styled.SettingCardBody>
