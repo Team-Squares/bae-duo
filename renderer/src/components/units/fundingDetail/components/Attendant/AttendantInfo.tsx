@@ -15,7 +15,7 @@ const AttendantInfo = ({ ...props }) => {
   const [attendantId, setAttendantId] = useState()
   const [attendantData, setAttendantData] = useState([])
   const [menu, setMenu] = useState({
-    userId: user.userId,
+    userId: user.id,
     userName: user.name,
     menuName: '',
     menuPrice: '',
@@ -23,7 +23,7 @@ const AttendantInfo = ({ ...props }) => {
   })
 
   useEffect(() => {
-    setMenu({ ...menu, userId: user.userId, userName: user.name })
+    setMenu({ ...menu, userId: user.id, userName: user.name })
   }, [user])
 
   // attendantId 판별
@@ -46,6 +46,8 @@ const AttendantInfo = ({ ...props }) => {
       userName: menu.userName,
       menuInfo: `[{'menuName': '${menu.menuName}', 'menuPrice': ${menu.menuPrice}, 'description': '설명입니다'}]`,
     }
+
+    console.log(obj)
 
     switch (_menuNum) {
       case 0: {
