@@ -23,7 +23,7 @@ import { useRouter } from 'next/router'
 import { useInterval } from '@/src/commons/hooks/useInterval'
 import { useToast } from '@/src/commons/hooks/useToast'
 import { useSetRecoilState } from 'recoil'
-import { toastArray } from '@/src/commons/atom/atom'
+import { toastArray } from '@/src/commons/atom/toast'
 
 const HOURS = 23
 const MINUTES = 56
@@ -95,7 +95,7 @@ const Navbar = () => {
               <Image src={IconMessage} alt="none"></Image>
             </Styled.Menu>
             <Styled.Menu>
-              <Image src={IconAlarm} alt="none" onClick={notiHandler}></Image>
+              <Image src={IconAlarm} alt="none" onClick={() => notiHandler(0, 0)}></Image>
             </Styled.Menu>
           </Styled.MenuBox>
           <Styled.Profile onClick={() => setToggleDialog(!toggleDialog)}>
