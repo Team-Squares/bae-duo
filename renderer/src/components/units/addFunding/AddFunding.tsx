@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { useSetRecoilState } from 'recoil'
 import { useToast } from '@/src/commons/hooks/useToast'
 import { toastArray } from '@/src/commons/atom/toast'
+import { serialize } from 'object-to-formdata'
 
 const AddFunding = () => {
   const queryClient = useQueryClient()
@@ -22,6 +23,8 @@ const AddFunding = () => {
   const [curStep, setCurStep] = useState(1)
   const [createdFundingId, setCreatedFundingId] = useState<number | null>(null)
   const [selectedBrand, setSelectedBrand] = useState<BrandType | null>(null)
+  const [imageFiles, setImageFiles] = useState<File[]>([])
+
   const { pushToastQueue } = useToast()
   const setToastQueue = useSetRecoilState(toastArray)
 
@@ -29,7 +32,6 @@ const AddFunding = () => {
     defaultValues: {
       starter: 'seung',
       brandId: 0,
-      brand: '',
       minPrice: 0,
       minMember: 0,
       deadline: new Date(moment().hours(11).minutes(0).seconds(0).format()), // 기본 11:00 세팅
@@ -62,7 +64,6 @@ const AddFunding = () => {
 
   useEffect(() => {
     if (!selectedBrand || !selectedBrand.id) return
-    setValue('brand', selectedBrand.name)
     setValue('brandId', selectedBrand.id)
     setValue('minPrice', selectedBrand?.defaultMinPrice || 0)
     setValue('minMember', selectedBrand?.defaultMinMember || 0)
@@ -82,7 +83,16 @@ const AddFunding = () => {
   }, [selectedBrand])
 
   const handleAddFunding = (data: FundingType) => {
-    addFundingMutation.mutate(data)
+    const convertedData = {
+      ...data,
+      deadline: moment(data.deadline).format('YYYY-MM-DD HH:mm:ss'),
+    }
+
+    const formData = serialize(convertedData)
+    for (let i = 0; i < imageFiles.length; i++) {
+      formData.append('files', imageFiles[i] as File)
+    }
+    addFundingMutation.mutate(formData)
   }
 
   return (
@@ -114,7 +124,7 @@ const AddFunding = () => {
           )}
 
           {/* 2. 추가 설정 */}
-          {curStep === 2 && <AdditionalSetting setCurStep={setCurStep} />}
+          {curStep === 2 && <AdditionalSetting setCurStep={setCurStep} setImageFiles={setImageFiles} />}
 
           {/* 3. 설정 확인 */}
           {curStep === 3 && deadline && (

@@ -26,9 +26,8 @@ export const deleteFunding = (id: number) => {
   return apiInstance.delete(`/funding/${id}`)
 }
 
-export const createFunding = (funding: FundingType) => {
-  return apiInstance.post(`/funding`, {
-    ...funding,
-    deadline: moment(funding.deadline).format('YYYY-MM-DD HH:mm:ss'),
+export const createFunding = (funding: FormData) => {
+  return apiInstance.post(`/funding`, funding, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   })
 }
