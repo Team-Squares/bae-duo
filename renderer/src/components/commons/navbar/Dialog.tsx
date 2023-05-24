@@ -23,6 +23,12 @@ const Dialog = ({ ...props }) => {
   const [userInfo] = useRecoilState(userInfoState)
   const userLogout = useResetRecoilState(userInfoState)
 
+  const logout = () => {
+    localStorage.removeItem('isLogin')
+    localStorage.removeItem('user')
+    userLogout()
+  }
+
   const { setToggleDialog } = props
   return (
     <Styled.DialogLayer
@@ -38,7 +44,7 @@ const Dialog = ({ ...props }) => {
         <Styled.Profile>
           <Image src={tempProfileImg} alt="none"></Image>
           <Styled.Info>
-            <Styled.Title>문동은</Styled.Title>
+            <Styled.Title>{userInfo.name}</Styled.Title>
             <Styled.Mail>dev@squares.ai</Styled.Mail>
           </Styled.Info>
         </Styled.Profile>
@@ -73,7 +79,7 @@ const Dialog = ({ ...props }) => {
         <Styled.Row
           onClick={() => {
             // setUser && setUser({ name: '', id: 0 })
-            if (userInfo.isLogin) userLogout()
+            if (userInfo.isLogin) logout()
             routePage('/login')
           }}
         >
