@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import * as Styled from '../../FundingDetail.style'
-import Button from '../../../../commons/button/Button'
+import { useRouter } from 'next/router'
 import Input from '../../../../commons/input/Input'
+import Button from '../../../../commons/button/Button'
+
 import { useMutation, useQueryClient } from 'react-query'
 import { postBill, getBill } from '@/src/commons/api/progressFundingApi'
-import { AttendantInfoType, Menu, billType, billPriceInfoType } from '../../FundingDetail.types'
+import { AttendantInfoType, Menu, billType } from '../../FundingDetail.types'
 
 const BillInfo = ({ ...props }) => {
   const { attendantData, totalPrice: menuPrice, fundingData, setIsCompleteOrder, isCompleteOrder } = props
@@ -17,6 +19,7 @@ const BillInfo = ({ ...props }) => {
     bankName: '',
     bankAccount: '',
   })
+  const router = useRouter()
 
   const GetBillMutation = useMutation(getBill, {
     onError: error => {
@@ -29,7 +32,7 @@ const BillInfo = ({ ...props }) => {
       console.log('BILL GET')
     },
   })
-
+  console.log('fundingData', fundingData)
   // post bill data
   const PostBillMutation = useMutation(postBill, {
     onError: error => {
@@ -38,6 +41,7 @@ const BillInfo = ({ ...props }) => {
     onSuccess: async variables => {
       console.log('success', variables.data.id)
       GetBillMutation.mutate(variables.data.id)
+      router.push(`/attendant/${fundingData.id}`)
       return queryClient.invalidateQueries('getBillList')
     },
   })
@@ -66,7 +70,7 @@ const BillInfo = ({ ...props }) => {
   return (
     <Styled.BillInfo>
       <div className="title">주문서</div>
-      {!isCompleteOrder && (
+      {fundingData.status === 1 && !isCompleteOrder && (
         <div className="billContainer">
           {attendantData.map((data: AttendantInfoType, idx: number) => (
             <div className="attendantInfo" key={idx}>
@@ -136,56 +140,6 @@ const BillInfo = ({ ...props }) => {
             onClick={() => handlePostBill()}
           >
             주문 완료하기
-          </Button>
-        </div>
-      )}
-
-      {/* 주문완료 */}
-      {isCompleteOrder && billData && (
-        <div className="billContainer">
-          {billData.priceInfo.map((priceInfo: billPriceInfoType, idx: number) => (
-            <div className="attendantInfo" key={idx}>
-              <div className="userInfo">
-                <div className="img"></div>
-                <div className="userName">{priceInfo.userName}</div>
-              </div>
-              <div className="menuList">
-                <div className="menuPrice" key={idx}>
-                  {priceInfo.totalPrice.toLocaleString()} 원
-                </div>
-              </div>
-            </div>
-          ))}
-          <div className="billInfoContainer">
-            <div className="billInfoGroup">
-              <div className="billTitle">주문합계</div>
-              <div className="price">{menuPrice.toLocaleString()} 원</div>
-            </div>
-            <div className="billInfoGroup">
-              <div className="billTitle">배달비</div>
-              <div className="price">{billData.deliveryFee.toLocaleString()} 원</div>
-            </div>
-            <div className="billInfoGroup total">
-              <div className="billTitle">총 합계</div>
-              <div className="menuPrice">{totalPrice.toLocaleString()} 원</div>
-            </div>
-          </div>
-          <div className="accountInfoContainer">
-            <p>주문자 계좌 정보</p>
-            <div className="accountGroup">
-              <div>{billData.bankName}</div>
-              <div>{billData.bankAccount}</div>
-            </div>
-          </div>
-          <Button
-            size="large"
-            style={{
-              width: '100%',
-              marginTop: '30px',
-            }}
-            onClick={() => alert('입금 부탁해여')}
-          >
-            입금 요청하기 💸
           </Button>
         </div>
       )}

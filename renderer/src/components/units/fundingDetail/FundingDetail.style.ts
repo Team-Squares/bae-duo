@@ -263,6 +263,7 @@ export const BillInfo = styled.div`
 
   .menuList {
     width: calc((100% / 3) * 2 - 20px);
+    text-align: end;
   }
   .menuInfo {
     width: 100%;

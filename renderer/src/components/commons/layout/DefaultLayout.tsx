@@ -44,10 +44,7 @@ const DefaultLayout = ({ children, isNav = true, title }: Props) => {
         {title && <Styled.HeaderLayout>{title}</Styled.HeaderLayout>}
         {children}
       </Styled.Container>
-      <Link href="/1">
-        {' '}
-        <Footer />
-      </Link>
+      <Footer />
     </Styled.Main>
   )
 }
