@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
 import Button from '@/src/components/commons/button/Button'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { addUser } from '@/src/commons/api/loginApi'
 import { useRouter } from 'next/router'
+import Input from '@/src/components/commons/input/Input'
 
 interface FormData {
   id: string
@@ -11,7 +12,7 @@ interface FormData {
 
 const SignUp = () => {
   const router = useRouter()
-  const { register, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm({
     mode: 'onChange',
     defaultValues: {
       id: '',
@@ -35,8 +36,18 @@ const SignUp = () => {
   return (
     <Container>
       <div>
-        <input placeholder="아이디를 입력해주세요." {...register('id')} />
-        <input placeholder="비밀번호를 입력해주세요." {...register('password')} />
+        {/* <input placeholder="아이디를 입력해주세요." {...register('id')} />
+        <input placeholder="비밀번호를 입력해주세요." {...register('password')} /> */}
+        <Controller
+          control={control}
+          name="id"
+          render={({ field }: { field: any }) => <Input {...field} placeholder="id를 입력해라" />}
+        />
+        <Controller
+          control={control}
+          name="password"
+          render={({ field }: { field: any }) => <Input {...field} placeholder="password를 입력해라" />}
+        />
       </div>
       <div>
         <Button onClick={handleSubmit(onSubmit)} variant="outlined" style={{ width: '100%', marginBottom: 20 }}>

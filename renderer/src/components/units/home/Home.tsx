@@ -43,8 +43,8 @@ const Home = () => {
             </button>
           ))}
         </Styled.CategoryBox>
-        <Button size="small" variant="outlined" onClick={() => router.push('/funding/add')}>
-          펀딩 추가 <RiAddLine />
+        <Button endIcon={<RiAddLine />} size="small" variant="outlined" onClick={() => router.push('/funding/add')}>
+          펀딩 추가
         </Button>
       </Styled.LandingHeader>
       {isLoading ? (

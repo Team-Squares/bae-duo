@@ -99,10 +99,8 @@ const Button = ({
       hoverBackground={hoverBackground}
       disable={disabled || false}
     >
-      <span>
-        {children}
-        {endIcon && <>{endIcon}</>}
-      </span>
+      <div>{children}</div>
+      {endIcon && <>{endIcon}</>}
     </Styled.Button>
   )
 }

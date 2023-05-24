@@ -2,10 +2,10 @@ import styled from '@emotion/styled'
 import { ButtonStyleProps } from './Button.types'
 
 export const Button = styled.button<ButtonStyleProps>`
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
   transition: all 0.3s;
 
   width: ${({ width }) => `${width}px`};
@@ -31,8 +31,6 @@ export const Button = styled.button<ButtonStyleProps>`
   }
 
   svg {
-    position: absolute;
-    top: 1px;
     path {
       color: ${({ fontColor }) => fontColor};
     }

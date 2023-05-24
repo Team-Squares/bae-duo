@@ -6,6 +6,7 @@ import { useToast } from '@/src/commons/hooks/useToast'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { toastArray } from '@/src/commons/atom/toast'
 import Link from 'next/link'
+import { userInfoState } from '@/src/commons/atom/user'
 
 type Props = {
   children: React.ReactNode
@@ -14,9 +15,26 @@ type Props = {
 }
 
 const DefaultLayout = ({ children, isNav = true, title }: Props) => {
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const { ToastArea } = useToast()
   const [toastQueue] = useRecoilState(toastArray)
   const setToastQueue = useSetRecoilState(toastArray)
+
+  const checkLogin = () => {
+    const isLogin = localStorage.getItem('isLogin')
+    if (!isLogin) return
+    const user = JSON.parse(localStorage.getItem('user') || '')
+    console.log(user)
+    setUserInfo({
+      name: user?.name,
+      id: user?.id,
+      isLogin: true,
+    })
+  }
+
+  React.useEffect(() => {
+    checkLogin()
+  }, [])
 
   return (
     <Styled.Main>
