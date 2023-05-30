@@ -8,6 +8,8 @@ import { RiUser3Fill, RiAddLine } from 'react-icons/ri'
 import { categoryName, getKORMoneyString, getPercentage, tagByStatus } from './data'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
+import hansotImg from '@/public/images/hansot.svg'
+
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
 import { useQuery, useQueryClient } from 'react-query'
@@ -32,7 +34,6 @@ const Home = () => {
     }
     return getFundingList(category)
   })
-
   return (
     <div>
       <Styled.LandingHeader>
@@ -58,7 +59,7 @@ const Home = () => {
           {fundingList?.data?.map((item: FundingType) => (
             <Fragment key={item.createdAt}>
               <Styled.BrandsCard onClick={() => router.push(`/attendant/${item.id}`)}>
-                <Styled.FundingInfo>
+                <Styled.FundingInfo imgUrl={item.brandImage}>
                   <Styled.StatusBox>
                     <Styled.FundingDate>{moment(item.createdAt).format('YYYY.MM.DD')}</Styled.FundingDate>
                     <Tag

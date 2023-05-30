@@ -14,6 +14,8 @@ export interface FundingType {
   description: string
   images: string[]
   createdAt?: string
+  menuImageIds: string
+  brandImage: string
 }
 
 export interface BrandType {
