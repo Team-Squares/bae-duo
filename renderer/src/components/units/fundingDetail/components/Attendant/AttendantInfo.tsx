@@ -31,6 +31,8 @@ const AttendantInfo = ({ ...props }) => {
     })
 
   const validationFunc = () => {
+    if (!userInfo.id) return alert('로그인 부탁해용')
+    if (!menu.menuName || !menu.menuPrice || !menu.menuCount) return alert('정보를 모두 입력해주세용')
     const __menu = data.filter((el: { userId: number }) => el.userId === userInfo.id)[0]
     const _menuNum = data.filter((el: { userId: number }) => el.userId === userInfo.id).length
     const postObj = {
