@@ -27,7 +27,7 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
   const { setValue, handleSubmit, control } = useForm<BrandType>({
     defaultValues: {
       id: brand?.id,
-      createdUserId: brand?.createdUserId || 1,
+      createdUserId: brand?.createdUserId,
       name: brand?.name || '',
       orderType: brand?.orderType || 1,
       brandImage: brand?.brandImage || '',
@@ -89,6 +89,8 @@ const AddBrandModal = ({ brand, isEditingMode = false, setShowModal }: AddBrandM
   }
 
   const handleModifyBrand = (data: BrandType) => {
+    delete data.brandImage
+
     const convertedData = {
       ...data,
       defaultDeadLine: moment(data.defaultDeadLine).format('YYYY-MM-DD HH:mm:ss'),

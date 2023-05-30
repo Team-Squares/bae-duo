@@ -12,14 +12,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { createFunding } from '@/src/commons/api/fundingApi'
 import { getBrandList } from '@/src/commons/api/brandApi'
 import { useRouter } from 'next/router'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { useToast } from '@/src/commons/hooks/useToast'
 import { toastArray } from '@/src/commons/atom/toast'
 import { serialize } from 'object-to-formdata'
+import { userInfoState } from '@/src/commons/atom/user'
 
 const AddFunding = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
+  const user = useRecoilValue(userInfoState)
   const [curStep, setCurStep] = useState(1)
   const [createdFundingId, setCreatedFundingId] = useState<number | null>(null)
   const [selectedBrand, setSelectedBrand] = useState<BrandType | null>(null)
@@ -30,7 +32,8 @@ const AddFunding = () => {
 
   const methods = useForm<FundingType>({
     defaultValues: {
-      starter: 'seung',
+      starterId: user?.id,
+      starter: user?.name,
       brandId: 0,
       minPrice: 0,
       minMember: 0,
@@ -63,6 +66,13 @@ const AddFunding = () => {
   })
 
   useEffect(() => {
+    if (user.id === 0) {
+      alert('로그인을 해주세요!')
+      router.push('/login')
+    }
+  }, [user])
+
+  useEffect(() => {
     if (!selectedBrand || !selectedBrand.id) return
     setValue('brandId', selectedBrand.id)
     setValue('minPrice', selectedBrand?.defaultMinPrice || 0)
@@ -83,6 +93,12 @@ const AddFunding = () => {
   }, [selectedBrand])
 
   const handleAddFunding = (data: FundingType) => {
+    delete data.images
+
+    if (user.id === 0) {
+      alert('로그인을 해주세요!')
+      return
+    }
     const convertedData = {
       ...data,
       deadline: moment(data.deadline).format('YYYY-MM-DD HH:mm:ss'),
@@ -127,9 +143,9 @@ const AddFunding = () => {
           {curStep === 2 && <AdditionalSetting setCurStep={setCurStep} setImageFiles={setImageFiles} />}
 
           {/* 3. 설정 확인 */}
-          {curStep === 3 && deadline && (
+          {curStep === 3 && deadline && selectedBrand && (
             <Styled.Flex direction="column" gap={8}>
-              <FundingCard brandImage={selectedBrand?.brandImage} />
+              <FundingCard brandName={selectedBrand.name} brandImage={selectedBrand?.brandImage} />
 
               <Button style={{ width: '100%', height: 56 }} onClick={handleSubmit(handleAddFunding)}>
                 펀딩 만들기
@@ -138,11 +154,14 @@ const AddFunding = () => {
           )}
 
           {/* 4. 생성 완료 */}
-          {curStep === 4 && deadline && (
+          {curStep === 4 && deadline && selectedBrand && (
             <Styled.Flex direction="column" gap={8}>
-              <FundingCard isSuccess={true} brandImage={selectedBrand?.brandImage} />
+              <FundingCard isSuccess={true} brandName={selectedBrand.name} brandImage={selectedBrand?.brandImage} />
 
-              <Button style={{ width: '100%', height: 56 }} onClick={() => router.push(`/${createdFundingId}`)}>
+              <Button
+                style={{ width: '100%', height: 56 }}
+                onClick={() => router.push(`/attendant/${createdFundingId}`)}
+              >
                 펀딩으로 이동
               </Button>
             </Styled.Flex>

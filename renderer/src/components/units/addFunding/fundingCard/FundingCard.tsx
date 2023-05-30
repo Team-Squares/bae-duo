@@ -11,15 +11,16 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import DefaultFoodImage from '@/public/images/food.svg'
 
 interface FundingCardProps {
+  brandName?: string
   brandImage?: string
   isSuccess?: boolean
 }
 
-const FundingCard = ({ brandImage, isSuccess }: FundingCardProps) => {
+const FundingCard = ({ brandName, brandImage, isSuccess }: FundingCardProps) => {
   const { control } = useFormContext()
-  const [brand, deadline, minPrice, minMember, description, images] = useWatch({
+  const [deadline, minPrice, minMember, description, images] = useWatch({
     control,
-    name: ['brand', 'deadline', 'minPrice', 'minMember', 'description', 'images'],
+    name: ['deadline', 'minPrice', 'minMember', 'description', 'images'],
   })
 
   return (
@@ -33,7 +34,7 @@ const FundingCard = ({ brandImage, isSuccess }: FundingCardProps) => {
         <FundingBrandImageContainer>
           <Image src={brandImage || DefaultFoodImage} alt={'브랜드 이미지'} width={60} height={60} />
         </FundingBrandImageContainer>
-        <h3>{brand}</h3>
+        <h3>{brandName}</h3>
       </FundingCardHeader>
       <Styled.SettingCardBody>
         <Styled.Flex direction="column" gap={16}>

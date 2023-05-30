@@ -12,6 +12,8 @@ import DefaultFoodImage from '@/public/images/food.svg'
 import Button from '@/src/components/commons/button/Button'
 import { useMutation, useQueryClient } from 'react-query'
 import { deleteBrand } from '@/src/commons/api/brandApi'
+import { useRecoilValue } from 'recoil'
+import { userInfoState } from '@/src/commons/atom/user'
 
 interface BranSettingProps extends SetCurStepProps {
   brandList: BrandType[]
@@ -20,6 +22,7 @@ interface BranSettingProps extends SetCurStepProps {
 
 const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingProps) => {
   const queryClient = useQueryClient()
+  const user = useRecoilValue(userInfoState)
   const [addingBrandModal, setAddingBrandModal] = useState(false)
   const [modifyBrandModal, setModifyBrandModal] = useState(false)
   const [viewBrandList, setViewBrandList] = useState<BrandType[]>()
@@ -111,32 +114,34 @@ const BrandSetting = ({ brandList, setCurStep, setSelectedBrand }: BranSettingPr
                     </h3>
                     <p className="funding-count">지난 펀딩 횟수: {brand.orderCnt}회</p>
                   </div>
-                  <Buttons className="buttons">
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      onClick={e => {
-                        e.stopPropagation()
-                        setModifyBrandModal(true)
-                        setModifiedBrand(brand)
-                      }}
-                    >
-                      수정
-                    </Button>
-                    <Button
-                      size="small"
-                      style={{ backgroundColor: colorPalette.red.red40 }}
-                      onClick={e => {
-                        e.stopPropagation()
-                        const message = confirm(`'${brand.name}'을(를) 정말 삭제하실건가요? 🥲`)
-                        if (message && brand.id) {
-                          deleteBrandMutation.mutate(brand.id)
-                        }
-                      }}
-                    >
-                      삭제
-                    </Button>
-                  </Buttons>
+                  {+user.id === brand.createdUserId && (
+                    <Buttons className="buttons">
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        onClick={e => {
+                          e.stopPropagation()
+                          setModifyBrandModal(true)
+                          setModifiedBrand(brand)
+                        }}
+                      >
+                        수정
+                      </Button>
+                      <Button
+                        size="small"
+                        style={{ backgroundColor: colorPalette.red.red40 }}
+                        onClick={e => {
+                          e.stopPropagation()
+                          const message = confirm(`'${brand.name}'을(를) 정말 삭제하실건가요? 🥲`)
+                          if (message && brand.id) {
+                            deleteBrandMutation.mutate(brand.id)
+                          }
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    </Buttons>
+                  )}
                 </Styled.Flex>
               </Styled.BrandInfo>
             </Styled.Brand>

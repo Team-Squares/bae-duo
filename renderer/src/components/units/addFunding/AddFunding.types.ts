@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 export interface FundingType {
   id?: number
   status?: number
+  starterId: number
   starter: string
   brand: string
   brandId: number
@@ -12,13 +13,13 @@ export interface FundingType {
   curPrice?: number
   deadline: Date
   description: string
-  images: string[]
+  images?: string[]
   createdAt?: string
 }
 
 export interface BrandType {
   id?: number
-  createdUserId: number
+  createdUserId?: number
   name: string
   orderType: number
   orderCnt?: number
