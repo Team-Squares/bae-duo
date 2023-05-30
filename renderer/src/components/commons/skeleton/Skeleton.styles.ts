@@ -2,6 +2,7 @@ import { color } from '@/src/commons/styles/styles'
 import styled from '@emotion/styled'
 import { keyframes } from '@emotion/react'
 import { SkeletonProps } from './Skeleton'
+import { typography } from '@/src/commons/styles/typography'
 
 export const pulse = keyframes`
 	0%,
@@ -56,4 +57,38 @@ export const SkeletonFlex = styled.div<SkeletonProps>`
   flex-direction: ${props => `${props.isCol ? 'column' : 'row'}`};
   align-items: center;
   gap: 8px;
+`
+
+export const FundingSkeletonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: fit-content;
+  width: calc((100% / 2) - 20px);
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+`
+
+export const AttendantTitle = styled.h2`
+  ${typography.heading4}
+  margin-bottom: 24px;
+`
+
+export const FundingSkeletonLine = styled.div<SkeletonProps>`
+  height: 36px;
+  border-radius: 4px;
+  background-color: ${color.$defaultGray};
+  height: ${props => `${props.height}px`};
+  width: ${props => `${props.width ? `${props.width}px` : 'calc(50% - 8px)'}`};
+`
+
+export const FundingSkeletonArticle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 0.2px solid #ddd;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 30px;
+  animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `

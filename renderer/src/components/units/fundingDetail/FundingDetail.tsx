@@ -18,6 +18,7 @@ import { useRecoilState } from 'recoil'
 import BillFinal from './components/Bill/BillFinal'
 import Modal from '../../commons/modal/Modal'
 import FundingMenuModal from './components/FundingMenuModal'
+import FundingSkeleton from '../../commons/skeleton/FundingSkeleton'
 
 const FundingDetail = () => {
   const [userInfo] = useRecoilState(userInfoState)
@@ -28,10 +29,12 @@ const FundingDetail = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0)
   const [queryId, setQueryId] = useState(0)
   const [isOpenMenu, setIsOpenMenu] = useState(false)
-  const { data, isSuccess } = useQuery(['getAllAttendantList'], () => getAttendant())
-  const { data: fetchedFundingData, isSuccess: isFundingSuccess } = useQuery(['getAllFundingList'], () =>
-    getFundingData(parseInt(router.query.id as string))
-  )
+  const { data, isSuccess, status: attendantStatus } = useQuery(['getAllAttendantList'], () => getAttendant())
+  const {
+    data: fetchedFundingData,
+    isSuccess: isFundingSuccess,
+    status: fundingStatus,
+  } = useQuery(['getAllFundingList'], () => getFundingData(parseInt(router.query.id as string)))
   const [isCompleteOrder, setIsCompleteOrder] = useState(false)
 
   const fundingStatusText = useMemo(() => {
@@ -125,7 +128,7 @@ const FundingDetail = () => {
             )}
 
             {/* 스타터 아이디로 변경 필요 , 임시 데이터 */}
-            {fetchedFundingData?.data.starter === 'seung' ? (
+            {fetchedFundingData?.data.starter === userInfo.id || 'seung2' ? (
               <Button
                 style={{
                   backgroundColor: `${color.$point}`,
@@ -159,9 +162,13 @@ const FundingDetail = () => {
       </Styled.Header>
       <Styled.Content>
         <FundingInfoList data={attendantData} totalPrice={totalPrice} fundingData={fundingData} />
-        {fundingMode === 'attendant' && fundingData?.status === 1 && (
-          <AttendantInfo data={attendantData} funding={fundingData} user={userInfo} />
+        {fundingStatus === 'loading' ? (
+          <FundingSkeleton />
+        ) : (
+          fundingMode === 'attendant' &&
+          fundingData?.status === 1 && <AttendantInfo data={attendantData} funding={fundingData} user={userInfo} />
         )}
+
         {fundingMode === 'bill' && fundingData?.status === 1 && (
           <BillInfo
             attendantData={attendantData}
