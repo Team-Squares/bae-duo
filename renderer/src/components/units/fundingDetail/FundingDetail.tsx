@@ -98,7 +98,7 @@ const FundingDetail = () => {
         </div>
         {fundingData?.status === 1 && (
           <div className="buttonGroup">
-            {fundingMode === 'attendant' ? (
+            {fundingMode === 'attendant' && fundingData?.menuImages?.length ? (
               <Button
                 variant={'text'}
                 style={{
@@ -193,7 +193,7 @@ const FundingDetail = () => {
           mode="none"
           closeModal={() => setIsOpenMenu(false)}
         >
-          <FundingMenuModal />
+          <FundingMenuModal menuImages={fundingData?.menuImages} />
         </Modal>
       )}
     </Styled.Container>

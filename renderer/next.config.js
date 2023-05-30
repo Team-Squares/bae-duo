@@ -6,6 +6,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
+    domains: ['your-cdn-image-domain'],
     remotePatterns: [
       {
         protocol: 'https',

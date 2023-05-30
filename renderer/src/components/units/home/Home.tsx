@@ -8,7 +8,6 @@ import { RiUser3Fill, RiAddLine } from 'react-icons/ri'
 import { categoryName, getKORMoneyString, getPercentage, tagByStatus } from './data'
 import tempProfileImg from '@/public/images/profile_small.svg'
 import starterImg from '@/public/images/starter.svg'
-import hansotImg from '@/public/images/hansot.svg'
 
 import Button from '../../commons/button/Button'
 import Tag from '../../commons/tag/Tag'
