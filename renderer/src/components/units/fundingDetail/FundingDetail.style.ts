@@ -51,7 +51,6 @@ export const Header = styled.div`
 export const Content = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
   gap: 40px;
 
   button {
@@ -64,7 +63,6 @@ export const Content = styled.div`
 `
 
 export const FundingInfoList = styled.div`
-  flex: 1;
   width: calc((100% - 40px) / 2);
 
   .fundingImg {
@@ -73,6 +71,11 @@ export const FundingInfoList = styled.div`
     margin-bottom: 24px;
     background-color: ${color.$defaultGray};
     border-radius: 20px;
+    overflow: hidden;
+
+    img {
+      object-fit: cover;
+    }
   }
 `
 
