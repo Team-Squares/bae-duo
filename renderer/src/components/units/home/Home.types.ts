@@ -8,4 +8,5 @@ export interface FundingListType {
   cur_member: number
   status: number
   createdAt: string
+  menuImages: { id: number; url: string }[] | null | undefined
 }

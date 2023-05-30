@@ -52,8 +52,10 @@ export const BrandsCard = styled.div`
   }
 `
 
-export const FundingInfo = styled.div`
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${hansotImg.src}), no-repeat;
+export const FundingInfo = styled.div<{ imgUrl: string }>`
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)),
+    ${props => (props.imgUrl ? `url(${props.imgUrl})` : `url(${hansotImg.src})`)}, no-repeat, center;
+  background-size: cover;
   height: 176px;
   display: flex;
   flex-direction: column;

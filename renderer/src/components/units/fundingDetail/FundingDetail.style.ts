@@ -68,6 +68,7 @@ export const FundingInfoList = styled.div`
   width: calc((100% - 40px) / 2);
 
   .fundingImg {
+    position: relative;
     width: 100%;
     height: 190px;
     margin-bottom: 24px;
