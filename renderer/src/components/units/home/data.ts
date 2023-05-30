@@ -17,5 +17,6 @@ export const getKORMoneyString = (money: number = 0) => {
 }
 
 export const getPercentage = (numerator: number = 0, denominator: number = 0) => {
-  return Math.floor((numerator / denominator) * 100)
+  const result = Math.floor((numerator / denominator) * 100)
+  return result >= 100 ? 100 : result
 }
